@@ -156,4 +156,4 @@ async function trackBuys(network, version) {
   });
 }
 
-trackBuys("metis", "v2");
+trackBuys("metis", "v3");

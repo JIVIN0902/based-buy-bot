@@ -1,0 +1,12 @@
+{
+  "name": "based-buy-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "dedent": "^1.5.1",
+    "ethers": "5.7.2",
+    "mongoose": "^8.1.1",
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}

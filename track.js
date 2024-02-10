@@ -156,4 +156,4 @@ async function trackBuys(network, version) {
   });
 }
 
-trackBuys("manta", "v2");
+trackBuys("manta", "izi");

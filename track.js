@@ -161,7 +161,7 @@ async function trackBuys(network, version) {
 const versions = ["v2", "v3", "izi"];
 let tasks = [];
 for (const version of versions) {
-  tasks.push(trackBuys("manta", version));
+  tasks.push(trackBuys("metis", version));
 }
 
 Promise.all(tasks)

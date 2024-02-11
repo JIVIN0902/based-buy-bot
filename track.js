@@ -26,16 +26,17 @@ const RPCS = {
   manta: "https://pacific-rpc.manta.network/http",
   metis: "https://andromeda.metis.io/?owner=1088",
 };
+const topics = {
+  v3: "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
+  v2: "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
+  izi: "0x0fe977d619f8172f7fdbe8bb8928ef80952817d96936509f67d66346bc4cd10f",
+};
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
   const db = new DB();
   const { buysCollection } = await db.init();
-  const topics = {
-    v3: "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
-    v2: "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
-    izi: "0x0fe977d619f8172f7fdbe8bb8928ef80952817d96936509f67d66346bc4cd10f",
-  };
+
   const topic = topics[version];
 
   // Create a filter object for the event
@@ -71,7 +72,7 @@ async function trackBuys(network, version) {
         version === "v2" || version === "v3"
           ? await poolContract.token1()
           : await poolContract.tokenY();
-      console.log(token0, token1);
+      console.log(version, token0, token1);
       const token0Contract = new ethers.Contract(token0, ERC20_ABI, provider);
       const token1Contract = new ethers.Contract(token1, ERC20_ABI, provider);
 
@@ -156,4 +157,17 @@ async function trackBuys(network, version) {
   });
 }
 
-trackBuys("manta", "izi");
+// trackBuys("manta", "izi");
+const versions = ["v2", "v3", "izi"];
+let tasks = [];
+for (const version of versions) {
+  tasks.push(trackBuys("manta", version));
+}
+
+Promise.all(tasks)
+  .then(() => {
+    // This block won't be executed as the promises never resolve
+  })
+  .catch((err) => {
+    console.error("An error occurred in one of the tasks:", err);
+  });

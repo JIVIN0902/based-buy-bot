@@ -63,6 +63,7 @@ const mainSchema = new Schema({
   website: { type: String, default: null },
   tg_link: { type: String, default: null },
   min_buy: { type: Number, default: 5 },
+  twitter: { type: String, default: null },
 });
 
 class DB {
@@ -84,3 +85,11 @@ class DB {
 }
 
 module.exports = { DB };
+
+// async function test() {
+//   const db = new DB();
+//   const { buysCollection } = await db.init();
+//   console.log(await buysCollection.find());
+// }
+
+// test();

@@ -2,12 +2,9 @@ const TelegramBot = require("node-telegram-bot-api");
 const dedent = require("dedent");
 const fs = require("fs");
 const { ethers } = require("ethers");
+const { explorers, TRENDINGS } = require("./config");
 
 const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
-
-const explorers = {
-  metis: "https://explorer.metis.io/tx",
-};
 
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
@@ -32,11 +29,6 @@ function readPrices() {
   }
 }
 
-const TRENDINGS = {
-  manta: "https://t.me/MantaTrendingLIVE",
-  metis: "https://t.me/MetisTrendingLIVE",
-};
-
 async function sendTelegramMessage(msg, img_url, chat_id, network) {
   try {
     msg = dedent(msg);
@@ -44,7 +36,7 @@ async function sendTelegramMessage(msg, img_url, chat_id, network) {
       inline_keyboard: [
         [
           {
-            text: `🔥 ${network.toUpperCase()} 🔥`,
+            text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
             url: TRENDINGS[network],
           },
         ],
@@ -183,4 +175,5 @@ module.exports = {
   compareAddresses,
   getUserPosition,
   explorers,
+  get_data_izi,
 };

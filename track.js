@@ -18,6 +18,7 @@ const {
   getUserPosition,
   explorers,
   get_data_v3,
+  get_data_izi,
 } = require("./utils");
 const { RPCS, topics, NATIVES } = require("./config");
 
@@ -63,12 +64,12 @@ async function trackBuys(network, version) {
         version === "v2" || version === "v3"
           ? await poolContract.token1()
           : await poolContract.tokenY();
-      console.log(version, token0, token1, pool_address);
+      // console.log(version, token0, token1, pool_address);
       const token0Contract = new ethers.Contract(token0, ERC20_ABI, provider);
       const token1Contract = new ethers.Contract(token1, ERC20_ABI, provider);
 
       for (const chat of chats) {
-        console.log(chat.chat_id);
+        // console.log(chat.chat_id);
         const pool = chat.pool;
         const {
           buy_step,
@@ -106,16 +107,22 @@ async function trackBuys(network, version) {
                 token0,
                 token1
               );
-        console.log(swap_data);
 
         let { amountIn, amountOut } = swap_data;
-        const to = version === "v3" ? args.recipient : args.to;
+
+        if (!amountIn && !amountOut) return;
+        const to =
+          version === "v3" ? args.recipient : version === "v2" ? args.to : null;
         const token0Decimals = await token0Contract.decimals();
         const token1Decimals = await token1Contract.decimals();
-        let userBalance = compareAddresses(token0, baseToken.address)
-          ? await token0Contract.balanceOf(to)
-          : await token1Contract.balanceOf(to);
-        userBalance = parseInt(userBalance.toString());
+        let userBalance =
+          version !== "izi"
+            ? compareAddresses(token0, baseToken.address)
+              ? await token0Contract.balanceOf(to)
+              : await token1Contract.balanceOf(to)
+            : null;
+        userBalance =
+          version !== "izi" ? parseInt(userBalance.toString()) : null;
         const totalSupply = compareAddresses(token0, baseToken.address)
           ? await token0Contract.totalSupply()
           : await token1Contract.totalSupply();
@@ -128,61 +135,70 @@ async function trackBuys(network, version) {
           : token1Decimals;
         tokenOutDecimals = parseInt(tokenOutDecimals.toString());
 
-        if (amountIn && amountOut) {
-          console.log(baseToken.symbol);
-          amountIn = parseInt(amountIn.toString());
-          amountOut = parseInt(amountOut.toString());
-          const position = getUserPosition(userBalance, amountOut);
-          amountIn = amountIn / 10 ** tokenInDecimals;
-          amountOut = amountOut / 10 ** tokenOutDecimals;
-          const prices = readPrices();
-          const quoteTokenPrice = prices[quoteToken.symbol];
-          const amountInUsd = amountIn * quoteTokenPrice;
-          const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
-          const marketCap =
-            (tokenPriceUsd * totalSupply) / 10 ** tokenOutDecimals;
-          console.log(amountInUsd, tokenPriceUsd, marketCap);
-          const explorer = explorers[pool.chainId];
-          const native = NATIVES[network];
-          const nativePrice = prices[native];
-          const msg = `
+        console.log(baseToken.symbol);
+        amountIn = parseInt(amountIn.toString());
+        amountOut = parseInt(amountOut.toString());
+        // console.log(amountIn, amountOut);
+        const position =
+          version !== "izi" ? getUserPosition(userBalance, amountOut) : null;
+        amountIn = amountIn / 10 ** tokenInDecimals;
+        amountOut = amountOut / 10 ** tokenOutDecimals;
+        // console.log(amountIn, amountOut);
+        const prices = readPrices();
+        const quoteTokenPrice = prices[quoteToken.symbol];
+        const amountInUsd = amountIn * quoteTokenPrice;
+        // console.log("Amt in usd ->", amountInUsd);
+        const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
+        // console.log("Token price usd ->", tokenPriceUsd);
+        const marketCap =
+          (tokenPriceUsd * totalSupply) / 10 ** tokenOutDecimals;
+        // console.log(amountInUsd, tokenPriceUsd, marketCap);
+        const explorer = explorers[pool.chainId];
+        const native = NATIVES[network];
+        const nativePrice = prices[native];
+        const msg = `
             <b>New ${baseToken.symbol} Buy!</b>\n
             ${buy_emoji.repeat(process_number(amountInUsd, buy_step))}\n
-            💵 <b>Spent:</b> ${formatNumber(amountIn)} ${
-            quoteToken.symbol
-          } ($${formatNumber(amountInUsd)})
+            💵 <b>Spent:</b> ${formatNumber(amountIn, 3)} ${
+          quoteToken.symbol
+        } ($${formatNumber(amountInUsd)})
             💰 <b>Bought: </b>${formatNumber(amountOut)} ${baseToken.symbol}
             🏷️ <b>${baseToken.symbol} Price:</b> $${
-            tokenPriceUsd >= 0.000000001
-              ? formatNumber(tokenPriceUsd, 8)
-              : formatNumber(tokenPriceUsd, 14)
-          }
+          tokenPriceUsd >= 0.000000001
+            ? formatNumber(tokenPriceUsd, 8)
+            : formatNumber(tokenPriceUsd, 14)
+        }
             💲 <b>${native} Price:</b> $${nativePrice}
-            🧔‍♂️ <b>Buyer: </b><a href="${explorer}/address/${to}">${to.slice(
-            0,
-            5
-          )}...${to.slice(38)}</a> | <a href='${explorer}/tx/${tx_hash}'>TX</a> 
             ${
-              position === Infinity
-                ? "<b>✅ New Buyer</b>"
-                : `⬆️ <b>Position:</b> ${(position < 0
-                    ? -1 * position
-                    : position
-                  ).toFixed(0)}%`
+              to
+                ? `🧔‍♂️ <b>Buyer: </b><a href="${explorer}/address/${to}">${to.slice(
+                    0,
+                    5
+                  )}...${to.slice(38)}</a> |`
+                : ""
+            }<a href='${explorer}/tx/${tx_hash}'>TX</a> 
+            ${
+              position
+                ? position === Infinity
+                  ? "<b>✅ New Chad</b>"
+                  : `⬆️ <b>Position:</b> +${(position < 0
+                      ? -1 * position
+                      : position
+                    ).toFixed(0)}%`
+                : ""
             }
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}\n
             <a href='https://dexscreener.com/${
               pool.chainId
             }/${pool_address}'>📊 CHART</a>${
-            tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
-          }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
-            website ? ` | <a href='${website}'>WEBSITE</a>` : ""
-          }
+          tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
+        }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
+          website ? ` | <a href='${website}'>WEBSITE</a>` : ""
+        }
         `;
-          if (amountInUsd > min_buy) {
-            await sendTelegramMessage(dedent(msg), image, chat_id, network);
-            console.log("msg sent");
-          }
+        if (amountInUsd > min_buy) {
+          await sendTelegramMessage(dedent(msg), image, chat_id, network);
+          // console.log("msg sent");
         }
       }
     } catch (error) {
@@ -192,18 +208,18 @@ async function trackBuys(network, version) {
 }
 
 // // trackBuys("manta", "izi");
-// const versions = ["v2", "v3"];
-// let tasks = [];
-// for (const version of versions) {
-//   tasks.push(trackBuys("avalanche", version));
-// }
+const versions = ["v2", "v3", "izi"];
+let tasks = [];
+for (const version of versions) {
+  tasks.push(trackBuys("manta", version));
+}
 
-// Promise.all(tasks)
-//   .then(() => {
-//     // This block won't be executed as the promises never resolve
-//   })
-//   .catch((err) => {
-//     console.error("An error occurred in one of the tasks:", err);
-//   });
+Promise.all(tasks)
+  .then(() => {
+    // This block won't be executed as the promises never resolve
+  })
+  .catch((err) => {
+    console.error("An error occurred in one of the tasks:", err);
+  });
 
-trackBuys("avalanche", "v2");
+// trackBuys("manta", "v3");

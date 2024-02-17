@@ -89,7 +89,10 @@ module.exports = { DB };
 // async function test() {
 //   const db = new DB();
 //   const { buysCollection } = await db.init();
-//   console.log(await buysCollection.find());
+//   const data = await buysCollection.find();
+//   for (const item of data) {
+//     console.log(item);
+//   }
 // }
 
 // test();

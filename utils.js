@@ -130,22 +130,21 @@ function get_data_v3(args, track_token, other_token, token0, token1) {
 }
 
 function get_data_izi(args, track_token, other_token, token0, token1) {
-  const amount0 = args.amount0 || 0;
-  const amount1 = args.amount1 || 0;
+  const { tokenX, tokenY, amountX, amountY, sellXEarnY } = args;
   const data = {
-    pool_address: "",
-    symbol: "None",
     amountIn: null,
     amountOut: null,
   };
-
-  if (token0 === track_token) {
-    data.amountOut = args.amount0;
-    data.amountIn = args.amount1;
-  }
-  if (token1 === track_token) {
-    data.amountOut = args.amount1;
-    data.amountIn = args.amount0;
+  if (sellXEarnY) {
+    if (tokenX === other_token) {
+      data.amountIn = amountX;
+      data.amountOut = amountY;
+    }
+  } else if (!sellXEarnY) {
+    if (tokenY === other_token) {
+      data.amountIn = amountY;
+      data.amountOut = amountX;
+    }
   }
 
   return data;

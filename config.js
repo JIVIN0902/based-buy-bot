@@ -1,6 +1,7 @@
 const explorers = {
   metis: "https://explorer.metis.io",
   avalanche: "https://snowtrace.io",
+  manta: "https://manta-pacific.calderaexplorer.xyz",
 };
 
 const TRENDINGS = {

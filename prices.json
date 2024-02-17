@@ -1,12 +1,14 @@
 {
-  "ETH": 2798.92,
-  "WETH": 2798.92,
-  "METIS": 87.07,
-  "AVAX": 40.27,
-  "WAVAX": 40.27,
+  "ETH": 2764.91,
+  "WETH": 2764.91,
+  "METIS": 81.42,
+  "Metis": 81.42,
+  "AVAX": 39.28,
+  "WAVAX": 39.28,
   "USDC": 1,
   "USDT": 1,
   "m.USDC": 1,
   "m.USDT": 1,
-  "MANTA": 2.94
+  "MANTA": 2.85,
+  "Manta": 2.85
 }

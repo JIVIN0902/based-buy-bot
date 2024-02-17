@@ -13,6 +13,7 @@ async function updatePrices() {
     ETH: ethPrice,
     WETH: ethPrice,
     METIS: metisPrice,
+    Metis: metisPrice,
     AVAX: avaxPrice,
     WAVAX: avaxPrice,
     USDC: 1,
@@ -38,5 +39,6 @@ function getNativePrice(key) {
   return data[key];
 }
 
-scheduleJob("*/60 * * * * *", updatePrices);
+// scheduleJob("*/60 * * * * *", updatePrices);
+// updatePrices();
 module.exports = { getNativePrice };

@@ -321,7 +321,7 @@ async function trackBuys(network, version) {
           )}...${to.slice(38)}</a>
             ${
               position === Infinity
-                ? "✅ New Buyer"
+                ? "<b>✅ New Buyer</b>"
                 : `⬆️ <b>Position:</b> ${(position < 0
                     ? -1 * position
                     : position

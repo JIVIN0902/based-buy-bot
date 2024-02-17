@@ -208,10 +208,10 @@ async function trackBuys(network, version) {
 }
 
 // // trackBuys("manta", "izi");
-const versions = ["v2", "v3"];
+const versions = ["v2"];
 let tasks = [];
 for (const version of versions) {
-  tasks.push(trackBuys("metis", version));
+  tasks.push(trackBuys("avalanche", version));
 }
 
 Promise.all(tasks)

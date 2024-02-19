@@ -66,6 +66,21 @@ const mainSchema = new Schema({
   twitter: { type: String, default: null },
 });
 
+const trendingSchema = new Schema({
+  network: String,
+  symbol: String,
+  project: String,
+  tg_link: String,
+  chat_id: Number,
+});
+
+const trendingVolumeSchema = new Schema({
+  symbol: String,
+  amount_buy: Number,
+  chat_id: String,
+  network: String,
+});
+
 class DB {
   db;
   constructor() {}
@@ -77,9 +92,11 @@ class DB {
     );
 
     const buysCollection = this.db.model("buys", mainSchema);
+    const trendingCollection = this.db.model("trends", trendingSchema);
 
     return {
       buysCollection,
+      trendingCollection,
     };
   }
 }

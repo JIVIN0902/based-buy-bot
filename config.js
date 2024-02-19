@@ -4,6 +4,7 @@ const explorers = {
   manta: "https://manta-pacific.calderaexplorer.xyz",
   scroll: "https://scrollscan.com",
   zksync: "https://explorer.zksync.io",
+  dymension: "https://jsonrpc.dymension.nodestake.org	",
 };
 
 const TRENDINGS = {
@@ -11,7 +12,8 @@ const TRENDINGS = {
   metis: "https://t.me/MetisTrendingLIVE",
   avalanche: "https://t.me/AvaxTrending_LIVE",
   scroll: "https://t.me/ScrollTrendingLIVE",
-  zksync: "",
+  zksync: "https://t.me/ZkSyncTrendingLIVE",
+  dymension: "https://t.me/DymensionTrending",
 };
 
 const RPCS = {
@@ -22,6 +24,7 @@ const RPCS = {
   scroll: "https://rpc.scroll.io",
   zksync:
     "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/zksync",
+  dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
 };
 const topics = {
   v3: "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
@@ -35,6 +38,7 @@ const NATIVES = {
   avalanche: "AVAX",
   scroll: "ETH",
   zksync: "ETH",
+  dymension: "DYM",
 };
 
 module.exports = { topics, RPCS, explorers, TRENDINGS, NATIVES };

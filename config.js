@@ -3,6 +3,7 @@ const explorers = {
   avalanche: "https://snowtrace.io",
   manta: "https://manta-pacific.calderaexplorer.xyz",
   scroll: "https://scrollscan.com",
+  zksync: "https://explorer.zksync.io",
 };
 
 const TRENDINGS = {
@@ -10,6 +11,7 @@ const TRENDINGS = {
   metis: "https://t.me/MetisTrendingLIVE",
   avalanche: "https://t.me/AvaxTrending_LIVE",
   scroll: "https://t.me/ScrollTrendingLIVE",
+  zksync: "",
 };
 
 const RPCS = {
@@ -18,6 +20,8 @@ const RPCS = {
   avalanche:
     "https://open-platform.nodereal.io/336906838ccd4ada98bad06c85251dd6/avalanche-c/ext/bc/C/rpc",
   scroll: "https://rpc.scroll.io",
+  zksync:
+    "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/zksync",
 };
 const topics = {
   v3: "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
@@ -30,6 +34,7 @@ const NATIVES = {
   metis: "METIS",
   avalanche: "AVAX",
   scroll: "ETH",
+  zksync: "ETH",
 };
 
 module.exports = { topics, RPCS, explorers, TRENDINGS, NATIVES };

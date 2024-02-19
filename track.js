@@ -166,7 +166,7 @@ async function trackBuys(network, version) {
             🏷️ <b>${baseToken.symbol} Price:</b> $${
           tokenPriceUsd >= 0.000000001
             ? formatNumber(tokenPriceUsd, 8)
-            : formatNumber(tokenPriceUsd, 14)
+            : formatNumber(tokenPriceUsd, 18)
         }
             💲 <b>${native} Price:</b> $${nativePrice}
             ${

@@ -9,7 +9,7 @@ const TRENDINGS = {
   manta: "https://t.me/MantaTrendingLIVE",
   metis: "https://t.me/MetisTrendingLIVE",
   avalanche: "https://t.me/AvaxTrending_LIVE",
-  scroll: "https://t.me/AvaxTrending_LIVE",
+  scroll: "https://t.me/ScrollTrendingLIVE",
 };
 
 const RPCS = {

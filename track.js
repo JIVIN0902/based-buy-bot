@@ -44,6 +44,7 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
+      // console.log(pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
@@ -208,9 +209,12 @@ async function trackBuys(network, version) {
 
 // // trackBuys("manta", "izi");
 const versions = ["v2", "v3", "izi"];
+const chains = ["base", "pulsechain"];
 let tasks = [];
-for (const version of versions) {
-  tasks.push(trackBuys("zksync", version));
+for (const network of chains) {
+  for (const version of versions) {
+    tasks.push(trackBuys(network, version));
+  }
 }
 
 Promise.all(tasks)
@@ -221,4 +225,4 @@ Promise.all(tasks)
     console.error("An error occurred in one of the tasks:", err);
   });
 
-// trackBuys("zksync", "v2");
+// trackBuys("pulsechain", "v2");

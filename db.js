@@ -69,8 +69,8 @@ const mainSchema = new Schema({
 const trendingSchema = new Schema({
   network: String,
   symbol: String,
-  project: String,
-  tg_link: String,
+  project: { type: String, default: null },
+  tg_link: { type: String, default: null },
   chat_id: Number,
 });
 

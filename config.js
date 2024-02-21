@@ -5,6 +5,9 @@ const explorers = {
   scroll: "https://scrollscan.com",
   zksync: "https://explorer.zksync.io",
   dymension: "https://jsonrpc.dymension.nodestake.org	",
+  base: "https://basescan.org",
+  pulsechain:
+    "https://scan.mypinata.cloud/ipfs/bafybeidn64pd2u525lmoipjl4nh3ooa2imd7huionjsdepdsphl5slfowy/#",
 };
 
 const TRENDINGS = {
@@ -14,6 +17,9 @@ const TRENDINGS = {
   scroll: "https://t.me/ScrollTrendingLIVE",
   zksync: "https://t.me/ZkSyncTrendingLIVE",
   dymension: "https://t.me/DymensionTrending",
+  blast: "https://t.me/BlastTrendingAlert",
+  base: "https://t.me/OrangeTrending",
+  pulsechain: "https://t.me/OrangeTrending",
 };
 
 const RPCS = {
@@ -25,7 +31,10 @@ const RPCS = {
   zksync:
     "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/zksync",
   dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
+  base: "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
+  pulsechain: "https://rpc.pulsechain.com",
 };
+
 const topics = {
   v3: "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
   v2: "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
@@ -39,6 +48,8 @@ const NATIVES = {
   scroll: "ETH",
   zksync: "ETH",
   dymension: "DYM",
+  base: "ETH",
+  pulsechain: "PLS",
 };
 
 module.exports = { topics, RPCS, explorers, TRENDINGS, NATIVES };

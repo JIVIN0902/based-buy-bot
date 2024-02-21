@@ -3,12 +3,13 @@ const fs = require("fs");
 const { scheduleJob } = require("node-schedule");
 
 async function updatePrices() {
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network&vs_currencies=usd`;
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network,pulsechain&vs_currencies=usd`;
   const { data } = await axios.get(url);
   const ethPrice = data.ethereum.usd;
   const avaxPrice = data["avalanche-2"].usd;
   const metisPrice = data["metis-token"].usd;
   const mantaPrice = data["manta-network"].usd;
+  const plsPrice = data["pulsechain"].usd;
   const priceData = {
     ETH: ethPrice,
     WETH: ethPrice,
@@ -20,6 +21,8 @@ async function updatePrices() {
     USDT: 1,
     "m.USDC": 1,
     "m.USDT": 1,
+    PLS: plsPrice,
+    WPLS: plsPrice,
     MANTA: mantaPrice,
   };
   const jsonData = JSON.stringify(priceData, null, 2);
@@ -39,6 +42,6 @@ function getNativePrice(key) {
   return data[key];
 }
 
-// scheduleJob("*/60 * * * * *", updatePrices);
+scheduleJob("*/60 * * * * *", updatePrices);
 // updatePrices();
 module.exports = { getNativePrice };

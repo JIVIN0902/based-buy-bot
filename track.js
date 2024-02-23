@@ -207,17 +207,9 @@ async function trackBuys(network, version) {
   });
 }
 
-// // trackBuys("manta", "izi");
+// // // trackBuys("manta", "izi");
 const versions = ["v2", "v3", "izi"];
-const chains = [
-  "base",
-  "pulsechain",
-  "manta",
-  "metis",
-  "scroll",
-  "avalanche",
-  "zksync",
-];
+const chains = ["merlinchain"];
 let tasks = [];
 for (const network of chains) {
   for (const version of versions) {
@@ -233,4 +225,4 @@ Promise.all(tasks)
     console.error("An error occurred in one of the tasks:", err);
   });
 
-// trackBuys("pulsechain", "v2");
+// trackBuys("merlinchain", "izi");

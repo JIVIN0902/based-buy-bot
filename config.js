@@ -8,6 +8,8 @@ const explorers = {
   base: "https://basescan.org",
   pulsechain:
     "https://scan.mypinata.cloud/ipfs/bafybeidn64pd2u525lmoipjl4nh3ooa2imd7huionjsdepdsphl5slfowy/#",
+  blast: "https://blastscan.io",
+  merlinchain: "https://scan.merlinchain.io",
 };
 
 const TRENDINGS = {
@@ -20,6 +22,8 @@ const TRENDINGS = {
   blast: "https://t.me/BlastTrendingAlert",
   base: "https://t.me/OrangeTrending",
   pulsechain: "https://t.me/OrangeTrending",
+  blast: "https://t.me/OrangeTrending",
+  merlinchain: "https://t.me/OrangeTrending",
 };
 
 const RPCS = {
@@ -33,6 +37,8 @@ const RPCS = {
   dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
   base: "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
   pulsechain: "https://rpc.pulsechain.com",
+  blast: "http://mainnet.blast.io",
+  merlinchain: "https://rpc.merlinchain.io",
 };
 
 const topics = {
@@ -50,6 +56,8 @@ const NATIVES = {
   dymension: "DYM",
   base: "ETH",
   pulsechain: "PLS",
+  blast: "ETH",
+  merlinchain: "BTC",
 };
 
 module.exports = { topics, RPCS, explorers, TRENDINGS, NATIVES };

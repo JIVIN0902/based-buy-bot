@@ -60,4 +60,26 @@ const NATIVES = {
   merlinchain: "BTC",
 };
 
-module.exports = { topics, RPCS, explorers, TRENDINGS, NATIVES };
+const TRENDING_CHAT_ID = -1001883705059;
+
+const TRENDING_MSG_IDS = {
+  manta: 13,
+  metis: 12,
+  avalanche: 11,
+  scroll: 14,
+  zksync: 18,
+  base: 19,
+  pulsechain: 17,
+  blast: 16,
+  merlinchain: 15,
+};
+
+module.exports = {
+  topics,
+  RPCS,
+  explorers,
+  TRENDINGS,
+  NATIVES,
+  TRENDING_CHAT_ID,
+  TRENDING_MSG_IDS,
+};

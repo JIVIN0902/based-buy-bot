@@ -72,13 +72,15 @@ const trendingSchema = new Schema({
   project: { type: String, default: null },
   tg_link: { type: String, default: null },
   chat_id: Number,
+  address: String,
 });
 
 const trendingVolumeSchema = new Schema({
-  symbol: String,
   amount_buy: Number,
   chat_id: String,
   network: String,
+  address: String,
+  timestamp: Number,
 });
 
 class DB {
@@ -93,10 +95,15 @@ class DB {
 
     const buysCollection = this.db.model("buys", mainSchema);
     const trendingCollection = this.db.model("trends", trendingSchema);
+    const trendingVolCollection = this.db.model(
+      "trending-volume",
+      trendingVolumeSchema
+    );
 
     return {
       buysCollection,
       trendingCollection,
+      trendingVolCollection,
     };
   }
 }

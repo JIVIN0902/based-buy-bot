@@ -29,6 +29,20 @@ function readPrices() {
   }
 }
 
+async function updateTrending(db, amount_buy, chat_id, network, address) {
+  const { trendingCollection, trendingVolCollection } = db;
+  const isTrending = await trendingCollection.findOne({ address });
+  if (isTrending) {
+    await trendingVolCollection.create({
+      amount_buy,
+      chat_id,
+      network,
+      address,
+      timestamp: Date.now(),
+    });
+  }
+}
+
 async function sendTelegramMessage(msg, img_url, chat_id, network) {
   try {
     msg = dedent(msg);
@@ -175,4 +189,5 @@ module.exports = {
   getUserPosition,
   explorers,
   get_data_izi,
+  buyBot,
 };

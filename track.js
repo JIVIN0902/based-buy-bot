@@ -209,7 +209,16 @@ async function trackBuys(network, version) {
 
 // // // trackBuys("manta", "izi");
 const versions = ["v2", "v3", "izi"];
-const chains = ["merlinchain"];
+const chains = [
+  "merlinchain",
+  "manta",
+  "metis",
+  "avalanche",
+  "scroll",
+  "base",
+  "zksync",
+  "pulsechain",
+];
 let tasks = [];
 for (const network of chains) {
   for (const version of versions) {

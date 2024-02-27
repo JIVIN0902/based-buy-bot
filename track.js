@@ -196,13 +196,13 @@ async function trackBuys(network, version) {
             ? formatNumber(tokenPriceUsd, 8)
             : formatNumber(tokenPriceUsd, 18)
         }
-            💲 <b>${native} Price:</b> $${nativePrice}
+            💲 <b>${native} Price:</b> $${formatNumber(nativePrice)}
             ${
               to
                 ? `🧔‍♂️ <b>Buyer: </b><a href="${explorer}/address/${to}">${to.slice(
                     0,
                     5
-                  )}...${to.slice(38)}</a> |`
+                  )}...${to.slice(38)}</a> | `
                 : ""
             }<a href='${explorer}/tx/${tx_hash}'>TX</a> 
             ${

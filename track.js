@@ -19,13 +19,24 @@ const {
   explorers,
   get_data_v3,
   get_data_izi,
+  updateTrendingVol,
 } = require("./utils");
-const { RPCS, topics, NATIVES } = require("./config");
+const {
+  RPCS,
+  topics,
+  NATIVES,
+  CHAINS,
+  VERSIONS,
+  TRENDING_RANK_EMOJIS,
+  TRENDING_CHAINS,
+  TRENDING_MSG_IDS,
+} = require("./config");
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
   const db = new DB();
-  const { buysCollection } = await db.init();
+  const { buysCollection, trendingCollection, trendingVolCollection } =
+    await db.init();
 
   const topic = topics[version];
 
@@ -44,7 +55,7 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-      // console.log(network, pool_address);
+      console.log(network, pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
@@ -111,8 +122,13 @@ async function trackBuys(network, version) {
         let { amountIn, amountOut } = swap_data;
 
         if (!amountIn && !amountOut) return;
-        const to =
+
+        let to =
           version === "v3" ? args.recipient : version === "v2" ? args.to : null;
+        if (version === "izi") {
+          const tx_receipt = await provider.getTransaction(tx_hash);
+          to = tx_receipt.from;
+        }
         const token0Decimals = await token0Contract.decimals();
         const token1Decimals = await token1Contract.decimals();
         let userBalance =
@@ -156,6 +172,18 @@ async function trackBuys(network, version) {
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
         const nativePrice = prices[native];
+        const isTrending = await trendingCollection.findOne({
+          address: ethers.utils.getAddress(baseToken.address),
+        });
+        let trendingMsg = null;
+        if (isTrending) {
+          trendingMsg = `\n<b><a href="https://t.me/OrangeTrending/${
+            TRENDING_MSG_IDS[network]
+          }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
+            TRENDING_CHAINS[network]
+          } TRENDING</a></b>\n`;
+        }
+        console.log("TRENDING ->", trendingMsg);
         const msg = `
             <b>New ${baseToken.symbol} Buy!</b>\n
             ${buy_emoji.repeat(process_number(amountInUsd, buy_step))}\n
@@ -179,7 +207,7 @@ async function trackBuys(network, version) {
             }<a href='${explorer}/tx/${tx_hash}'>TX</a> 
             ${
               position
-                ? position === Infinity
+                ? position === Infinity || position >= 100 || position <= -100
                   ? "<b>✅ New Chad</b>"
                   : `⬆️ <b>Position:</b> +${(position < 0
                       ? -1 * position
@@ -187,7 +215,8 @@ async function trackBuys(network, version) {
                     ).toFixed(0)}%`
                 : ""
             }
-            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}\n
+            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
+            ${trendingMsg || "\n"}
             <a href='https://dexscreener.com/${
               pool.chainId
             }/${pool_address}'>📊 CHART</a>${
@@ -197,6 +226,14 @@ async function trackBuys(network, version) {
         }
         `;
         if (amountInUsd > min_buy) {
+          await updateTrendingVol(
+            { trendingCollection, trendingVolCollection },
+            amountInUsd,
+            chat_id,
+            network,
+            baseToken.address
+          );
+
           await sendTelegramMessage(dedent(msg), image, chat_id, network);
           // console.log("msg sent");
         }
@@ -207,21 +244,9 @@ async function trackBuys(network, version) {
   });
 }
 
-// // // trackBuys("manta", "izi");
-const versions = ["v2", "v3", "izi"];
-const chains = [
-  "merlinchain",
-  "manta",
-  "metis",
-  "avalanche",
-  "scroll",
-  "base",
-  "zksync",
-  "pulsechain",
-];
 let tasks = [];
-for (const network of chains) {
-  for (const version of versions) {
+for (const network of ["merlinchain"]) {
+  for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }
 }
@@ -233,5 +258,3 @@ Promise.all(tasks)
   .catch((err) => {
     console.error("An error occurred in one of the tasks:", err);
   });
-
-// trackBuys("merlinchain", "izi");

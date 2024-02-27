@@ -12,6 +12,9 @@ const explorers = {
   merlinchain: "https://scan.merlinchain.io",
 };
 
+// const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
+const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+
 const TRENDINGS = {
   manta: "https://t.me/MantaTrendingLIVE",
   metis: "https://t.me/MetisTrendingLIVE",
@@ -63,15 +66,65 @@ const NATIVES = {
 const TRENDING_CHAT_ID = -1001883705059;
 
 const TRENDING_MSG_IDS = {
-  manta: 13,
-  metis: 12,
-  avalanche: 11,
-  scroll: 14,
-  zksync: 18,
-  base: 19,
-  pulsechain: 17,
-  blast: 16,
-  merlinchain: 15,
+  manta: 48,
+  metis: 47,
+  avalanche: 45,
+  scroll: 46,
+  zksync: 50,
+  base: 49,
+  pulsechain: 44,
+  blast: 43,
+  merlinchain: 51,
+};
+
+const TRENDING_RANK_EMOJIS = {
+  1: "🥇",
+  2: "🥈",
+  3: "🥉",
+  4: "4️⃣",
+  10: "🔟",
+  11: "1️⃣1️⃣",
+  12: "1️⃣2️⃣",
+  13: "1️⃣3️⃣",
+  14: "1️⃣4️⃣",
+  15: "1️⃣5️⃣",
+  16: "1️⃣6️⃣",
+  17: "1️⃣7️⃣",
+  18: "1️⃣8️⃣",
+  19: "1️⃣9️⃣",
+  20: "2️⃣0️⃣",
+};
+
+const VERSIONS = ["v2", "v3", "izi"];
+
+const CHAINS = [
+  "merlinchain",
+  "manta",
+  "metis",
+  "avalanche",
+  "scroll",
+  "base",
+  "zksync",
+  "pulsechain",
+];
+
+const TRENDING_CHAINS = {
+  manta: "MANTA",
+  metis: "METIS",
+  avalanche: "AVAX",
+  scroll: "SCROLL",
+  zksync: "ZKSYNC",
+  pulsechain: "PULSE",
+  blast: "BLAST",
+  merlinchain: "MERLIN",
+  base: "BASE",
+};
+
+const TRENDING_RECIPIENT_ADDRESS = "0x70eA2D4Ac98b304FbF8924fb43C8f7f220F0b4F6";
+
+const TRENDINGS_AMOUNTS_PER_HOURS = {
+  8: 100,
+  24: 200,
 };
 
 module.exports = {
@@ -82,4 +135,11 @@ module.exports = {
   NATIVES,
   TRENDING_CHAT_ID,
   TRENDING_MSG_IDS,
+  CHAINS,
+  VERSIONS,
+  BOT_TOKEN,
+  TRENDING_RANK_EMOJIS,
+  TRENDINGS_AMOUNTS_PER_HOURS,
+  TRENDING_RECIPIENT_ADDRESS,
+  TRENDING_CHAINS,
 };

@@ -45,6 +45,6 @@ function getNativePrice(key) {
   return data[key];
 }
 
-scheduleJob("*/60 * * * * *", updatePrices);
+// scheduleJob("*/60 * * * * *", updatePrices);
 // updatePrices();
 module.exports = { getNativePrice };

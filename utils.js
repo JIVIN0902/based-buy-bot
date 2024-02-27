@@ -2,9 +2,13 @@ const TelegramBot = require("node-telegram-bot-api");
 const dedent = require("dedent");
 const fs = require("fs");
 const { ethers } = require("ethers");
-const { explorers, TRENDINGS } = require("./config");
-
-const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
+const {
+  explorers,
+  TRENDINGS,
+  BOT_TOKEN,
+  TRENDING_CHAT_ID,
+  TRENDING_MSG_IDS,
+} = require("./config");
 
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
@@ -29,17 +33,22 @@ function readPrices() {
   }
 }
 
-async function updateTrending(db, amount_buy, chat_id, network, address) {
-  const { trendingCollection, trendingVolCollection } = db;
-  const isTrending = await trendingCollection.findOne({ address });
-  if (isTrending) {
-    await trendingVolCollection.create({
-      amount_buy,
-      chat_id,
-      network,
-      address,
-      timestamp: Date.now(),
-    });
+async function updateTrendingVol(db, amount_buy, chat_id, network, address) {
+  try {
+    const { trendingCollection, trendingVolCollection } = db;
+    const isTrending = await trendingCollection.findOne({ address, network });
+    if (isTrending) {
+      await trendingVolCollection.create({
+        amount_buy,
+        chat_id,
+        network,
+        address,
+        timestamp: Date.now(),
+      });
+      // console.log("Trending updated", isTrending);
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -51,7 +60,7 @@ async function sendTelegramMessage(msg, img_url, chat_id, network) {
         [
           {
             text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
-            url: TRENDINGS[network],
+            url: `https://t.me/OrangeTrending/${TRENDING_MSG_IDS[network]}`,
           },
         ],
       ],
@@ -190,4 +199,5 @@ module.exports = {
   explorers,
   get_data_izi,
   buyBot,
+  updateTrendingVol,
 };

@@ -1,13 +1,74 @@
 const { scheduleJob } = require("node-schedule");
 const { DB } = require("./db");
 const { buyBot } = require("./utils");
-const { TRENDING_CHAT_ID, TRENDING_MSG_IDS } = require("./config");
+const {
+  TRENDING_CHAT_ID,
+  TRENDING_MSG_IDS,
+  CHAINS,
+  TRENDING_RANK_EMOJIS,
+} = require("./config");
 const dedent = require("dedent");
+const { ethers } = require("ethers");
 
 async function updateTrending() {
   const db = new DB();
   const { trendingCollection, trendingVolCollection } = await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
+  for (const network of CHAINS) {
+    let trendingData = await trendingCollection.find({ network });
+    // console.log(trendingData);
+
+    let trends = [];
+    for (let item of trendingData) {
+      const address = ethers.utils.getAddress(item.address);
+      let condition = {
+        address,
+        timestamp: { $gte: snapshot },
+      };
+
+      let result = await trendingVolCollection.aggregate([
+        { $match: condition },
+        { $group: { _id: null, total: { $sum: "$amount_buy" } } },
+      ]);
+
+      let volume = result.length > 0 && result[0].total ? result[0].total : 0;
+      trends.push({ address, vol: volume });
+    }
+
+    // Sort and reverse to get trends
+    trends.sort((a, b) => b.vol - a.vol);
+    let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
+      .charAt(0)
+      .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
+    let i = 1;
+    for (let item of trends) {
+      try {
+        let trendingGroup = await trendingCollection.findOne({
+          address: item.address,
+        });
+        if (trendingGroup) {
+          const prevVol = trendingGroup.vol;
+          let volGrowth = (item.vol / prevVol) * 100;
+          volGrowth = volGrowth.toFixed(2);
+          msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${trendingGroup.tg_link}'>${trendingGroup.symbol}</a> <a href="https://dexscreener.com/${network}/${item.address}">📊 CHART (+${volGrowth}%)</a></b>\n`;
+        }
+        await trendingCollection.updateOne(
+          { address: item.address },
+          { $set: { rank: i, vol: item.vol + trendingGroup.vol } }
+        );
+        i++;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
+    msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
+
+    // console.log(msg);
+    // Replace with you
+    await editTrendingMsg(msg, network);
+  }
 }
 async function editTrendingMsg(msg, network) {
   try {
@@ -25,10 +86,9 @@ async function editTrendingMsg(msg, network) {
 async function sendTrendingMessageFirstTime(network) {
   try {
     const msg = `
-    ✅ <a href='https://t.me/OrangeTrending'>${network} Trending</a> (LIVE)\n
+    ✅<b> <a href='https://t.me/OrangeTrending'>${network} Trending</a> (LIVE)</b>\n
 
-    🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>
-    🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>
+    🍊 <i><b><a href='https://t.me/OrangeTrending'>@OrangeTrending</a> automatically updates Trending every 30 secs.</b></i>
     `;
     const m = await buyBot.sendMessage(TRENDING_CHAT_ID, dedent(msg), {
       parse_mode: "HTML",
@@ -40,21 +100,46 @@ async function sendTrendingMessageFirstTime(network) {
   }
 }
 
+async function tr() {
+  try {
+    const reply_markup = {
+      inline_keyboard: [
+        [
+          {
+            text: "Book Trending",
+            url: "https://t.me/OrangeTrendBot",
+          },
+        ],
+      ],
+    };
+    await buyBot.editMessageReplyMarkup(reply_markup, {
+      chat_id: TRENDING_CHAT_ID,
+      message_id: 20,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+// updateTrending();
+// tr();
+
 // (async () => {
 //   for (const net of [
+//     // "Blast",
+//     "PulseChain",
 //     "Avalanche",
+//     "Scroll",
 //     "Metis",
 //     "Manta",
-//     "Scroll",
-//     "MerlinChain",
-//     "Blast",
-//     "PulseChain",
-//     "Zksync",
 //     "Base",
+//     "Zksync",
+//     "Merlin",
 //   ]) {
 //     await sendTrendingMessageFirstTime(net);
 //   }
 // })();
+
 // const msg = `
 //     ✅ <a href='https://t.me/OrangeTrending'>Metis Trending</a> (LIVE)\n
 

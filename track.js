@@ -55,7 +55,7 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-      console.log(network, pool_address);
+      // console.log(network, pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
@@ -151,7 +151,7 @@ async function trackBuys(network, version) {
           : token1Decimals;
         tokenOutDecimals = parseInt(tokenOutDecimals.toString());
 
-        console.log(baseToken.symbol);
+        // console.log(baseToken.symbol);
         amountIn = parseInt(amountIn.toString());
         amountOut = parseInt(amountOut.toString());
         // console.log(amountIn, amountOut);
@@ -183,7 +183,7 @@ async function trackBuys(network, version) {
             TRENDING_CHAINS[network]
           } TRENDING</a></b>\n`;
         }
-        console.log("TRENDING ->", trendingMsg);
+        // console.log("TRENDING ->", trendingMsg);
         const msg = `
             <b>New ${baseToken.symbol} Buy!</b>\n
             ${buy_emoji.repeat(process_number(amountInUsd, buy_step))}\n
@@ -239,13 +239,13 @@ async function trackBuys(network, version) {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   });
 }
 
 let tasks = [];
-for (const network of ["merlinchain"]) {
+for (const network of CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }

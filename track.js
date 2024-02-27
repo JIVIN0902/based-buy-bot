@@ -156,7 +156,7 @@ async function trackBuys(network, version) {
         amountOut = parseInt(amountOut.toString());
         // console.log(amountIn, amountOut);
         const position =
-          version !== "izi" ? getUserPosition(userBalance, amountOut) : null;
+          to !== null ? getUserPosition(userBalance, amountOut) : null;
         amountIn = amountIn / 10 ** tokenInDecimals;
         amountOut = amountOut / 10 ** tokenOutDecimals;
         // console.log(amountIn, amountOut);

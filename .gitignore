@@ -1,3 +1,4 @@
 node_modules
 prices.json
 ./prices.json
+nohup.out

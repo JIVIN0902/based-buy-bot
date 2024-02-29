@@ -65,6 +65,7 @@ const mainSchema = new Schema({
   tg_link: { type: String, default: null },
   min_buy: { type: Number, default: 5 },
   twitter: { type: String, default: null },
+  circ_supply: { type: Number, default: null },
 });
 
 const trendingSchema = new Schema({

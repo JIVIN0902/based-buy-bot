@@ -106,6 +106,7 @@ const CHAINS = [
   "base",
   "zksync",
   "pulsechain",
+  "blast",
 ];
 
 const TRENDING_CHAINS = {

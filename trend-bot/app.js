@@ -175,11 +175,9 @@ bot.on("callback_query", async (callbackQuery) => {
         hrs_tier,
         tg_link,
         symbol,
-        user_id: chatId,
         timestamp: Date.now(),
         network,
       };
-      console.log(data);
       const existingRanks = await trendingCollection.countDocuments({
         network,
       });

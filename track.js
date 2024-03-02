@@ -267,5 +267,5 @@ Promise.all(tasks)
     // This block won't be executed as the promises never resolve
   })
   .catch((err) => {
-    console.error("An error occurred in one of the tasks:", err);
+    console.error("An error occurred in one of the tasks:", err.message);
   });

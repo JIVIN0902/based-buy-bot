@@ -94,7 +94,7 @@ async function sendTrendingMessageFirstTime(network) {
       parse_mode: "HTML",
       disable_web_page_preview: true,
     });
-    console.log(`${network} ->`, m.message_id);
+    // console.log(`${network} ->`, m.message_id);
   } catch (error) {
     console.log(error.message);
   }
@@ -121,7 +121,8 @@ async function tr() {
   }
 }
 
-// updateTrending();
+scheduleJob("*/40 * * * * *", updateTrending);
+// ();
 // tr();
 
 // (async () => {

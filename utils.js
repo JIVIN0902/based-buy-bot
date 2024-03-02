@@ -91,7 +91,7 @@ async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
       });
     }
   } catch (error) {
-    console.error("Sending message errored:", error);
+    console.error("Sending message errored:", error.message);
   }
 }
 

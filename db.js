@@ -77,7 +77,6 @@ const trendingSchema = new Schema({
   vol: { type: Number, default: 10 },
   tx_hash: { type: String, default: null },
   hrs_tier: { type: Number, default: null },
-  user_id: Number,
   timestamp: Number,
 });
 
@@ -116,27 +115,27 @@ class DB {
 
 module.exports = { DB, mainSchema, trendingSchema, trendingVolumeSchema };
 
-// async function test() {
-//   const db = new DB();
-//   const { buysCollection, trendingCollection, trendingVolCollection } =
-//     await db.init();
-//   await trendingCollection.deleteOne({
-//     address: "0xd6c31ba0754c4383a41c0e9df042c62b5e918f6d",
-//   });
-//   console.log(await trendingCollection.find({ network: "pulsechain" }));
-//   // await trendingCollection.create({
-//   //   network: "merlinchain",
-//   //   symbol: "VOYA",
-//   //   project: "Voya",
-//   //   tg_link: "https://t.me/+YQyWhYjpeUQ1NDM1",
-//   //   address: ethers.utils.getAddress(
-//   //     "0x480E158395cC5b41e5584347c495584cA2cAf78d"
-//   //   ),
-//   // });
-//   // const data = await buysCollection.find();
-//   // for (const item of data) {
-//   //   console.log(item);
-//   // }
-// }
+async function test() {
+  const db = new DB();
+  const { buysCollection, trendingCollection, trendingVolCollection } =
+    await db.init();
+  // await trendingCollection.deleteOne({
+  //   address: "0xd6c31ba0754c4383a41c0e9df042c62b5e918f6d",
+  // });
+  console.log(await trendingCollection.find({ network: "merlinchain" }));
+  // await trendingCollection.create({
+  //   network: "merlinchain",
+  //   symbol: "VOYA",
+  //   project: "Voya",
+  //   tg_link: "https://t.me/+YQyWhYjpeUQ1NDM1",
+  //   address: ethers.utils.getAddress(
+  //     "0x480E158395cC5b41e5584347c495584cA2cAf78d"
+  //   ),
+  // });
+  // const data = await buysCollection.find();
+  // for (const item of data) {
+  //   console.log(item);
+  // }
+}
 
-// test();
+test();

@@ -26,8 +26,9 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of CHAINS) {
+  for (const network of ["blast"]) {
     let trendingData = await trendingCollection.find({ network });
+    console.log(trendingData);
 
     let trends = [];
     for (let item of trendingData) {
@@ -133,7 +134,8 @@ async function tr() {
   }
 }
 
-scheduleJob("*/30 * * * * *", updateTrending);
+// scheduleJob("*/30 * * * * *", updateTrending);
+// updateTrending();
 // ();
 // tr();
 

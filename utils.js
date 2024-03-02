@@ -52,19 +52,22 @@ async function updateTrendingVol(db, amount_buy, chat_id, network, address) {
   }
 }
 
-async function sendTelegramMessage(msg, img_url, chat_id, network) {
+async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
   try {
     msg = dedent(msg);
-    const keyboardMarkup = {
-      inline_keyboard: [
-        [
-          {
-            text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
-            url: `https://t.me/OrangeTrending/${TRENDING_MSG_IDS[network]}`,
-          },
-        ],
-      ],
-    };
+    let keyboardMarkup = is_button
+      ? {
+          inline_keyboard: [
+            [
+              {
+                text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
+                url: `https://t.me/OrangeTrending/${TRENDING_MSG_IDS[network]}`,
+              },
+            ],
+          ],
+        }
+      : null;
+
     if (img_url) {
       const img_type = img_url.includes("mp4") ? "video" : "photo";
       if (img_type === "photo") {

@@ -30,6 +30,7 @@ const {
   TRENDING_RANK_EMOJIS,
   TRENDING_CHAINS,
   TRENDING_MSG_IDS,
+  TRENDING_CHAT_ID,
 } = require("./config");
 
 async function trackBuys(network, version) {
@@ -80,7 +81,6 @@ async function trackBuys(network, version) {
       const token1Contract = new ethers.Contract(token1, ERC20_ABI, provider);
 
       for (const chat of chats) {
-        // console.log(chat.chat_id);
         const pool = chat.pool;
         const {
           buy_step,
@@ -94,6 +94,7 @@ async function trackBuys(network, version) {
         } = chat;
         const baseToken = pool.baseToken;
         const quoteToken = pool.quoteToken;
+        console.log(chat.chat_id, baseToken.symbol);
         const swap_data =
           version === "v3"
             ? get_data_v3(
@@ -176,6 +177,7 @@ async function trackBuys(network, version) {
           address: ethers.utils.getAddress(baseToken.address),
         });
         let trendingMsg = null;
+
         if (isTrending) {
           trendingMsg = `\n<b><a href="https://t.me/OrangeTrending/${
             TRENDING_MSG_IDS[network]
@@ -183,8 +185,8 @@ async function trackBuys(network, version) {
             TRENDING_CHAINS[network]
           } TRENDING</a></b>\n`;
         }
-        // console.log("TRENDING ->", trendingMsg);
-        const msg = `
+
+        let msg = `
             <b>New ${baseToken.symbol} Buy!</b>\n
             ${buy_emoji.repeat(process_number(amountInUsd, buy_step))}\n
             💵 <b>Spent:</b> ${formatNumber(amountIn, 3)} ${
@@ -225,6 +227,7 @@ async function trackBuys(network, version) {
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         }
         `;
+
         if (amountInUsd > min_buy) {
           await updateTrendingVol(
             { trendingCollection, trendingVolCollection },
@@ -234,8 +237,16 @@ async function trackBuys(network, version) {
             baseToken.address
           );
 
-          await sendTelegramMessage(dedent(msg), image, chat_id, network);
-          // console.log("msg sent");
+          await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
+          if (amountInUsd > 200 && isTrending) {
+            await sendTelegramMessage(
+              dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
+              null,
+              TRENDING_CHAT_ID,
+              network,
+              false
+            );
+          }
         }
       }
     } catch (error) {

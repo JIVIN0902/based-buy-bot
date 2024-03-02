@@ -10,13 +10,24 @@ const {
 const dedent = require("dedent");
 const { ethers } = require("ethers");
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function updateTrending() {
   const db = new DB();
   const { trendingCollection, trendingVolCollection } = await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
+  const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  await trendingVolCollection.deleteMany({
+    timestamp: { $lt: snapshot },
+  });
+  await trendingCollection.deleteMany({
+    timestamp: { $lt: weekSnap },
+  });
+
   for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
-    // console.log(trendingData);
 
     let trends = [];
     for (let item of trendingData) {
@@ -68,6 +79,7 @@ async function updateTrending() {
     // console.log(msg);
     // Replace with you
     await editTrendingMsg(msg, network);
+    await sleep(5000);
   }
 }
 async function editTrendingMsg(msg, network) {
@@ -121,7 +133,7 @@ async function tr() {
   }
 }
 
-scheduleJob("*/40 * * * * *", updateTrending);
+scheduleJob("*/30 * * * * *", updateTrending);
 // ();
 // tr();
 

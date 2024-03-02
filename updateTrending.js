@@ -80,7 +80,7 @@ async function updateTrending() {
     // console.log(msg);
     // Replace with you
     await editTrendingMsg(msg, network);
-    await sleep(1000);
+    // await sleep(1000);
   }
 }
 async function editTrendingMsg(msg, network) {
@@ -92,7 +92,7 @@ async function editTrendingMsg(msg, network) {
       message_id: TRENDING_MSG_IDS[network],
     });
   } catch (error) {
-    console.log(error.message);
+    console.log("ERROR while editing ->", error.message);
   }
 }
 

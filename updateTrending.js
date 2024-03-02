@@ -26,9 +26,9 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of ["blast"]) {
+  for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
-    console.log(trendingData);
+    console.log(network);
 
     let trends = [];
     for (let item of trendingData) {
@@ -80,7 +80,7 @@ async function updateTrending() {
     // console.log(msg);
     // Replace with you
     await editTrendingMsg(msg, network);
-    await sleep(5000);
+    await sleep(1000);
   }
 }
 async function editTrendingMsg(msg, network) {

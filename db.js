@@ -119,9 +119,9 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
-  await trendingCollection.deleteMany({
-    network: "manta",
-  });
+  // await trendingCollection.deleteMany({
+  //   network: "manta",
+  // });
   // console.log(await trendingCollection.findOne({ network: "blast" }));
   // console.log(
   //   await trendingCollection.updateOne(
@@ -144,4 +144,4 @@ async function test() {
   // }
 }
 
-test();
+// test();

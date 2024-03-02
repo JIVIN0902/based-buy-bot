@@ -1,3 +1,5 @@
+const { config } = require("dotenv");
+config();
 const explorers = {
   metis: "https://explorer.metis.io",
   avalanche: "https://snowtrace.io",
@@ -12,8 +14,8 @@ const explorers = {
   merlinchain: "https://scan.merlinchain.io",
 };
 
-const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
-// const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+// const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
+const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const TRENDINGS = {
   manta: "https://t.me/MantaTrendingLIVE",

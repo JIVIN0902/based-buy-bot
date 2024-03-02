@@ -134,7 +134,7 @@ async function tr() {
   }
 }
 
-// scheduleJob("*/30 * * * * *", updateTrending);
+scheduleJob("*/30 * * * * *", updateTrending);
 // updateTrending();
 // ();
 // tr();

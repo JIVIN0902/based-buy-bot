@@ -148,9 +148,8 @@ async function trackBuys(network, version) {
         tokenOutDecimals = parseInt(tokenOutDecimals.toString());
 
         totalSupply = parseInt(
-          ethers.utils.formatUnits(totalSupply, tokenInDecimals).toString()
+          ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
         );
-        console.log("TOTAL SUPPLY ->", totalSupply);
         let userBalance = compareAddresses(token0, baseToken.address)
           ? await token0Contract.balanceOf(to)
           : await token1Contract.balanceOf(to);

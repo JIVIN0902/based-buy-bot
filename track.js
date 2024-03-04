@@ -84,6 +84,8 @@ async function trackBuys(network, version) {
       const token1Decimals = await token1Contract.decimals();
       let i = 0;
       for (const chat of chats) {
+        console.log(i);
+        i += 1;
         const pool = chat.pool;
         const {
           buy_step,
@@ -242,7 +244,7 @@ async function trackBuys(network, version) {
           );
 
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
-          if (amountInUsd > 500 && isTrending && i === 0) {
+          if (amountInUsd > 500 && isTrending && i === 1) {
             await sendTelegramMessage(
               dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
               null,
@@ -251,7 +253,6 @@ async function trackBuys(network, version) {
               false
             );
           }
-          i++;
         }
       }
     } catch (error) {

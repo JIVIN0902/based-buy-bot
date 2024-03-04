@@ -172,11 +172,11 @@ async function trackBuys(network, version) {
         const amountInUsd = amountIn * quoteTokenPrice;
         // console.log("Amt in usd ->", amountInUsd);
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
-        console.log("Token price usd ->", tokenPriceUsd);
+        // console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
-        console.log("Supply ->", supply, baseToken.symbol);
+        // console.log("Supply ->", supply, baseToken.symbol);
         const marketCap = tokenPriceUsd * supply;
-        console.log(amountInUsd, tokenPriceUsd, marketCap);
+        // console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
         const nativePrice = prices[native];
@@ -234,7 +234,7 @@ async function trackBuys(network, version) {
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         }
         `;
-        console.log(msg);
+        // console.log(msg);
 
         if (amountInUsd > min_buy) {
           await updateTrendingVol(

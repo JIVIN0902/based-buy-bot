@@ -151,6 +151,7 @@ async function trackBuys(network, version) {
         totalSupply = parseInt(
           ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
         );
+        console.log("TSUPPLY->", totalSupply);
         let userBalance = compareAddresses(token0, baseToken.address)
           ? await token0Contract.balanceOf(to)
           : await token1Contract.balanceOf(to);
@@ -173,7 +174,7 @@ async function trackBuys(network, version) {
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
         // console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
-        // console.log("Supply ->", supply);
+        console.log("Supply ->", supply);
         const marketCap = tokenPriceUsd * supply;
         // console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];

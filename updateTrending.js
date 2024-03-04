@@ -29,7 +29,7 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of ["base"]) {
+  for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];
@@ -49,11 +49,7 @@ async function updateTrending() {
 
         let volume = result.length > 0 && result[0].total ? result[0].total : 0;
 
-        const groupData = await buysCollection.findOne({});
-        const tgLink = trendingGroup.tg_link
-          ? trendingGroup.tg_link
-          : groupData.tg_link;
-        trends.push({ address, vol: volume, tg_link: tgLink });
+        trends.push({ address, vol: volume });
       } else {
         await trendingCollection.deleteOne({ address });
       }
@@ -74,7 +70,11 @@ async function updateTrending() {
           const prevVol = trendingGroup.vol;
           let volGrowth = (item.vol / prevVol) * 100;
           volGrowth = volGrowth.toFixed(2);
-          msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${trendingGroup.tg_link}'>${trendingGroup.symbol}</a> <a href="https://dexscreener.com/${network}/${item.address}">📊 CHART (+${volGrowth}%)</a></b>\n`;
+          const groupData = await buysCollection.findOne({});
+          const tgLink = trendingGroup.tg_link
+            ? trendingGroup.tg_link
+            : groupData.tg_link;
+          msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${trendingGroup.symbol}</a> <a href="https://dexscreener.com/${network}/${item.address}">📊 CHART (+${volGrowth}%)</a></b>\n`;
         }
         await trendingCollection.updateOne(
           { address: item.address },

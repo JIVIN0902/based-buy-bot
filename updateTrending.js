@@ -18,7 +18,8 @@ function sleep(ms) {
 
 async function updateTrending() {
   const db = new DB();
-  const { trendingCollection, trendingVolCollection } = await db.init();
+  const { trendingCollection, trendingVolCollection, buysCollection } =
+    await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
   const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
   await trendingVolCollection.deleteMany({
@@ -47,7 +48,12 @@ async function updateTrending() {
         ]);
 
         let volume = result.length > 0 && result[0].total ? result[0].total : 0;
-        trends.push({ address, vol: volume });
+
+        const groupData = await buysCollection.findOne({});
+        const tgLink = trendingGroup.tg_link
+          ? trendingGroup.tg_link
+          : groupData.tg_link;
+        trends.push({ address, vol: volume, tg_link: tgLink });
       } else {
         await trendingCollection.deleteOne({ address });
       }

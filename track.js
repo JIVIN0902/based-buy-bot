@@ -135,12 +135,6 @@ async function trackBuys(network, version) {
           const tx_receipt = await provider.getTransaction(tx_hash);
           to = tx_receipt.from;
         }
-        let userBalance = compareAddresses(token0, baseToken.address)
-          ? await token0Contract.balanceOf(to)
-          : await token1Contract.balanceOf(to);
-        userBalance = parseFloat(
-          ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
-        );
         const totalSupply = compareAddresses(token0, baseToken.address)
           ? await token0Contract.totalSupply()
           : await token1Contract.totalSupply();
@@ -153,6 +147,12 @@ async function trackBuys(network, version) {
           : token1Decimals;
         tokenOutDecimals = parseInt(tokenOutDecimals.toString());
 
+        let userBalance = compareAddresses(token0, baseToken.address)
+          ? await token0Contract.balanceOf(to)
+          : await token1Contract.balanceOf(to);
+        userBalance = parseFloat(
+          ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
+        );
         // console.log(baseToken.symbol);
         amountIn = parseFloat(
           ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()

@@ -140,14 +140,14 @@ function get_data_v3(args, track_token, other_token, token0, token1) {
 
   if (amount0 < 0) {
     if (token0 === track_token) {
-      data.amountOut = -args.amount0;
+      data.amountOut = args.amount0.mul(-1);
       data.amountIn = args.amount1;
     }
   }
 
   if (amount1 < 0) {
     if (token1 === track_token) {
-      data.amountOut = -args.amount1;
+      data.amountOut = args.amount1.mul(-1);
       data.amountIn = args.amount0;
     }
   }

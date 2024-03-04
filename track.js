@@ -156,14 +156,20 @@ async function trackBuys(network, version) {
         tokenOutDecimals = parseInt(tokenOutDecimals.toString());
 
         // console.log(baseToken.symbol);
-        amountIn = parseInt(amountIn.toString());
-        amountOut = parseInt(amountOut.toString());
+        amountIn = parseFloat(
+          ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
+        );
+        // amountIn = parseInt(amountIn.toString());
+        // amountOut = parseInt(amountOut.toString());
+        amountOut = parseFloat(
+          ethers.utils.formatUnits(amountOut, 18).toString()
+        );
         // console.log(amountIn, amountOut);
         const position =
           to !== null ? getUserPosition(userBalance, amountOut) : null;
-        amountIn = amountIn / 10 ** tokenInDecimals;
-        amountOut = amountOut / 10 ** tokenOutDecimals;
-        // console.log(amountIn, amountOut);
+        // amountIn = amountIn / 10 ** tokenInDecimals;
+        // amountOut = amountOut / 10 ** tokenOutDecimals;
+        console.log(amountIn, amountOut);
         const prices = readPrices();
         const quoteTokenPrice = prices[quoteToken.symbol];
         const amountInUsd = amountIn * quoteTokenPrice;

@@ -135,9 +135,13 @@ async function trackBuys(network, version) {
           const tx_receipt = await provider.getTransaction(tx_hash);
           to = tx_receipt.from;
         }
-        const totalSupply = compareAddresses(token0, baseToken.address)
+        let totalSupply = compareAddresses(token0, baseToken.address)
           ? await token0Contract.totalSupply()
           : await token1Contract.totalSupply();
+        totalSupply = parseInt(
+          ethers.utils.formatUnits(totalSupply, tokenInDecimals).toString()
+        );
+        console.log("TOTAL SUPPLY ->", totalSupply);
         let tokenInDecimals = compareAddresses(token0, quoteToken.address)
           ? token0Decimals
           : token1Decimals;
@@ -175,7 +179,8 @@ async function trackBuys(network, version) {
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
         console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
-        const marketCap = (tokenPriceUsd * supply) / 10 ** tokenOutDecimals;
+        console.log("Supply ->", supply);
+        const marketCap = tokenPriceUsd * supply;
         console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];

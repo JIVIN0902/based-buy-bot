@@ -115,7 +115,7 @@ async function sendTrendingMessageFirstTime(network) {
     const msg = `
     ✅<b> <a href='https://t.me/OrangeTrending'>${network} Trending</a> (LIVE)</b>\n
 
-    🍊 <i><b><a href='https://t.me/OrangeTrending'>@OrangeTrending</a> automatically updates Trending every 30 secs.</b></i>
+    🍊 <i><b><a href='https://t.me/OrangeTrending'>@OrangeTrending</a> automatically updates Trending every 20 secs.</b></i>
     `;
     const m = await buyBot.sendMessage(TRENDING_CHAT_ID, dedent(msg), {
       parse_mode: "HTML",
@@ -148,7 +148,7 @@ async function tr() {
   }
 }
 
-scheduleJob("*/30 * * * * *", updateTrending);
+scheduleJob("*/20 * * * * *", updateTrending);
 // updateTrending();
 // ();
 // tr();

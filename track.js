@@ -192,9 +192,9 @@ async function trackBuys(network, version) {
         }
 
         const isWhale = amountInUsd > marketCap * 0.02;
-        console.log(isWhale);
+        // console.log(isWhale);
         const emoji = isWhale ? "🐳" : buy_emoji;
-        console.log(emoji);
+        // console.log(emoji);
 
         let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
@@ -238,7 +238,7 @@ async function trackBuys(network, version) {
         }
         `;
 
-        console.log(msg);
+        // console.log(msg);
         if (amountInUsd > min_buy) {
           await updateTrendingVol(
             { trendingCollection, trendingVolCollection },

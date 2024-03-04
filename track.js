@@ -151,12 +151,11 @@ async function trackBuys(network, version) {
         totalSupply = parseInt(
           ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
         );
-        console.log("TSUPPLY->", totalSupply);
         let userBalance = compareAddresses(token0, baseToken.address)
           ? await token0Contract.balanceOf(to)
           : await token1Contract.balanceOf(to);
         userBalance = parseFloat(
-          ethers.utils.formatUnits(amountIn, tokenOutDecimals).toString()
+          ethers.utils.formatUnits(userBalance, tokenOutDecimals).toString()
         );
         amountIn = parseFloat(
           ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()

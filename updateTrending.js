@@ -9,6 +9,8 @@ const {
 } = require("./config");
 const dedent = require("dedent");
 const { ethers } = require("ethers");
+const { default: axios } = require("axios");
+const { getTokenDetails } = require("./trend-bot/utils");
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,24 +28,29 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of ["blast"]) {
+  for (const network of ["base"]) {
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];
     for (let item of trendingData) {
       const address = ethers.utils.getAddress(item.address);
-      let condition = {
-        address,
-        timestamp: { $gte: snapshot },
-      };
+      const tokenData = await getTokenDetails(address);
+      const liquidity = tokenData.liquidity.usd;
+      if (liquidity > 1000) {
+        let condition = {
+          address,
+          timestamp: { $gte: snapshot },
+        };
+        let result = await trendingVolCollection.aggregate([
+          { $match: condition },
+          { $group: { _id: null, total: { $sum: "$amount_buy" } } },
+        ]);
 
-      let result = await trendingVolCollection.aggregate([
-        { $match: condition },
-        { $group: { _id: null, total: { $sum: "$amount_buy" } } },
-      ]);
-
-      let volume = result.length > 0 && result[0].total ? result[0].total : 0;
-      trends.push({ address, vol: volume });
+        let volume = result.length > 0 && result[0].total ? result[0].total : 0;
+        trends.push({ address, vol: volume });
+      } else {
+        await trendingCollection.deleteOne({ address });
+      }
     }
 
     // Sort and reverse to get trends
@@ -54,7 +61,6 @@ async function updateTrending() {
     let i = 1;
     for (let item of trends) {
       try {
-        console.log(item);
         let trendingGroup = await trendingCollection.findOne({
           address: item.address,
         });

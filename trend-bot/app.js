@@ -69,6 +69,7 @@ bot.on("message", (msg) => {
         inline_keyboard: [
           [{ text: "🔴 8 hrs 🔴", callback_data: "8_hrs" }],
           [{ text: "🔴 24 hrs 🔴", callback_data: "24_hrs" }],
+          [{ text: "🔴 7 days 🔴", callback_data: "168_hrs" }],
           [{ text: "✅ Confirm ✅", callback_data: "confirm_hrs" }],
         ],
       };
@@ -104,7 +105,7 @@ bot.on("callback_query", async (callbackQuery) => {
       await bot.sendMessage(chatId, "Enter token address: ", {
         reply_markup: { force_reply: true },
       });
-    } else if (["8_hrs", "24_hrs"].includes(action)) {
+    } else if (["8_hrs", "24_hrs", "168_hrs"].includes(action)) {
       let inline_keyboard = msg.reply_markup.inline_keyboard;
       let hrs = action.split("_")[0];
       hrs = parseInt(hrs);
@@ -133,7 +134,7 @@ bot.on("callback_query", async (callbackQuery) => {
           : text.replace(/🟢/g, "🔴"),
         callback_data: action,
       };
-      console.log(idx, hrs);
+      // console.log(idx, hrs);
       messageState[chatId][PLAN] = hrs;
       await bot.editMessageReplyMarkup(
         { inline_keyboard },
@@ -144,6 +145,18 @@ bot.on("callback_query", async (callbackQuery) => {
       const hrs_tier = messageState[chatId][PLAN];
       const tg_link = messageState[chatId][GROUP_LINK];
       const token_data = await getTokenDetails(address);
+      const liquidity = token_data.liquidity.usd;
+      console.log("LIQUIDITY ->", liquidity);
+      if (liquidity < 1000) {
+        await bot.sendMessage(
+          chatId,
+          "<b>❌ This token has very little liquidity. Pls Ensure you have at least 1000$ in liquidity to be eligible for trending</b>",
+          {
+            parse_mode: "HTML",
+          }
+        );
+        return;
+      }
       messageState[chatId][TOKEN_DATA] = token_data;
       const symbol = token_data.baseToken.symbol;
       const reply_markup = {
@@ -154,7 +167,7 @@ bot.on("callback_query", async (callbackQuery) => {
       };
       const msg = `
       <b>BOOKING DETAILS</b>\n
-      <b>Token Address: </b>${address}
+      <b>Token Address: </b><code>${address}</code>
       <b>Group/Portal Link: </b>${tg_link}
       <b>Symbol </b>${symbol}
       <b>Slot Time: </b>${hrs_tier}hrs
@@ -164,14 +177,15 @@ bot.on("callback_query", async (callbackQuery) => {
         parse_mode: "HTML",
       });
     } else if (action === "confirm_booking") {
-      const address = messageState[chatId][TOKEN_ADDRESS];
+      let address = messageState[chatId][TOKEN_ADDRESS];
       const hrs_tier = messageState[chatId][PLAN];
       const tg_link = messageState[chatId][GROUP_LINK];
       const token_data = messageState[chatId][TOKEN_DATA];
       const network = messageState[chatId][NETWORK];
       const symbol = token_data.baseToken.symbol;
+      address = ethers.utils.getAddress(address);
       const data = {
-        address: ethers.utils.getAddress(address),
+        address,
         hrs_tier,
         tg_link,
         symbol,
@@ -181,6 +195,17 @@ bot.on("callback_query", async (callbackQuery) => {
       const existingRanks = await trendingCollection.countDocuments({
         network,
       });
+      const trendingExists = await trendingCollection.findOne({ address });
+      if (trendingExists) {
+        await bot.sendMessage(
+          chatId,
+          "<b>❌ Trending entry already exists for this token</b>",
+          {
+            parse_mode: "HTML",
+          }
+        );
+        return;
+      }
       await trendingCollection.create({ ...data, rank: existingRanks + 1 });
       const msg = `
       🎉 <b>BOOKING CONFIRMED</b>🎉

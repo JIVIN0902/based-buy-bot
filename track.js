@@ -53,7 +53,7 @@ async function trackBuys(network, version) {
       : UNISWAP_V3_PAIR_ABI;
   const iface = new ethers.utils.Interface(abi);
 
-  provider.on(filter, async (log, tx) => {
+  provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
       // console.log(network, pool_address);

@@ -98,7 +98,7 @@ async function trackBuys(network, version) {
         } = chat;
         const baseToken = pool.baseToken;
         const quoteToken = pool.quoteToken;
-        console.log(chat.chat_id, baseToken.symbol, circ_supply);
+        // console.log(chat.chat_id, baseToken.symbol, circ_supply);
         const swap_data =
           version === "v3"
             ? get_data_v3(
@@ -124,7 +124,6 @@ async function trackBuys(network, version) {
                 token1
               );
 
-        console.log(swap_data);
         let { amountIn, amountOut } = swap_data;
 
         if (!amountIn && !amountOut) return;
@@ -156,27 +155,21 @@ async function trackBuys(network, version) {
         userBalance = parseFloat(
           ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
         );
-        // console.log(baseToken.symbol);
         amountIn = parseFloat(
           ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
         );
-        // amountIn = parseInt(amountIn.toString());
-        // amountOut = parseInt(amountOut.toString());
         amountOut = parseFloat(
           ethers.utils.formatUnits(amountOut, 18).toString()
         );
-        // console.log(amountIn, amountOut);
         const position =
           to !== null ? getUserPosition(userBalance, amountOut) : null;
-        // amountIn = amountIn / 10 ** tokenInDecimals;
-        // amountOut = amountOut / 10 ** tokenOutDecimals;
-        console.log(amountIn, amountOut);
+        // console.log(amountIn, amountOut);
         const prices = readPrices();
         const quoteTokenPrice = prices[quoteToken.symbol];
         const amountInUsd = amountIn * quoteTokenPrice;
-        console.log("Amt in usd ->", amountInUsd);
+        // console.log("Amt in usd ->", amountInUsd);
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
-        console.log("Token price usd ->", tokenPriceUsd);
+        // console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
         console.log("Supply ->", supply);
         const marketCap = tokenPriceUsd * supply;
@@ -238,7 +231,6 @@ async function trackBuys(network, version) {
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         }
         `;
-        console.log(msg);
 
         if (amountInUsd > min_buy) {
           await updateTrendingVol(

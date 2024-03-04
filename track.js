@@ -45,6 +45,7 @@ async function trackBuys(network, version) {
   const filter = {
     topics: [topic],
   };
+
   const abi =
     version === "v2"
       ? UNISWAP_V2_PAIR_ABI
@@ -76,7 +77,6 @@ async function trackBuys(network, version) {
         version === "v2" || version === "v3"
           ? await poolContract.token1()
           : await poolContract.tokenY();
-      // console.log(version, token0, token1, pool_address);
       const token0Contract = new ethers.Contract(token0, ERC20_ABI, provider);
       const token1Contract = new ethers.Contract(token1, ERC20_ABI, provider);
 
@@ -84,7 +84,6 @@ async function trackBuys(network, version) {
       const token1Decimals = await token1Contract.decimals();
       let i = 0;
       for (const chat of chats) {
-        console.log(i);
         i += 1;
         const pool = chat.pool;
         const {
@@ -192,9 +191,12 @@ async function trackBuys(network, version) {
           } TRENDING</a></b>\n`;
         }
 
+        const isWhale = amountInUsd > marketCap * 0.02;
+        const emoji = isWhale ? "🐳" : buy_emoji;
+
         let msg = `
-            <b>New ${baseToken.symbol} Buy!</b>\n
-            ${buy_emoji.repeat(process_number(amountInUsd, buy_step))}\n
+            <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
+            ${emoji.repeat(process_number(amountInUsd, buy_step))}\n
             💵 <b>Spent:</b> ${formatNumber(amountIn, 3)} ${
           quoteToken.symbol
         } ($${formatNumber(amountInUsd)})
@@ -233,8 +235,6 @@ async function trackBuys(network, version) {
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         }
         `;
-        // console.log(msg);
-
         if (amountInUsd > min_buy) {
           await updateTrendingVol(
             { trendingCollection, trendingVolCollection },

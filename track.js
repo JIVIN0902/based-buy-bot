@@ -171,9 +171,9 @@ async function trackBuys(network, version) {
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
         // console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
-        console.log("Supply ->", supply);
+        // console.log("Supply ->", supply);
         const marketCap = tokenPriceUsd * supply;
-        console.log(amountInUsd, tokenPriceUsd, marketCap);
+        // console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
         const nativePrice = prices[native];

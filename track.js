@@ -135,14 +135,12 @@ async function trackBuys(network, version) {
           const tx_receipt = await provider.getTransaction(tx_hash);
           to = tx_receipt.from;
         }
-        let userBalance =
-          version !== "izi"
-            ? compareAddresses(token0, baseToken.address)
-              ? await token0Contract.balanceOf(to)
-              : await token1Contract.balanceOf(to)
-            : null;
-        userBalance =
-          version !== "izi" ? parseInt(userBalance.toString()) : null;
+        let userBalance = compareAddresses(token0, baseToken.address)
+          ? await token0Contract.balanceOf(to)
+          : await token1Contract.balanceOf(to);
+        userBalance = parseFloat(
+          ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
+        );
         const totalSupply = compareAddresses(token0, baseToken.address)
           ? await token0Contract.totalSupply()
           : await token1Contract.totalSupply();
@@ -173,12 +171,12 @@ async function trackBuys(network, version) {
         const prices = readPrices();
         const quoteTokenPrice = prices[quoteToken.symbol];
         const amountInUsd = amountIn * quoteTokenPrice;
-        // console.log("Amt in usd ->", amountInUsd);
+        console.log("Amt in usd ->", amountInUsd);
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
-        // console.log("Token price usd ->", tokenPriceUsd);
+        console.log("Token price usd ->", tokenPriceUsd);
         const supply = circ_supply ? circ_supply : totalSupply;
         const marketCap = (tokenPriceUsd * supply) / 10 ** tokenOutDecimals;
-        // console.log(amountInUsd, tokenPriceUsd, marketCap);
+        console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
         const nativePrice = prices[native];

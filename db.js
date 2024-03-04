@@ -119,10 +119,18 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
-  // await trendingCollection.deleteMany({
-  //   network: "manta",
-  // });
-  // console.log(await trendingCollection.findOne({ network: "blast" }));
+  for (const item of [
+    "65e3dd79a1f6d76ded7b868c",
+    "65e3dd73a1f6d76ded7b868a",
+    "65e3a9d56a61d15889e0615f",
+    "65e3a9756a61d15889e06159",
+  ]) {
+    const delRes = await trendingCollection.deleteOne({
+      _id: item,
+    });
+    console.log(delRes);
+  }
+  console.log(await trendingCollection.find({ network: "metis" }));
   // console.log(
   //   await trendingCollection.updateOne(
   //     { address: "0x5D5cB63E071E4cA1956F9C8C5258Fe7711FD2Ba9" },

@@ -26,9 +26,8 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of CHAINS) {
+  for (const network of ["blast"]) {
     let trendingData = await trendingCollection.find({ network });
-    console.log(network);
 
     let trends = [];
     for (let item of trendingData) {
@@ -55,6 +54,7 @@ async function updateTrending() {
     let i = 1;
     for (let item of trends) {
       try {
+        console.log(item);
         let trendingGroup = await trendingCollection.findOne({
           address: item.address,
         });

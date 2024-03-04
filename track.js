@@ -53,7 +53,7 @@ async function trackBuys(network, version) {
       : UNISWAP_V3_PAIR_ABI;
   const iface = new ethers.utils.Interface(abi);
 
-  provider.on(filter, async (log) => {
+  provider.on(filter, async (log, tx) => {
     try {
       const pool_address = log.address;
       // console.log(network, pool_address);
@@ -80,6 +80,9 @@ async function trackBuys(network, version) {
       const token0Contract = new ethers.Contract(token0, ERC20_ABI, provider);
       const token1Contract = new ethers.Contract(token1, ERC20_ABI, provider);
 
+      const token0Decimals = await token0Contract.decimals();
+      const token1Decimals = await token1Contract.decimals();
+      let i = 0;
       for (const chat of chats) {
         const pool = chat.pool;
         const {
@@ -91,10 +94,11 @@ async function trackBuys(network, version) {
           tg_link,
           twitter,
           website,
+          circ_supply,
         } = chat;
         const baseToken = pool.baseToken;
         const quoteToken = pool.quoteToken;
-        console.log(chat.chat_id, baseToken.symbol);
+        console.log(chat.chat_id, baseToken.symbol, circ_supply);
         const swap_data =
           version === "v3"
             ? get_data_v3(
@@ -130,8 +134,6 @@ async function trackBuys(network, version) {
           const tx_receipt = await provider.getTransaction(tx_hash);
           to = tx_receipt.from;
         }
-        const token0Decimals = await token0Contract.decimals();
-        const token1Decimals = await token1Contract.decimals();
         let userBalance =
           version !== "izi"
             ? compareAddresses(token0, baseToken.address)
@@ -167,8 +169,8 @@ async function trackBuys(network, version) {
         // console.log("Amt in usd ->", amountInUsd);
         const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
         // console.log("Token price usd ->", tokenPriceUsd);
-        const marketCap =
-          (tokenPriceUsd * totalSupply) / 10 ** tokenOutDecimals;
+        const supply = circ_supply ? circ_supply : totalSupply;
+        const marketCap = (tokenPriceUsd * supply) / 10 ** tokenOutDecimals;
         // console.log(amountInUsd, tokenPriceUsd, marketCap);
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
@@ -227,6 +229,7 @@ async function trackBuys(network, version) {
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         }
         `;
+        console.log(msg);
 
         if (amountInUsd > min_buy) {
           await updateTrendingVol(
@@ -238,7 +241,7 @@ async function trackBuys(network, version) {
           );
 
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
-          if (amountInUsd > 200 && isTrending) {
+          if (amountInUsd > 500 && isTrending && i === 0) {
             await sendTelegramMessage(
               dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
               null,
@@ -247,6 +250,7 @@ async function trackBuys(network, version) {
               false
             );
           }
+          i++;
         }
       }
     } catch (error) {

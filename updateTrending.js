@@ -29,7 +29,7 @@ async function updateTrending() {
     timestamp: { $lt: weekSnap },
   });
 
-  for (const network of ["base"]) {
+  for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];

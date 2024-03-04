@@ -124,6 +124,7 @@ async function trackBuys(network, version) {
                 token1
               );
 
+        console.log(swap_data);
         let { amountIn, amountOut } = swap_data;
 
         if (!amountIn && !amountOut) return;

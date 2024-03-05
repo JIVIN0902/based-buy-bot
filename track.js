@@ -191,7 +191,7 @@ async function trackBuys(network, version) {
           } TRENDING</a></b>\n`;
         }
 
-        const isWhale = amountInUsd > marketCap * 0.02;
+        const isWhale = amountInUsd >= 2000;
         // console.log(isWhale);
         const emoji = isWhale ? "🐳" : buy_emoji;
         // console.log(emoji);

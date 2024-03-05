@@ -119,6 +119,7 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
+  console.log(await trendingCollection.find({ network: "base" }));
   // for (const item of [
   //   "65e3dd79a1f6d76ded7b868c",
   //   "65e3dd73a1f6d76ded7b868a",
@@ -130,7 +131,7 @@ async function test() {
   //   });
   //   console.log(delRes);
   // }
-  console.log(await buysCollection.find({}));
+  // console.log(await buysCollection.find({}));
   // console.log(
   //   await trendingCollection.updateOne(
   //     { address: "0x5D5cB63E071E4cA1956F9C8C5258Fe7711FD2Ba9" },

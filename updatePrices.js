@@ -31,6 +31,7 @@ async function updatePrices() {
     "ETH.ETH": ethPrice,
     "BTC.BTC": btcPrice,
     ZETA: zetaPrice,
+    WZETA: zetaPrice,
   };
   const jsonData = JSON.stringify(priceData, null, 2);
   console.log(jsonData);

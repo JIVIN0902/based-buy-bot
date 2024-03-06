@@ -213,7 +213,7 @@ async function trackBuys(network, version) {
             💲 <b>${native} Price:</b> $${
           nativePrice >= 1
             ? formatNumber(nativePrice)
-            : formatNumber(nativePrice, 6)
+            : formatNumber(nativePrice, 4)
         }
             ${
               to

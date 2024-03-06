@@ -32,6 +32,8 @@ const {
   TRENDING_MSG_IDS,
   TRENDING_CHAT_ID,
 } = require("./config");
+const { scheduleJob } = require("node-schedule");
+const { updatePrices } = require("./updatePrices");
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
@@ -238,7 +240,6 @@ async function trackBuys(network, version) {
         }
         `;
 
-        console.log(msg);
         if (amountInUsd > min_buy) {
           await updateTrendingVol(
             { trendingCollection, trendingVolCollection },
@@ -272,6 +273,8 @@ for (const network of CHAINS) {
     tasks.push(trackBuys(network, version));
   }
 }
+
+scheduleJob("*/60 * * * * *", updatePrices);
 
 Promise.all(tasks)
   .then(() => {

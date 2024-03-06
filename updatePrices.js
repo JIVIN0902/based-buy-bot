@@ -34,7 +34,7 @@ async function updatePrices() {
     WZETA: zetaPrice,
   };
   const jsonData = JSON.stringify(priceData, null, 2);
-  console.log(jsonData);
+  // console.log(jsonData);
   fs.writeFile("prices.json", jsonData, (err) => {
     if (err) {
       console.error("An error occurred:", err);
@@ -50,6 +50,5 @@ function getNativePrice(key) {
   return data[key];
 }
 
-scheduleJob("*/60 * * * * *", updatePrices);
 // updatePrices();
-module.exports = { getNativePrice };
+module.exports = { getNativePrice, updatePrices };

@@ -44,6 +44,7 @@ const RPCS = {
   pulsechain: "https://rpc.pulsechain.com",
   blast: "https://blast.blockpi.network/v1/rpc/public",
   merlinchain: "https://rpc.merlinchain.io",
+  zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
 };
 
 const topics = {
@@ -63,6 +64,7 @@ const NATIVES = {
   pulsechain: "PLS",
   blast: "ETH",
   merlinchain: "BTC",
+  zetachain: "ZETA",
 };
 
 const TRENDING_CHAT_ID = -1001883705059;
@@ -77,6 +79,7 @@ const TRENDING_MSG_IDS = {
   pulsechain: 44,
   blast: 43,
   merlinchain: 51,
+  zetachain: 20,
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -114,6 +117,7 @@ const CHAINS = [
   "zksync",
   "pulsechain",
   "blast",
+  "zetachain",
 ];
 
 const TRENDING_CHAINS = {
@@ -126,6 +130,7 @@ const TRENDING_CHAINS = {
   blast: "BLAST",
   merlinchain: "MERLIN",
   base: "BASE",
+  zetachain: "ZETACHAIN",
 };
 
 const TRENDING_RECIPIENT_ADDRESS = "0x70eA2D4Ac98b304FbF8924fb43C8f7f220F0b4F6";

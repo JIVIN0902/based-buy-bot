@@ -31,11 +31,13 @@ async function updateTrending() {
 
   for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
+    // console.log(network, trendingData);
 
     let trends = [];
     for (let item of trendingData) {
       const address = ethers.utils.getAddress(item.address);
       const tokenData = await getTokenDetails(address);
+      if (!tokenData) continue;
       const liquidity = tokenData.liquidity.usd;
       if (liquidity > 1000) {
         let condition = {
@@ -148,7 +150,7 @@ async function tr() {
   }
 }
 
-scheduleJob("*/20 * * * * *", updateTrending);
+scheduleJob("*/30 * * * * *", updateTrending);
 // updateTrending();
 // ();
 // tr();

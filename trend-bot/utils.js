@@ -13,10 +13,13 @@ const { default: axios } = require("axios");
 async function getTokenDetails(tokenAddress) {
   try {
     const base_url = "https://api.dexscreener.com/latest/dex/tokens";
-    const { data } = await axios.get(`${base_url}/${tokenAddress}`);
+    const url = `${base_url}/${tokenAddress}`;
+    const { data } = await axios.get(url);
+    if (!data.pairs) return;
     return data.pairs[0];
   } catch (error) {
-    throw new Error("Unable to fetch token details. Please try again");
+    // throw new Error("Unable to fetch token details. Please try again");
+    return;
   }
 }
 

@@ -12,6 +12,7 @@ const explorers = {
     "https://scan.mypinata.cloud/ipfs/bafybeidn64pd2u525lmoipjl4nh3ooa2imd7huionjsdepdsphl5slfowy/#",
   blast: "https://blastscan.io",
   merlinchain: "https://scan.merlinchain.io",
+  zetachain: "https://explorer.zetachain.com",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";

@@ -37,7 +37,7 @@ async function updatePrices() {
   // console.log(jsonData);
   fs.writeFile("prices.json", jsonData, (err) => {
     if (err) {
-      console.error("An error occurred:", err);
+      console.error("An error occurred:", err.message);
     } else {
       console.log("Data written to file successfully.");
     }

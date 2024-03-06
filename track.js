@@ -34,6 +34,7 @@ const {
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
+const { updateTrending } = require("./updateTrending");
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
@@ -279,6 +280,7 @@ for (const network of CHAINS) {
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
+scheduleJob("*/30 * * * * *", updateTrending);
 
 Promise.all(tasks)
   .then(() => {

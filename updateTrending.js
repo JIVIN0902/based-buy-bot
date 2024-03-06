@@ -31,7 +31,7 @@ async function updateTrending() {
 
   for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
-    // console.log(network, trendingData);
+    console.log(network);
 
     let trends = [];
     for (let item of trendingData) {
@@ -150,7 +150,7 @@ async function tr() {
   }
 }
 
-scheduleJob("*/30 * * * * *", updateTrending);
+module.exports = { updateTrending };
 // updateTrending();
 // ();
 // tr();

@@ -75,6 +75,7 @@ const trendingSchema = new Schema({
   address: String,
   rank: { type: Number, default: null },
   vol: { type: Number, default: 10 },
+  volSnapshot: { type: Number, default: null },
   tx_hash: { type: String, default: null },
   hrs_tier: { type: Number, default: null },
   timestamp: Number,
@@ -119,19 +120,17 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
-  console.log(await trendingCollection.find({ network: "base" }));
-  // for (const item of [
-  //   "65e3dd79a1f6d76ded7b868c",
-  //   "65e3dd73a1f6d76ded7b868a",
-  //   "65e3a9d56a61d15889e0615f",
-  //   "65e3a9756a61d15889e06159",
-  // ]) {
-  //   const delRes = await trendingCollection.deleteOne({
+  // console.log(await trendingCollection.find({ network: "zetachain" }));
+  // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {
+  //   const delRes = await buysCollection.deleteOne({
   //     _id: item,
   //   });
   //   console.log(delRes);
   // }
-  // console.log(await buysCollection.find({}));
+  // await buysCollection.deleteOne({ _id: "65d108ad4d4497d6248bd687" });
+  // console.log(
+  //   await buysCollection.find({ "pool.baseToken.symbol": "VMUMDOGE" })
+  // );
   // console.log(
   //   await trendingCollection.updateOne(
   //     { address: "0x5D5cB63E071E4cA1956F9C8C5258Fe7711FD2Ba9" },

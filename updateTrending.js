@@ -12,6 +12,8 @@ const { ethers } = require("ethers");
 const { default: axios } = require("axios");
 const { getTokenDetails } = require("./trend-bot/utils");
 
+const BREAK_INTERVAL = 10 * 60 * 1000;
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -68,6 +70,7 @@ async function updateTrending() {
         let trendingGroup = await trendingCollection.findOne({
           address: item.address,
         });
+        // console.log(trendingGroup);
         if (trendingGroup) {
           const prevVol = trendingGroup.vol;
           let volGrowth = (item.vol / prevVol) * 100;
@@ -80,9 +83,34 @@ async function updateTrending() {
             : groupData?.tg_link;
           msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${trendingGroup.symbol}</a> <a href="https://dexscreener.com/${network}/${item.address}">📊 CHART (+${volGrowth}%)</a></b>\n`;
         }
+        const isSnapshotToBeTaken = !item.volSnapshot
+          ? true
+          : item.volSnapshot < snapshot
+          ? true
+          : false;
+        // console.log("TO TAKE SNAP ->", isSnapshotToBeTaken);
+        // console.log({
+        //   rank: i,
+        //   vol: isSnapshotToBeTaken
+        //     ? item.vol + trendingGroup.vol
+        //     : trendingGroup.vol,
+        //   volSnapshot: isSnapshotToBeTaken
+        //     ? Date.now() - BREAK_INTERVAL
+        //     : trendingGroup.volSnapshot,
+        // });
         await trendingCollection.updateOne(
           { address: item.address },
-          { $set: { rank: i, vol: item.vol + trendingGroup.vol } }
+          {
+            $set: {
+              rank: i,
+              vol: isSnapshotToBeTaken
+                ? item.vol + trendingGroup.vol
+                : trendingGroup.vol,
+              volSnapshot: isSnapshotToBeTaken
+                ? Date.now() - BREAK_INTERVAL
+                : trendingGroup.volSnapshot,
+            },
+          }
         );
         i++;
       } catch (e) {
@@ -108,7 +136,7 @@ async function editTrendingMsg(msg, network) {
       message_id: TRENDING_MSG_IDS[network],
     });
   } catch (error) {
-    console.log("ERROR while editing ->", error.message);
+    console.log("ERROR while editing");
   }
 }
 
@@ -150,8 +178,8 @@ async function tr() {
   }
 }
 
+updateTrending();
 module.exports = { updateTrending };
-// updateTrending();
 // ();
 // tr();
 

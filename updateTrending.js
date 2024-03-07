@@ -178,7 +178,7 @@ async function tr() {
   }
 }
 
-updateTrending();
+// updateTrending();
 module.exports = { updateTrending };
 // ();
 // tr();

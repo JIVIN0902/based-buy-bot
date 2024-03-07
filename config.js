@@ -80,7 +80,7 @@ const TRENDING_MSG_IDS = {
   pulsechain: 44,
   blast: 43,
   merlinchain: 51,
-  zetachain: 20,
+  zetachain: 54,
 };
 
 const TRENDING_RANK_EMOJIS = {

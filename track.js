@@ -194,10 +194,8 @@ async function trackBuys(network, version) {
           } TRENDING</a></b>\n`;
         }
 
-        const isWhale = amountInUsd >= 2000;
-        // console.log(isWhale);
+        const isWhale = amountInUsd >= 3000;
         const emoji = isWhale ? "🐳" : buy_emoji;
-        // console.log(emoji);
 
         let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n

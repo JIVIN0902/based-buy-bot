@@ -60,9 +60,13 @@ async function updateTrending() {
     for (let item of trends) {
       try {
         const groupData = await buysCollection.findOne({
-          address: item.address,
+          "pool.baseToken.address": item.address,
         });
-        const tgLink = groupData?.tg_link ? groupData?.tg_link : item?.tg_link;
+        if (!groupData) continue;
+        // console.log(item.symbol, groupData.tg_link, item.tg_link);
+        // console.log(item.symbol, groupData);
+        const tgLink = groupData.tg_link || item?.tg_link;
+        // console.log(tgLink);
         msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${
           item.symbol
         }</a> <a href="https://dexscreener.com/${network}/${
@@ -86,9 +90,9 @@ async function updateTrending() {
     msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
     msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
 
-    // console.log(msg);
+    console.log(msg);
     // Replace with you
-    // await editTrendingMsg(msg, network);
+    await editTrendingMsg(msg, network);
   }
 }
 async function editTrendingMsg(msg, network) {
@@ -142,7 +146,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending };
 // ();
 // tr();

@@ -124,7 +124,12 @@ async function test() {
     trendingCollection,
     trendingVolCollection,
   } = await db.init();
-  console.log(await trendingCollection.find({ network: "blast" }));
+  console.log(
+    await buysCollection.find({
+      // network: "merlinchain",
+      "pool.baseToken.address": "0x7a677e59dC2C8a42d6aF3a62748c5595034A008b",
+    })
+  );
   // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {
   // const delRes = await trendingCollection.deleteOne({
   //   _id: "65e38ab38f7d2f4734ba6ff4",

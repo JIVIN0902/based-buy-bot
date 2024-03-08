@@ -46,6 +46,7 @@ const RPCS = {
   blast: "https://blast.blockpi.network/v1/rpc/public",
   merlinchain: "https://rpc.merlinchain.io",
   zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
+  inevm: "https://mainnet.rpc.inevm.com/http",
 };
 
 const topics = {

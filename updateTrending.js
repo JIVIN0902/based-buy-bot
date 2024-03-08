@@ -20,8 +20,11 @@ function sleep(ms) {
 
 async function updateTrending() {
   const db = new DB();
-  const { trendingCollection, trendingVolCollection, buysCollection } =
-    await db.init();
+  const {
+    trendingCollection,
+    trendingVolCollection,
+    buysCollection,
+  } = await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
   const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
   await trendingVolCollection.deleteMany({
@@ -60,7 +63,7 @@ async function updateTrending() {
     }
 
     // Sort and reverse to get trends
-    trends.sort((a, b) => b.vol - a.vol);
+    trends.sort((a, b) => b.vol - a.vol).splice(0, 10);
     let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
       .charAt(0)
       .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;

@@ -39,8 +39,11 @@ const { updateTrending } = require("./updateTrending");
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
   const db = new DB();
-  const { buysCollection, trendingCollection, trendingVolCollection } =
-    await db.init();
+  const {
+    buysCollection,
+    trendingCollection,
+    trendingVolCollection,
+  } = await db.init();
 
   const topic = topics[version];
 
@@ -186,7 +189,7 @@ async function trackBuys(network, version) {
         });
         let trendingMsg = null;
 
-        if (isTrending) {
+        if (isTrending && isTrending.rank <= 10) {
           trendingMsg = `\n<b><a href="https://t.me/OrangeTrending/${
             TRENDING_MSG_IDS[network]
           }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${

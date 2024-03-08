@@ -27,16 +27,14 @@ async function updateTrending() {
   } = await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
   const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  await trendingVolCollection.deleteMany({
-    timestamp: { $lt: snapshot },
-  });
+
   await trendingCollection.deleteMany({
     timestamp: { $lt: weekSnap },
   });
 
   for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
-    console.log(network);
+    // console.log(network, trendingData);
 
     let trends = [];
     for (let item of trendingData) {
@@ -45,74 +43,37 @@ async function updateTrending() {
       if (!tokenData) continue;
       const liquidity = tokenData.liquidity.usd;
       if (liquidity > 1000) {
-        let condition = {
-          address,
-          timestamp: { $gte: snapshot },
-        };
-        let result = await trendingVolCollection.aggregate([
-          { $match: condition },
-          { $group: { _id: null, total: { $sum: "$amount_buy" } } },
-        ]);
-
-        let volume = result.length > 0 && result[0].total ? result[0].total : 0;
-
-        trends.push({ address, vol: volume });
+        trends.push({ ...item._doc, address });
       } else {
         await trendingCollection.deleteOne({ address });
       }
     }
 
     // Sort and reverse to get trends
-    trends.sort((a, b) => b.vol - a.vol);
+    trends.sort((a, b) => b.priceGrowth - a.priceGrowth);
     trends = trends.slice(0, 10);
+    // console.log("TRENDS ->", trends);
     let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
       .charAt(0)
       .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
     let i = 1;
     for (let item of trends) {
       try {
-        let trendingGroup = await trendingCollection.findOne({
+        const groupData = await buysCollection.findOne({
           address: item.address,
         });
-        // console.log(trendingGroup);
-        if (trendingGroup) {
-          const prevVol = trendingGroup.vol;
-          let volGrowth = (item.vol / prevVol) * 100;
-          volGrowth = volGrowth.toFixed(2);
-          const groupData = await buysCollection.findOne({
-            address: item.address,
-          });
-          const tgLink = trendingGroup?.tg_link
-            ? trendingGroup?.tg_link
-            : groupData?.tg_link;
-          msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${trendingGroup.symbol}</a> <a href="https://dexscreener.com/${network}/${item.address}">📊 CHART (+${volGrowth}%)</a></b>\n`;
-        }
-        const isSnapshotToBeTaken = !item.volSnapshot
-          ? true
-          : item.volSnapshot < snapshot
-          ? true
-          : false;
-        // console.log("TO TAKE SNAP ->", isSnapshotToBeTaken);
-        // console.log({
-        //   rank: i,
-        //   vol: isSnapshotToBeTaken
-        //     ? item.vol + trendingGroup.vol
-        //     : trendingGroup.vol,
-        //   volSnapshot: isSnapshotToBeTaken
-        //     ? Date.now() - BREAK_INTERVAL
-        //     : trendingGroup.volSnapshot,
-        // });
+        const tgLink = groupData?.tg_link ? groupData?.tg_link : item?.tg_link;
+        msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${
+          item.symbol
+        }</a> <a href="https://dexscreener.com/${network}/${
+          item.address
+        }">📊 CHART (+${item.priceGrowth || 0}%)</a></b>\n`;
+
         await trendingCollection.updateOne(
           { address: item.address },
           {
             $set: {
               rank: i,
-              vol: isSnapshotToBeTaken
-                ? item.vol + trendingGroup.vol
-                : trendingGroup.vol,
-              volSnapshot: isSnapshotToBeTaken
-                ? Date.now() - BREAK_INTERVAL
-                : trendingGroup.volSnapshot,
             },
           }
         );
@@ -127,8 +88,7 @@ async function updateTrending() {
 
     // console.log(msg);
     // Replace with you
-    await editTrendingMsg(msg, network);
-    // await sleep(1000);
+    // await editTrendingMsg(msg, network);
   }
 }
 async function editTrendingMsg(msg, network) {
@@ -182,7 +142,7 @@ async function tr() {
   }
 }
 
-updateTrending();
+// updateTrending();
 module.exports = { updateTrending };
 // ();
 // tr();

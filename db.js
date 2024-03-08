@@ -74,11 +74,12 @@ const trendingSchema = new Schema({
   tg_link: { type: String, default: null },
   address: String,
   rank: { type: Number, default: null },
-  vol: { type: Number, default: 10 },
-  volSnapshot: { type: Number, default: null },
   tx_hash: { type: String, default: null },
   hrs_tier: { type: Number, default: null },
   timestamp: Number,
+  price: { type: Number, default: null },
+  priceTimestamp: { type: Number, default: null },
+  priceGrowth: { type: Number, default: null },
 });
 
 const trendingVolumeSchema = new Schema({
@@ -118,14 +119,17 @@ module.exports = { DB, mainSchema, trendingSchema, trendingVolumeSchema };
 
 async function test() {
   const db = new DB();
-  const { buysCollection, trendingCollection, trendingVolCollection } =
-    await db.init();
-  // console.log(await trendingCollection.find({ network: "zetachain" }));
+  const {
+    buysCollection,
+    trendingCollection,
+    trendingVolCollection,
+  } = await db.init();
+  console.log(await trendingCollection.find({ network: "manta" }));
   // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {
-  //   const delRes = await buysCollection.deleteOne({
-  //     _id: item,
-  //   });
-  //   console.log(delRes);
+  // const delRes = await trendingCollection.deleteOne({
+  //   _id: "65e38ab38f7d2f4734ba6ff4",
+  // });
+  // console.log(delRes);
   // }
   // await buysCollection.deleteOne({ _id: "65d108ad4d4497d6248bd687" });
   // console.log(

@@ -20,6 +20,7 @@ const {
   get_data_v3,
   get_data_izi,
   updateTrendingVol,
+  updateTrendingPrice,
 } = require("./utils");
 const {
   RPCS,
@@ -246,15 +247,14 @@ async function trackBuys(network, version) {
         }
         `;
 
+        await updateTrendingPrice(
+          { trendingCollection, trendingVolCollection },
+          tokenPriceUsd,
+          chat_id,
+          network,
+          baseToken.address
+        );
         if (amountInUsd > min_buy) {
-          await updateTrendingVol(
-            { trendingCollection, trendingVolCollection },
-            amountInUsd,
-            chat_id,
-            network,
-            baseToken.address
-          );
-
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
           if (amountInUsd > 500 && isTrending && i === 1) {
             await sendTelegramMessage(

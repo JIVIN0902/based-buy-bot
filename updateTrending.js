@@ -63,7 +63,7 @@ async function updateTrending() {
     }
 
     // Sort and reverse to get trends
-    trends.sort((a, b) => b.vol - a.vol).splice(0, 10);
+    trends.sort((a, b) => b.vol - a.vol).slice(0, 10);
     let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
       .charAt(0)
       .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
@@ -181,7 +181,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending };
 // ();
 // tr();

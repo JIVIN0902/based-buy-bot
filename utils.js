@@ -54,7 +54,7 @@ async function updateTrendingPrice(db, price, chat_id, network, address) {
         { upsert: false } // Options
       );
 
-    console.log("Trending updated", isTrending);
+    // console.log("Trending updated", isTrending);
   } catch (error) {
     console.log(error);
   }

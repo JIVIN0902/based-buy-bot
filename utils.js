@@ -64,14 +64,20 @@ async function updateTrendingMarketCap(
       { upsert: false } // Options
     );
 
-    if (!isTrending.priceTimestamp || isTrending.priceTimestamp <= snapshot) {
+    if (
+      !isTrending.marketCapTimestamp ||
+      isTrending.marketCapTimestamp <= snapshot
+    ) {
       await trendingCollection.updateOne(
         { address, network }, // Filter
         {
           $set: {
             marketCap,
             marketCapTimestamp: Date.now(),
-            marketCapGrowth: marketCapGrowth.toFixed(2),
+            marketCapGrowth:
+              prevMarketCap === null
+                ? Math.floor(Math.random() * 20) + 1
+                : marketCapGrowth.toFixed(2),
           },
         },
         { upsert: false } // Options

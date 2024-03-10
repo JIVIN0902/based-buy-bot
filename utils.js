@@ -75,7 +75,7 @@ async function updateTrendingPrice(
         { upsert: false } // Options
       );
 
-    console.log("Trending updated", isTrending);
+    // console.log("Trending updated", isTrending);
   } catch (error) {
     console.log(error);
   }

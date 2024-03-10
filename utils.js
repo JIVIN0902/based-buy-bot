@@ -47,9 +47,12 @@ async function updateTrendingMarketCap(
     if (!isTrending) return;
     const snapshot = Date.now() - 60 * 60 * 1000;
     const prevMarketCap = isTrending?.marketCap;
+    console.log("PREV ->", prevMarketCap);
     const marketCapGrowth = prevMarketCap
       ? (marketCap - prevMarketCap / prevMarketCap) * 100
       : 0;
+
+    console.log("GROWTH ->", marketCapGrowth);
 
     await trendingCollection.updateOne(
       { address, network }, // Filter

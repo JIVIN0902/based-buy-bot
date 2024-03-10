@@ -34,12 +34,14 @@ async function updateTrending() {
   await trendingVolCollection.deleteMany({
     timestamp: { $lt: snapshot },
   });
+  await trendingCollection.updateMany({}, { $set: { rank: 0 } });
   for (const network of ["base"]) {
     let trendingData = await trendingCollection.find({ network });
     // console.log(network, trendingData);
 
     let trends = [];
     for (let item of trendingData) {
+      // console.log(item);
       const address = ethers.utils.getAddress(item.address);
       const tokenData = await getTokenDetails(address);
       if (!tokenData) continue;
@@ -148,7 +150,7 @@ async function tr() {
   }
 }
 
-updateTrending();
+// updateTrending();
 module.exports = { updateTrending };
 // ();
 // tr();

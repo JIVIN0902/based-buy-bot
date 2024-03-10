@@ -190,7 +190,7 @@ async function trackBuys(network, version) {
         });
         let trendingMsg = null;
 
-        if (isTrending && isTrending.rank <= 10) {
+        if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
           trendingMsg = `\n<b><a href="https://t.me/OrangeTrending/${
             TRENDING_MSG_IDS[network]
           }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${

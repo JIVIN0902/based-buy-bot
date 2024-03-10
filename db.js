@@ -73,7 +73,7 @@ const trendingSchema = new Schema({
   symbol: String,
   tg_link: { type: String, default: null },
   address: String,
-  rank: { type: Number, default: null },
+  rank: { type: Number, default: 0 },
   tx_hash: { type: String, default: null },
   hrs_tier: { type: Number, default: null },
   timestamp: Number,
@@ -82,6 +82,7 @@ const trendingSchema = new Schema({
   priceGrowth: { type: Number, default: null },
   vol: { type: Number, default: 0 },
   volTimestampLatest: { type: Number, default: 0 },
+  lastVolResetTimestamp: { type: Number, default: 0 },
 });
 
 const trendingVolumeSchema = new Schema({

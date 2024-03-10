@@ -35,18 +35,13 @@ async function updateTrending() {
     timestamp: { $lt: snapshot },
   });
   await trendingCollection.updateMany({}, { $set: { rank: 0 } });
-  for (const network of ["base"]) {
+  for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
-    // console.log(network, trendingData);
 
     let trends = [];
     for (let item of trendingData) {
-      // console.log(item);
       const address = ethers.utils.getAddress(item.address);
-      const tokenData = await getTokenDetails(address);
-      if (!tokenData) continue;
-      const liquidity = tokenData.liquidity.usd;
-      if (liquidity > 1000) {
+      if (item.marketCap > 10000) {
         trends.push({ ...item._doc, address });
       } else {
         await trendingCollection.deleteOne({ address });
@@ -56,7 +51,7 @@ async function updateTrending() {
     // // Sort and reverse to get trends
     trends.sort((a, b) => b.vol - a.vol);
     trends = trends.slice(0, 10);
-    console.log("TRENDS ->", trends);
+    // console.log("TRENDS ->", trends);
     let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
       .charAt(0)
       .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
@@ -67,15 +62,12 @@ async function updateTrending() {
           "pool.baseToken.address": item.address,
         });
         if (!groupData) continue;
-        // console.log(item.symbol, groupData.tg_link, item.tg_link);
-        // console.log(item.symbol, groupData);
         const tgLink = groupData.tg_link || item?.tg_link;
-        // console.log(tgLink);
         msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${
           item.symbol
         }</a> <a href="https://dexscreener.com/${network}/${
           item.address
-        }">📊 CHART (${item.priceGrowth || 0}%)</a></b>\n`;
+        }">📊 CHART (${item.marketCapGrowth || 0}%)</a></b>\n`;
 
         await trendingCollection.updateOne(
           { address: item.address },
@@ -94,7 +86,7 @@ async function updateTrending() {
     msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
     msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
 
-    console.log(msg);
+    // console.log(msg);
     // Replace with you
     await editTrendingMsg(msg, network);
   }
@@ -161,7 +153,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();

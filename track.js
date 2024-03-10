@@ -250,6 +250,7 @@ async function trackBuys(network, version) {
         await updateTrendingPrice(
           { trendingCollection, trendingVolCollection },
           tokenPriceUsd,
+          amountInUsd,
           chat_id,
           network,
           baseToken.address
@@ -281,7 +282,7 @@ for (const network of CHAINS) {
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
-scheduleJob("*/30 * * * * *", updateTrending);
+// scheduleJob("*/30 * * * * *", updateTrending);
 
 Promise.all(tasks)
   .then(() => {

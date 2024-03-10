@@ -33,7 +33,14 @@ function readPrices() {
   }
 }
 
-async function updateTrendingPrice(db, price, chat_id, network, address) {
+async function updateTrendingPrice(
+  db,
+  price,
+  amount_buy,
+  chat_id,
+  network,
+  address
+) {
   try {
     const { trendingCollection, trendingVolCollection } = db;
     const isTrending = await trendingCollection.findOne({ address, network });
@@ -41,6 +48,13 @@ async function updateTrendingPrice(db, price, chat_id, network, address) {
     const prevPrice = isTrending.price;
     const priceGrowth = prevPrice ? (price - prevPrice / prevPrice) * 100 : 0;
     if (!isTrending) return;
+    await trendingVolCollection.create({
+      amount_buy,
+      chat_id,
+      network,
+      address,
+      timestamp: Date.now(),
+    });
     if (!isTrending.priceTimestamp || isTrending.priceTimestamp <= snapshot)
       await trendingCollection.updateOne(
         { address, network }, // Filter
@@ -50,7 +64,7 @@ async function updateTrendingPrice(db, price, chat_id, network, address) {
             priceTimestamp: Date.now(),
             priceGrowth: priceGrowth.toFixed(2),
           },
-        }, // Update
+        },
         { upsert: false } // Options
       );
 

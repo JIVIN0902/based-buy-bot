@@ -31,8 +31,10 @@ async function updateTrending() {
   await trendingCollection.deleteMany({
     timestamp: { $lt: weekSnap },
   });
-
-  for (const network of CHAINS) {
+  await trendingVolCollection.deleteMany({
+    timestamp: { $lt: snapshot },
+  });
+  for (const network of ["base"]) {
     let trendingData = await trendingCollection.find({ network });
     // console.log(network, trendingData);
 
@@ -49,50 +51,50 @@ async function updateTrending() {
       }
     }
 
-    // Sort and reverse to get trends
-    trends.sort((a, b) => b.priceGrowth - a.priceGrowth);
-    trends = trends.slice(0, 10);
-    // console.log("TRENDS ->", trends);
-    let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
-      .charAt(0)
-      .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
-    let i = 1;
-    for (let item of trends) {
-      try {
-        const groupData = await buysCollection.findOne({
-          "pool.baseToken.address": item.address,
-        });
-        if (!groupData) continue;
-        // console.log(item.symbol, groupData.tg_link, item.tg_link);
-        // console.log(item.symbol, groupData);
-        const tgLink = groupData.tg_link || item?.tg_link;
-        // console.log(tgLink);
-        msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${
-          item.symbol
-        }</a> <a href="https://dexscreener.com/${network}/${
-          item.address
-        }">📊 CHART (+${item.priceGrowth || 0}%)</a></b>\n`;
+    // // Sort and reverse to get trends
+    // trends.sort((a, b) => b.priceGrowth - a.priceGrowth);
+    // trends = trends.slice(0, 10);
+    // // console.log("TRENDS ->", trends);
+    // let msg = `✅ <a href='https://t.me/OrangeTrending'> ${network
+    //   .charAt(0)
+    //   .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
+    // let i = 1;
+    // for (let item of trends) {
+    //   try {
+    //     const groupData = await buysCollection.findOne({
+    //       "pool.baseToken.address": item.address,
+    //     });
+    //     if (!groupData) continue;
+    //     // console.log(item.symbol, groupData.tg_link, item.tg_link);
+    //     // console.log(item.symbol, groupData);
+    //     const tgLink = groupData.tg_link || item?.tg_link;
+    //     // console.log(tgLink);
+    //     msg += `${TRENDING_RANK_EMOJIS[i]}<b> <a href='${tgLink}'>${
+    //       item.symbol
+    //     }</a> <a href="https://dexscreener.com/${network}/${
+    //       item.address
+    //     }">📊 CHART (+${item.priceGrowth || 0}%)</a></b>\n`;
 
-        await trendingCollection.updateOne(
-          { address: item.address },
-          {
-            $set: {
-              rank: i,
-            },
-          }
-        );
-        i++;
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    //     await trendingCollection.updateOne(
+    //       { address: item.address },
+    //       {
+    //         $set: {
+    //           rank: i,
+    //         },
+    //       }
+    //     );
+    //     i++;
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
 
-    msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
-    msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
+    // msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
+    // msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
 
-    console.log(msg);
-    // Replace with you
-    await editTrendingMsg(msg, network);
+    // console.log(msg);
+    // // Replace with you
+    // await editTrendingMsg(msg, network);
   }
 }
 async function editTrendingMsg(msg, network) {
@@ -104,7 +106,7 @@ async function editTrendingMsg(msg, network) {
       message_id: TRENDING_MSG_IDS[network],
     });
   } catch (error) {
-    console.log("ERROR while editing");
+    console.log("ERROR while editing", error.message);
   }
 }
 

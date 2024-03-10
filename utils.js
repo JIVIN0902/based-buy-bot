@@ -44,10 +44,10 @@ async function updateTrendingPrice(
   try {
     const { trendingCollection, trendingVolCollection } = db;
     const isTrending = await trendingCollection.findOne({ address, network });
-    const snapshot = Date.now() - 10 * 60 * 1000;
-    const prevPrice = isTrending.price;
-    const priceGrowth = prevPrice ? (price - prevPrice / prevPrice) * 100 : 0;
     if (!isTrending) return;
+    const snapshot = Date.now() - 10 * 60 * 1000;
+    const prevPrice = isTrending?.price;
+    const priceGrowth = prevPrice ? (price - prevPrice / prevPrice) * 100 : 0;
     await trendingVolCollection.create({
       amount_buy,
       chat_id,

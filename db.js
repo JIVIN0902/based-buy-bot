@@ -80,6 +80,8 @@ const trendingSchema = new Schema({
   price: { type: Number, default: null },
   priceTimestamp: { type: Number, default: null },
   priceGrowth: { type: Number, default: null },
+  vol: { type: Number, default: 0 },
+  volTimestampLatest: { type: Number, default: 0 },
 });
 
 const trendingVolumeSchema = new Schema({

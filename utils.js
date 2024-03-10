@@ -48,13 +48,20 @@ async function updateTrendingPrice(
     const snapshot = Date.now() - 10 * 60 * 1000;
     const prevPrice = isTrending?.price;
     const priceGrowth = prevPrice ? (price - prevPrice / prevPrice) * 100 : 0;
-    await trendingVolCollection.create({
-      amount_buy,
-      chat_id,
-      network,
-      address,
-      timestamp: Date.now(),
-    });
+
+    await trendingCollection.updateOne(
+      { address, network }, // Filter
+      {
+        $inc: {
+          vol: amount_buy,
+        },
+        $set: {
+          volTimestampLatest: Date.now(),
+        },
+      },
+      { upsert: false } // Options
+    );
+
     if (!isTrending.priceTimestamp || isTrending.priceTimestamp <= snapshot)
       await trendingCollection.updateOne(
         { address, network }, // Filter
@@ -68,7 +75,7 @@ async function updateTrendingPrice(
         { upsert: false } // Options
       );
 
-    // console.log("Trending updated", isTrending);
+    console.log("Trending updated", isTrending);
   } catch (error) {
     console.log(error);
   }

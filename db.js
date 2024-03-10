@@ -133,7 +133,7 @@ async function test() {
   //     "pool.baseToken.address": "0x7a677e59dC2C8a42d6aF3a62748c5595034A008b",
   //   })
   // );
-  const data = await trendingCollection.find({ network: "base" });
+  const data = await trendingCollection.find({ network: "merlinchain" });
   for (const item of data) {
     console.log(item);
   }

@@ -247,14 +247,6 @@ async function trackBuys(network, version) {
         }
         `;
 
-        await updateTrendingMarketCap(
-          { trendingCollection, trendingVolCollection },
-          marketCap,
-          amountInUsd,
-          chat_id,
-          network,
-          baseToken.address
-        );
         if (amountInUsd > min_buy) {
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
           if (amountInUsd > 500 && isTrending && i === 1) {
@@ -267,6 +259,14 @@ async function trackBuys(network, version) {
             );
           }
         }
+        await updateTrendingMarketCap(
+          { trendingCollection, trendingVolCollection },
+          marketCap,
+          amountInUsd,
+          chat_id,
+          network,
+          baseToken.address
+        );
       }
     } catch (error) {
       console.log(error.message);

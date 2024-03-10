@@ -33,9 +33,9 @@ function readPrices() {
   }
 }
 
-async function updateTrendingPrice(
+async function updateTrendingMarketCap(
   db,
-  price,
+  marketCap,
   amount_buy,
   chat_id,
   network,
@@ -45,9 +45,11 @@ async function updateTrendingPrice(
     const { trendingCollection, trendingVolCollection } = db;
     const isTrending = await trendingCollection.findOne({ address, network });
     if (!isTrending) return;
-    const snapshot = Date.now() - 10 * 60 * 1000;
-    const prevPrice = isTrending?.price;
-    const priceGrowth = prevPrice ? (price - prevPrice / prevPrice) * 100 : 0;
+    const snapshot = Date.now() - 60 * 60 * 1000;
+    const prevMarketCap = isTrending?.marketCap;
+    const marketCapGrowth = prevMarketCap
+      ? (marketCap - prevMarketCap / prevMarketCap) * 100
+      : 0;
 
     await trendingCollection.updateOne(
       { address, network }, // Filter
@@ -62,20 +64,20 @@ async function updateTrendingPrice(
       { upsert: false } // Options
     );
 
-    if (!isTrending.priceTimestamp || isTrending.priceTimestamp <= snapshot)
+    if (!isTrending.priceTimestamp || isTrending.priceTimestamp <= snapshot) {
       await trendingCollection.updateOne(
         { address, network }, // Filter
         {
           $set: {
-            price,
-            priceTimestamp: Date.now(),
-            priceGrowth: priceGrowth.toFixed(2),
+            marketCap,
+            marketCapTimestamp: Date.now(),
+            marketCapGrowth: marketCapGrowth.toFixed(2),
           },
         },
         { upsert: false } // Options
       );
-
-    // console.log("Trending updated", isTrending);
+      console.log("Trending updated", isTrending);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -254,5 +256,5 @@ module.exports = {
   get_data_izi,
   buyBot,
   updateTrendingVol,
-  updateTrendingPrice,
+  updateTrendingMarketCap,
 };

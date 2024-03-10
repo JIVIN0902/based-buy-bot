@@ -20,7 +20,7 @@ const {
   get_data_v3,
   get_data_izi,
   updateTrendingVol,
-  updateTrendingPrice,
+  updateTrendingMarketCap,
 } = require("./utils");
 const {
   RPCS,
@@ -35,7 +35,7 @@ const {
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
-const { updateTrending } = require("./updateTrending");
+const { updateTrending, updateTrendingVolumes } = require("./updateTrending");
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
@@ -247,9 +247,9 @@ async function trackBuys(network, version) {
         }
         `;
 
-        await updateTrendingPrice(
+        await updateTrendingMarketCap(
           { trendingCollection, trendingVolCollection },
-          tokenPriceUsd,
+          marketCap,
           amountInUsd,
           chat_id,
           network,
@@ -283,6 +283,7 @@ for (const network of CHAINS) {
 
 scheduleJob("*/60 * * * * *", updatePrices);
 // scheduleJob("*/30 * * * * *", updateTrending);
+scheduleJob("0 * * * *", updateTrendingVolumes);
 
 Promise.all(tasks)
   .then(() => {

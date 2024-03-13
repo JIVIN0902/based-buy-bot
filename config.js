@@ -41,9 +41,10 @@ const RPCS = {
   zksync:
     "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/zksync",
   dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
-  base: "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
+  base:
+    "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
   pulsechain: "https://rpc.pulsechain.com",
-  blast: "https://blast.blockpi.network/v1/rpc/public",
+  blast: "https://rpc.blast.io",
   merlinchain: "https://rpc.merlinchain.io",
   zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
   inevm: "https://mainnet.rpc.inevm.com/http",

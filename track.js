@@ -64,7 +64,6 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-      // console.log(network, pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
@@ -191,7 +190,11 @@ async function trackBuys(network, version) {
         let trendingMsg = null;
 
         if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
-          trendingMsg = `\n<b><a href="https://t.me/OrangeTrending/${
+          const grpLink =
+            network === "svm"
+              ? "https://t.me/SatoshiVMTrending"
+              : "https://t.me/OrangeTrending";
+          trendingMsg = `\n<b><a href="${grpLink}/${
             TRENDING_MSG_IDS[network]
           }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
             TRENDING_CHAINS[network]

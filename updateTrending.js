@@ -153,7 +153,7 @@ async function tr() {
   }
 }
 
-updateTrending();
+// updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();

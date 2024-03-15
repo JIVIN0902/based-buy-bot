@@ -13,6 +13,7 @@ const explorers = {
   blast: "https://blastscan.io",
   merlinchain: "https://scan.merlinchain.io",
   zetachain: "https://explorer.zetachain.com",
+  svm: "https://svmscan.io",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -30,6 +31,7 @@ const TRENDINGS = {
   pulsechain: "https://t.me/OrangeTrending",
   blast: "https://t.me/OrangeTrending",
   merlinchain: "https://t.me/OrangeTrending",
+  svm: "https://t.me/SatoshiVMTrending",
 };
 
 const RPCS = {
@@ -48,6 +50,7 @@ const RPCS = {
   merlinchain: "https://rpc.merlinchain.io",
   zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
   inevm: "https://mainnet.rpc.inevm.com/http",
+  svm: "https://alpha-rpc-node-http.svmscan.io",
 };
 
 const topics = {
@@ -68,6 +71,7 @@ const NATIVES = {
   blast: "ETH",
   merlinchain: "BTC",
   zetachain: "ZETA",
+  svm: "BTC",
 };
 
 const TRENDING_CHAT_ID = -1001883705059;
@@ -83,6 +87,7 @@ const TRENDING_MSG_IDS = {
   blast: 43,
   merlinchain: 51,
   zetachain: 55,
+  svm: 0,
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -121,6 +126,7 @@ const CHAINS = [
   "pulsechain",
   "blast",
   "zetachain",
+  "svm",
 ];
 
 const TRENDING_CHAINS = {
@@ -134,6 +140,7 @@ const TRENDING_CHAINS = {
   merlinchain: "MERLIN",
   base: "BASE",
   zetachain: "ZETACHAIN",
+  svm: "satoshivm",
 };
 
 const TRENDING_RECIPIENT_ADDRESS = "0x70eA2D4Ac98b304FbF8924fb43C8f7f220F0b4F6";

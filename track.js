@@ -31,7 +31,7 @@ const {
   TRENDING_RANK_EMOJIS,
   TRENDING_CHAINS,
   TRENDING_MSG_IDS,
-  TRENDING_CHAT_ID,
+  TRENDING_CHAT_IDS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
@@ -256,7 +256,7 @@ async function trackBuys(network, version) {
             await sendTelegramMessage(
               dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
               null,
-              TRENDING_CHAT_ID,
+              TRENDING_CHAT_IDS[network],
               network,
               false
             );

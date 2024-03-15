@@ -74,7 +74,20 @@ const NATIVES = {
   svm: "BTC",
 };
 
-const TRENDING_CHAT_ID = -1001883705059;
+// const TRENDING_CHAT_ID = -1001883705059;
+const TRENDING_CHAT_IDS = {
+  manta: -1001883705059,
+  metis: -1001883705059,
+  avalanche: -1001883705059,
+  scroll: -1001883705059,
+  zksync: -1001883705059,
+  base: -1001883705059,
+  pulsechain: -1001883705059,
+  blast: -1001883705059,
+  merlinchain: -1001883705059,
+  zetachain: -1001883705059,
+  svm: -1002045980358,
+};
 
 const TRENDING_MSG_IDS = {
   manta: 48,
@@ -156,7 +169,7 @@ module.exports = {
   explorers,
   TRENDINGS,
   NATIVES,
-  TRENDING_CHAT_ID,
+  TRENDING_CHAT_IDS,
   TRENDING_MSG_IDS,
   CHAINS,
   VERSIONS,

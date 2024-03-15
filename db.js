@@ -127,16 +127,20 @@ async function test() {
     trendingCollection,
     trendingVolCollection,
   } = await db.init();
+
+  // await buysCollection.deleteOne({
+  //   _id: "65f483848325c097d811aefa",
+  // });
   // console.log(
   //   await buysCollection.find({
-  //     // network: "merlinchain",
-  //     "pool.baseToken.address": "0x7a677e59dC2C8a42d6aF3a62748c5595034A008b",
+  //     "pool.chainId": "svm",
+  //     "pool.pairAddress": "0xD05bd2fd4c5dFC743dE05FFb8322Ad8C36da6705",
   //   })
   // );
-  const data = await trendingCollection.find({ network: "merlinchain" });
-  for (const item of data) {
-    console.log(item);
-  }
+  // const data = await buysCollection.find({ network: "svm" });
+  // for (const item of data) {
+  //   console.log(item);
+  // }
   // console.log();
   // console.log(await buysCollection.find({ "pool.chainId": "avalanche" }));
   // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {

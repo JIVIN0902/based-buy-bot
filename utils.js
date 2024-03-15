@@ -120,7 +120,7 @@ async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
             [
               {
                 text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
-                url: `https://t.me/${TRENDINGS[network]}/${TRENDING_MSG_IDS[network]}`,
+                url: `${TRENDINGS[network]}/${TRENDING_MSG_IDS[network]}`,
               },
             ],
           ],

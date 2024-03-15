@@ -6,6 +6,7 @@ const {
   TRENDING_MSG_IDS,
   CHAINS,
   TRENDING_RANK_EMOJIS,
+  TRENDING_CHAT_IDS,
 } = require("./config");
 const dedent = require("dedent");
 const { ethers } = require("ethers");
@@ -97,7 +98,7 @@ async function editTrendingMsg(msg, network) {
     await buyBot.editMessageText(dedent(msg), {
       parse_mode: "HTML",
       disable_web_page_preview: true,
-      chat_id: TRENDING_CHAT_ID,
+      chat_id: TRENDING_CHAT_IDS[network],
       message_id: TRENDING_MSG_IDS[network],
     });
   } catch (error) {

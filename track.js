@@ -188,6 +188,7 @@ async function trackBuys(network, version) {
           address: ethers.utils.getAddress(baseToken.address),
         });
         let trendingMsg = null;
+        console.log(isTrending);
 
         if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
           const grpLink =
@@ -251,7 +252,7 @@ async function trackBuys(network, version) {
         `;
 
         if (amountInUsd > min_buy) {
-          await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
+          // await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
           if (amountInUsd > 500 && isTrending && i === 1) {
             await sendTelegramMessage(
               dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),

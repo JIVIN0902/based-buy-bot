@@ -280,15 +280,15 @@ async function trackBuys(network, version) {
 }
 
 let tasks = [];
-for (const network of ["svm"]) {
+for (const network of CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
-scheduleJob("*/30 * * * * *", updateTrending);
-scheduleJob("0 * * * *", updateTrendingVolumes);
+// scheduleJob("*/30 * * * * *", updateTrending);
+// scheduleJob("0 * * * *", updateTrendingVolumes);
 
 Promise.all(tasks)
   .then(() => {

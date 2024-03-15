@@ -7,6 +7,7 @@ const {
   BOT_TOKEN,
   TRENDING_MSG_IDS,
   TRENDING_CHAT_IDS,
+  TRENDINGS,
 } = require("./config");
 
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
@@ -119,7 +120,7 @@ async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
             [
               {
                 text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
-                url: `https://t.me/${TRENDING_CHAT_IDS[network]}/${TRENDING_MSG_IDS[network]}`,
+                url: `https://t.me/${TRENDINGS[network]}/${TRENDING_MSG_IDS[network]}`,
               },
             ],
           ],

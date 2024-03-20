@@ -127,6 +127,10 @@ async function test() {
     trendingCollection,
     trendingVolCollection,
   } = await db.init();
+  const items = await trendingCollection.find({});
+  for (const item of items) {
+    console.log(item);
+  }
 
   // await buysCollection.deleteOne({
   //   _id: "65f483848325c097d811aefa",

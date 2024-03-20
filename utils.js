@@ -47,12 +47,9 @@ async function updateTrendingMarketCap(
     if (!isTrending) return;
     const snapshot = Date.now() - 60 * 60 * 1000;
     const prevMarketCap = isTrending?.marketCap;
-    console.log("PREV ->", prevMarketCap);
     const marketCapGrowth = prevMarketCap
       ? (marketCap - prevMarketCap / prevMarketCap) * 100
       : 0;
-
-    console.log("GROWTH ->", marketCapGrowth);
 
     await trendingCollection.updateOne(
       { address, network }, // Filter
@@ -69,7 +66,8 @@ async function updateTrendingMarketCap(
 
     if (
       !isTrending.marketCapTimestamp ||
-      isTrending.marketCapTimestamp <= snapshot
+      isTrending.marketCapTimestamp <= snapshot ||
+      isTrending.marketCap > 100
     ) {
       await trendingCollection.updateOne(
         { address, network }, // Filter
@@ -85,7 +83,7 @@ async function updateTrendingMarketCap(
         },
         { upsert: false } // Options
       );
-      console.log("Trending updated", isTrending);
+      // console.log("Trending updated", isTrending);
     }
   } catch (error) {
     console.log(error);

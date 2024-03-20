@@ -87,9 +87,9 @@ async function updateTrending() {
     msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
     msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
 
-    // console.log(msg);
+    console.log(msg);
     // Replace with you
-    await editTrendingMsg(msg, network);
+    // await editTrendingMsg(msg, network);
   }
 }
 
@@ -154,7 +154,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();

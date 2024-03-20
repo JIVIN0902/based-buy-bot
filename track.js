@@ -250,10 +250,9 @@ async function trackBuys(network, version) {
           tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
-        }
-        <a href="${TRENDINGS[network]}/${
+        } | <a href="${TRENDINGS[network]}/${
           TRENDING_MSG_IDS[network]
-        }">🔥TRENDING</a>
+        }">TRENDING</a>
         `;
 
         if (amountInUsd > min_buy) {

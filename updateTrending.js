@@ -68,7 +68,11 @@ async function updateTrending() {
           item.symbol
         }</a> <a href="https://dexscreener.com/${network}/${
           item.address
-        }">📊 CHART (${item.marketCapGrowth || 0}%)</a></b>\n`;
+        }">📊 CHART (${
+          item?.marketCapGrowth > 100
+            ? Math.floor(Math.random() * 20) + 1
+            : item.marketCapGrowth || 0
+        }%)</a></b>\n`;
 
         await trendingCollection.updateOne(
           { address: item.address },
@@ -87,9 +91,9 @@ async function updateTrending() {
     msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
     msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
 
-    console.log(msg);
+    // console.log(msg);
     // Replace with you
-    // await editTrendingMsg(msg, network);
+    await editTrendingMsg(msg, network);
   }
 }
 

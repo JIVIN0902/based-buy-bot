@@ -290,8 +290,8 @@ for (const network of CHAINS) {
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
-// scheduleJob("*/30 * * * * *", updateTrending);
-// scheduleJob("0 * * * *", updateTrendingVolumes);
+scheduleJob("*/30 * * * * *", updateTrending);
+scheduleJob("0 * * * *", updateTrendingVolumes);
 
 Promise.all(tasks)
   .then(() => {

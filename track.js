@@ -32,6 +32,7 @@ const {
   TRENDING_CHAINS,
   TRENDING_MSG_IDS,
   TRENDING_CHAT_IDS,
+  TRENDINGS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
@@ -249,7 +250,9 @@ async function trackBuys(network, version) {
           tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
-        }
+        } <a href="${TRENDINGS[network]}/${
+          TRENDING_MSG_IDS[network]
+        }">TRENDING🔥</a>
         `;
 
         if (amountInUsd > min_buy) {

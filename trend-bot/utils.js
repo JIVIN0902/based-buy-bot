@@ -10,18 +10,84 @@ const { DB } = require("../db");
 const { compareAddresses } = require("../utils");
 const { default: axios } = require("axios");
 
-async function getTokenDetails(tokenAddress) {
+async function getTokenDetails(tokenAddress, rpc) {
   try {
-    const base_url = "https://api.dexscreener.com/latest/dex/tokens";
-    const url = `${base_url}/${tokenAddress}`;
-    const { data } = await axios.get(url);
-    if (!data.pairs) return;
-    return data.pairs[0];
+    // Connect to the blockchain
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+
+    // ERC20 ABI
+    const erc20Abi = [
+      "function name() view returns (string)",
+      "function symbol() view returns (string)",
+      "function decimals() view returns (uint8)",
+      "function balanceOf(address) view returns (uint256)",
+      "function transfer(address to, uint amount) returns (bool)",
+      {
+        anonymous: false,
+        inputs: [
+          { indexed: true, name: "from", type: "address" },
+          { indexed: true, name: "to", type: "address" },
+          { indexed: false, name: "value", type: "uint256" },
+        ],
+        name: "Transfer",
+        type: "event",
+      },
+    ];
+
+    // Connect to the token contract
+    const contract = new ethers.Contract(
+      ethers.utils.getAddress(tokenAddress),
+      erc20Abi,
+      provider
+    );
+
+    // Get the token symbol
+    const symbol = await contract.symbol();
+
+    const decimals = await contract.decimals();
+
+    return { symbol, decimals };
   } catch (error) {
-    // throw new Error("Unable to fetch token details. Please try again");
-    return;
+    console.error(error);
   }
 }
+
+async function validatePayment(txHash, network) {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"
+    );
+
+    // Fetch the transaction details using the transaction hash
+    const tx = await provider.getTransaction(txHash);
+
+    if (!tx) {
+      console.log("Transaction not found");
+      return;
+    }
+
+    // Convert the value from wei to ETH
+    const valueInETH = ethers.utils.formatEther(tx.value);
+
+    console.log(`Transaction Amount: ${valueInETH} ETH`);
+    return valueInETH;
+  } catch (error) {
+    console.error("Error fetching transaction:", error);
+  }
+}
+
+// async function getTokenDetails(tokenAddress) {
+//   try {
+//     const base_url = "https://api.dexscreener.com/latest/dex/tokens";
+//     const url = `${base_url}/${tokenAddress}`;
+//     const { data } = await axios.get(url);
+//     if (!data.pairs) return;
+//     return data.pairs[0];
+//   } catch (error) {
+//     // throw new Error("Unable to fetch token details. Please try again");
+//     return;
+//   }
+// }
 
 function getPaymentAmountToBeSent(network, hrs) {
   const native = NATIVES[network];

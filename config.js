@@ -20,13 +20,13 @@ const explorers = {
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const TRENDINGS = {
-  manta: "https://t.me/MantaTrendingLIVE",
-  metis: "https://t.me/MetisTrendingLIVE",
-  avalanche: "https://t.me/AvaxTrending_LIVE",
-  scroll: "https://t.me/ScrollTrendingLIVE",
-  zksync: "https://t.me/ZkSyncTrendingLIVE",
-  dymension: "https://t.me/DymensionTrending",
-  blast: "https://t.me/BlastTrendingAlert",
+  manta: "https://t.me/OrangeTrending",
+  metis: "https://t.me/OrangeTrending",
+  avalanche: "https://t.me/OrangeTrending",
+  scroll: "https://t.me/OrangeTrending",
+  zksync: "https://t.me/OrangeTrending",
+  dymension: "https://t.me/OrangeTrending",
+  blast: "https://t.me/OrangeTrending",
   base: "https://t.me/OrangeTrending",
   pulsechain: "https://t.me/OrangeTrending",
   blast: "https://t.me/OrangeTrending",
@@ -156,6 +156,10 @@ const TRENDING_CHAINS = {
   svm: "satoshivm",
 };
 
+const TREND_BOT_CHAINS = {
+  svm: "SatoshiVM",
+};
+
 const TRENDING_RECIPIENT_ADDRESS = "0x70eA2D4Ac98b304FbF8924fb43C8f7f220F0b4F6";
 
 const TRENDINGS_AMOUNTS_PER_HOURS = {
@@ -178,4 +182,5 @@ module.exports = {
   TRENDINGS_AMOUNTS_PER_HOURS,
   TRENDING_RECIPIENT_ADDRESS,
   TRENDING_CHAINS,
+  TREND_BOT_CHAINS,
 };

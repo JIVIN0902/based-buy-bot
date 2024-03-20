@@ -114,18 +114,19 @@ async function updateTrendingVol(db, amount_buy, chat_id, network, address) {
 async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
   try {
     msg = dedent(msg);
-    let keyboardMarkup = is_button
-      ? {
-          inline_keyboard: [
-            [
-              {
-                text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
-                url: `${TRENDINGS[network]}/${TRENDING_MSG_IDS[network]}`,
-              },
-            ],
-          ],
-        }
-      : null;
+    let keyboardMarkup = null;
+    // let keyboardMarkup = is_button
+    //   ? {
+    //       inline_keyboard: [
+    //         [
+    //           {
+    //             text: `🔥 ${network.toUpperCase()} TRENDING 🔥`,
+    //             url: `${TRENDINGS[network]}/${TRENDING_MSG_IDS[network]}`,
+    //           },
+    //         ],
+    //       ],
+    //     }
+    //   : null;
 
     if (img_url) {
       const img_type = img_url.includes("mp4") ? "video" : "photo";

@@ -26,7 +26,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           args.to === "0x000000000000000000000000000000000000dEaD" ||
           args.to === "0x0000000000000000000000000000000000000000"
         ) {
-          console.log(args.to, args.value.toString());
+          //   console.log(args.to, args.value.toString());
           const tokenAddress = log.address;
           const isLpBurn = await buysCollection.find({
             "pool.pairAddress": ethers.utils.getAddress(tokenAddress),
@@ -35,7 +35,6 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           const isTokenBurn = await buysCollection.find({
             "pool.baseToken.address": ethers.utils.getAddress(tokenAddress),
           });
-          console.log(isLpBurn, isTokenBurn);
           if (isLpBurn.length > 0) {
             console.log("LP was burnt");
           } else if (isTokenBurn.length > 0) {
@@ -103,7 +102,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           }
         }
       } catch (error) {
-        console.log("Some error: ");
+        console.log(error.message);
       }
     }
   );

@@ -57,9 +57,11 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                 twitter,
                 website,
                 circ_supply,
+                total_burned,
+                pool,
               } = chat;
 
-              const totalSupply = circ_supply
+              let totalSupply = circ_supply
                 ? ethers.utils.parseUnits(circ_supply.toString(), tokenDecimals)
                 : await tokenContract.totalSupply();
               console.log(totalSupply.toString());
@@ -84,13 +86,26 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                     $set: {
                       circ_supply: remainingSupply,
                     },
+                    $inc: {
+                      total_burned: amountBurned,
+                    },
                   }
                 ));
-              console.log("Db updated");
+              totalSupply = parseInt(
+                ethers.utils
+                  .formatUnits(remainingSupply, tokenDecimals)
+                  .toString()
+              );
+              let percentageBurned = (amountBurned / totalSupply) * 100;
+              percentageBurned = percentageBurned.toFixed(2);
+              let totalBurned = total_burned + amountBurned;
+              let percentageTotalBurned = (totalBurned / totalSupply) * 100;
               const msg = `
-              <b>Tokens Burnt!</b>\n
-              <b>Amount Burned: </b>${amountBurned}
-              <b>Remaining Supply: </b>${remainingSupply}
+              <b>${amountBurned} ${pool.baseToken.symbol} Burnt!</b>\n
+              🔥🔥🔥🔥🔥🔥🔥🔥\n
+              <b>👌 Amount Burned: </b>${amountBurned} (${percentageBurned})
+              <b>✌️ Total Burned: </b>${totalBurned} (${percentageTotalBurned})
+              <b>👉 Remaining Supply: </b>${remainingSupply}
               `;
 
               await sendTelegramMessage(
@@ -105,7 +120,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           }
         }
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
       }
     }
   );

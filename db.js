@@ -66,6 +66,7 @@ const mainSchema = new Schema({
   min_buy: { type: Number, default: 5 },
   twitter: { type: String, default: null },
   circ_supply: { type: Number, default: null },
+  total_burned: { type: Number, default: 0 },
 });
 
 const trendingSchema = new Schema({
@@ -122,18 +123,20 @@ module.exports = { DB, mainSchema, trendingSchema, trendingVolumeSchema };
 
 async function test() {
   const db = new DB();
-  const {
-    buysCollection,
-    trendingCollection,
-    trendingVolCollection,
-  } = await db.init();
-  const items = await trendingCollection.find({});
-  for (const item of items) {
-    console.log(item);
-  }
+  const { buysCollection, trendingCollection, trendingVolCollection } =
+    await db.init();
+  // console.log(
+  //   await buysCollection.find({
+  //     "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
+  //   })
+  // );
+  // const items = await trendingCollection.find({});
+  // for (const item of items) {
+  //   console.log(item);
+  // }
 
   // await buysCollection.deleteOne({
-  //   _id: "65f483848325c097d811aefa",
+  //   _id: "65fcc4db8325c097d811b167",
   // });
   // console.log(
   //   await buysCollection.find({
@@ -178,4 +181,4 @@ async function test() {
   // }
 }
 
-// test();
+test();

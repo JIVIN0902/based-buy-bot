@@ -41,11 +41,8 @@ const { updateTrending, updateTrendingVolumes } = require("./updateTrending");
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
   const db = new DB();
-  const {
-    buysCollection,
-    trendingCollection,
-    trendingVolCollection,
-  } = await db.init();
+  const { buysCollection, trendingCollection, trendingVolCollection } =
+    await db.init();
 
   const topic = topics[version];
 
@@ -190,7 +187,6 @@ async function trackBuys(network, version) {
           address: ethers.utils.getAddress(baseToken.address),
         });
         let trendingMsg = null;
-        console.log(isTrending);
 
         if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
           const grpLink =

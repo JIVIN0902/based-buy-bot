@@ -67,6 +67,7 @@ const mainSchema = new Schema({
   twitter: { type: String, default: null },
   circ_supply: { type: Number, default: null },
   total_burned: { type: Number, default: 0 },
+  lp_burned: { type: Number, default: 0 },
 });
 
 const trendingSchema = new Schema({

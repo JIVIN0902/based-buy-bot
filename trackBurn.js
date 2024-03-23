@@ -38,6 +38,93 @@ async function listenForAllERC20Transfers(network) {
           });
           if (isLpBurn.length > 0) {
             console.log("LP was burnt");
+
+            const tokenContract = new ethers.Contract(
+              tokenAddress,
+              ERC20_ABI,
+              provider
+            );
+            const tokenDecimals = await tokenContract.decimals();
+            let i = 0;
+            for (const chat of isLpBurn) {
+              const {
+                buy_step,
+                buy_emoji,
+                min_buy,
+                image,
+                chat_id,
+                tg_link,
+                twitter,
+                website,
+                circ_supply,
+                total_burned,
+                pool,
+              } = chat;
+
+              const explorer = explorers[pool.chainId];
+              let totalSupply = circ_supply
+                ? ethers.utils.parseUnits(circ_supply.toString(), tokenDecimals)
+                : await tokenContract.totalSupply();
+              let remainingSupply = totalSupply.sub(args.value);
+              remainingSupply = parseInt(
+                ethers.utils
+                  .formatUnits(remainingSupply, tokenDecimals)
+                  .toString()
+              );
+              const amountBurned = parseInt(
+                ethers.utils.formatUnits(args.value, tokenDecimals).toString()
+              );
+              i === 0 &&
+                (await buysCollection.updateMany(
+                  {
+                    "pool.baseToken.address":
+                      ethers.utils.getAddress(tokenAddress),
+                  },
+                  {
+                    $inc: {
+                      lp_burned: amountBurned,
+                    },
+                  }
+                ));
+              totalSupply = parseInt(
+                ethers.utils.formatUnits(totalSupply, tokenDecimals).toString()
+              );
+              let percentageBurned = (amountBurned / totalSupply) * 100;
+              percentageBurned = percentageBurned.toFixed(4);
+              let totalBurned = total_burned + amountBurned;
+              let percentageTotalBurned = (totalBurned / totalSupply) * 100;
+              percentageTotalBurned = percentageTotalBurned.toFixed(4);
+              const emojiSteps = (percentageBurned / 0.1) * 10;
+              const msg = `
+              <b>${formatNumber(amountBurned)} ${
+                pool.baseToken.symbol
+              } Burned!</b>\n
+            ${"🔥".repeat(emojiSteps > 1 ? parseInt(emojiSteps) : 10)}\n
+              <b>👌 Amount Burned: </b>${formatNumber(
+                amountBurned
+              )} (${percentageBurned}%)
+              <b>✌️ Total Burned: </b>${formatNumber(
+                totalBurned
+              )} (${percentageTotalBurned}%)
+              <b>👉 Remaining Supply: </b>${formatNumber(remainingSupply)}\n
+              <a href='${explorer}/tx/${tx_hash}'>TX</a> | <a href='https://dexscreener.com/${
+                pool.chainId
+              }/${pool.pairAddress}'>CHART</a>${
+                tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
+              }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
+                website ? ` | <a href='${website}'>WEBSITE</a>` : ""
+              }
+              `;
+
+              await sendTelegramMessage(
+                dedent(msg),
+                image,
+                chat_id,
+                network,
+                true
+              );
+              i += 1;
+            }
           } else if (isTokenBurn.length > 0) {
             console.log("Token Burned: ", tokenAddress);
             const tokenContract = new ethers.Contract(
@@ -105,6 +192,7 @@ async function listenForAllERC20Transfers(network) {
               let percentageTotalBurned = (totalBurned / totalSupply) * 100;
               percentageTotalBurned = percentageTotalBurned.toFixed(4);
               const emojiSteps = (percentageBurned / 0.1) * 10;
+
               const msg = `
               <b>${formatNumber(amountBurned)} ${
                 pool.baseToken.symbol

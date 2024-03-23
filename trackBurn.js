@@ -77,7 +77,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                 ethers.utils.formatUnits(args.value, tokenDecimals).toString()
               );
               i === 0 &&
-                (await buysCollection.update(
+                (await buysCollection.updateMany(
                   {
                     "pool.baseToken.address":
                       ethers.utils.getAddress(tokenAddress),

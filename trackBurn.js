@@ -46,7 +46,12 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               provider
             );
             const tokenDecimals = await tokenContract.decimals();
-            const totalSupply = await tokenContract.totalSupply();
+            const totalSupply = circ_supply
+              ? ethers.BigNumber.from(
+                  (circ_supply * 10 ** tokenDecimals).toString()
+                )
+              : await tokenContract.totalSupply();
+            console.log(totalSupply.toString());
             console.log("Amount Burned: ", args.value.toString());
             let remainingSupply = totalSupply.sub(args.value);
             remainingSupply = parseInt(

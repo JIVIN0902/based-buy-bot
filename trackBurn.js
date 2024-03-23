@@ -1,6 +1,7 @@
 const { ethers } = require("ethers");
 const { ERC20_ABI } = require("./abis");
 const { DB } = require("./db");
+const { sendTelegramMessage } = require("./utils");
 
 const iface = new ethers.utils.Interface(ERC20_ABI);
 async function listenForAllERC20Transfers(providerUrl, network) {

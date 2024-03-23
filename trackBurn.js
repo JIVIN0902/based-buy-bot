@@ -60,10 +60,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               } = chat;
 
               const totalSupply = circ_supply
-                ? ethers.utils.formatUnits(
-                    circ_supply.toString(),
-                    tokenDecimals
-                  )
+                ? ethers.utils.parseUnits(circ_supply.toString(), tokenDecimals)
                 : await tokenContract.totalSupply();
               console.log(totalSupply.toString());
               console.log("Amount Burned: ", args.value.toString());

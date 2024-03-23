@@ -31,6 +31,7 @@ const TRENDINGS = {
   pulsechain: "https://t.me/OrangeTrending",
   blast: "https://t.me/OrangeTrending",
   merlinchain: "https://t.me/OrangeTrending",
+  zetachain: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
 };
 
@@ -43,8 +44,7 @@ const RPCS = {
   zksync:
     "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/zksync",
   dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
-  base:
-    "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
+  base: "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
   pulsechain: "https://rpc.pulsechain.com",
   blast: "https://rpc.blast.io",
   merlinchain: "https://rpc.merlinchain.io",

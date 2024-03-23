@@ -45,34 +45,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               provider
             );
             const tokenDecimals = await tokenContract.decimals();
-            const totalSupply = circ_supply
-              ? ethers.BigNumber.from(
-                  (circ_supply * 10 ** tokenDecimals).toString()
-                )
-              : await tokenContract.totalSupply();
-            console.log(totalSupply.toString());
-            console.log("Amount Burned: ", args.value.toString());
-            let remainingSupply = totalSupply.sub(args.value);
-            remainingSupply = parseInt(
-              ethers.utils
-                .formatUnits(remainingSupply, tokenDecimals)
-                .toString()
-            );
-            console.log("Remaining Supply: ", remainingSupply);
-            const amountBurned = parseInt(
-              ethers.utils.formatUnits(args.value, tokenDecimals).toString()
-            );
-            await buysCollection.update(
-              {
-                "pool.baseToken.address": ethers.utils.getAddress(tokenAddress),
-              },
-              {
-                $set: {
-                  circ_supply: remainingSupply,
-                },
-              }
-            );
-            console.log("Db updated");
+            let i = 0;
             for (const chat of isTokenBurn) {
               const {
                 buy_step,
@@ -85,6 +58,37 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                 website,
                 circ_supply,
               } = chat;
+
+              const totalSupply = circ_supply
+                ? ethers.BigNumber.from(
+                    (circ_supply * 10 ** tokenDecimals).toString()
+                  )
+                : await tokenContract.totalSupply();
+              console.log(totalSupply.toString());
+              console.log("Amount Burned: ", args.value.toString());
+              let remainingSupply = totalSupply.sub(args.value);
+              remainingSupply = parseInt(
+                ethers.utils
+                  .formatUnits(remainingSupply, tokenDecimals)
+                  .toString()
+              );
+              console.log("Remaining Supply: ", remainingSupply);
+              const amountBurned = parseInt(
+                ethers.utils.formatUnits(args.value, tokenDecimals).toString()
+              );
+              i === 0 &&
+                (await buysCollection.update(
+                  {
+                    "pool.baseToken.address":
+                      ethers.utils.getAddress(tokenAddress),
+                  },
+                  {
+                    $set: {
+                      circ_supply: remainingSupply,
+                    },
+                  }
+                ));
+              console.log("Db updated");
               const msg = `
               <b>Tokens Burnt!</b>\n
               <b>Amount Burned: </b>${amountBurned}
@@ -98,6 +102,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                 network,
                 true
               );
+              i += 1;
             }
           }
         }

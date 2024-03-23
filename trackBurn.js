@@ -1,7 +1,7 @@
 const { ethers } = require("ethers");
 const { ERC20_ABI } = require("./abis");
 const { DB } = require("./db");
-const { sendTelegramMessage } = require("./utils");
+const { sendTelegramMessage, formatNumber } = require("./utils");
 const dedent = require("dedent");
 
 const iface = new ethers.utils.Interface(ERC20_ABI);
@@ -105,9 +105,13 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               const msg = `
               <b>${amountBurned} ${pool.baseToken.symbol} Burned!</b>\n
               🔥🔥🔥🔥🔥🔥🔥🔥\n
-              <b>👌 Amount Burned: </b>${amountBurned} (${percentageBurned}%)
-              <b>✌️ Total Burned: </b>${totalBurned} (${percentageTotalBurned}%)
-              <b>👉 Remaining Supply: </b>${remainingSupply}
+              <b>👌 Amount Burned: </b>${formatNumber(
+                amountBurned
+              )} (${percentageBurned}%)
+              <b>✌️ Total Burned: </b>${formatNumber(
+                totalBurned
+              )} (${percentageTotalBurned}%)
+              <b>👉 Remaining Supply: </b>${formatNumber(remainingSupply)}
               `;
 
               await sendTelegramMessage(

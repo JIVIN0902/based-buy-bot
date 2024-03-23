@@ -92,9 +92,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                   }
                 ));
               totalSupply = parseInt(
-                ethers.utils
-                  .formatUnits(remainingSupply, tokenDecimals)
-                  .toString()
+                ethers.utils.formatUnits(totalSupply, tokenDecimals).toString()
               );
               console.log("TSUPPLY->", totalSupply);
               console.log("BURNED ->", amountBurned);

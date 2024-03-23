@@ -114,7 +114,7 @@ async function listenForAllERC20Transfers(network) {
                 totalBurned
               )} (${percentageTotalBurned}%)
               <b>👉 Remaining Supply: </b>${formatNumber(remainingSupply)}
-              <a href='${explorer}/tx/${tx_hash}'>TX/a> | <a href='https://dexscreener.com/${
+              <a href='${explorer}/tx/${tx_hash}'>TX</a> | <a href='https://dexscreener.com/${
                 pool.chainId
               }/${pool.pairAddress}'>📊 CHART</a>${
                 tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""

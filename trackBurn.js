@@ -116,7 +116,7 @@ async function listenForAllERC20Transfers(network) {
               <b>👉 Remaining Supply: </b>${formatNumber(remainingSupply)}\n
               <a href='${explorer}/tx/${tx_hash}'>TX</a> | <a href='https://dexscreener.com/${
                 pool.chainId
-              }/${pool.pairAddress}'>📊 CHART</a>${
+              }/${pool.pairAddress}'>CHART</a>${
                 tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
               }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
                 website ? ` | <a href='${website}'>WEBSITE</a>` : ""

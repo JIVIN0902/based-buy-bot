@@ -73,7 +73,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               const msg = `
               <b>Tokens Burnt!</b>\n
               <b>Amount Burned: </b>${amountBurned}
-              </b>Remaining Supply: </b>${remainingSupply}
+              <b>Remaining Supply: </b>${remainingSupply}
               `;
               await sendTelegramMessage(
                 dedent(msg),

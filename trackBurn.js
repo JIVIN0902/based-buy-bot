@@ -64,15 +64,15 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               let totalSupply = circ_supply
                 ? ethers.utils.parseUnits(circ_supply.toString(), tokenDecimals)
                 : await tokenContract.totalSupply();
-              console.log(totalSupply.toString());
-              console.log("Amount Burned: ", args.value.toString());
+              //   console.log(totalSupply.toString());
+              //   console.log("Amount Burned: ", args.value.toString());
               let remainingSupply = totalSupply.sub(args.value);
               remainingSupply = parseInt(
                 ethers.utils
                   .formatUnits(remainingSupply, tokenDecimals)
                   .toString()
               );
-              console.log("Remaining Supply: ", remainingSupply);
+              //   console.log("Remaining Supply: ", remainingSupply);
               const amountBurned = parseInt(
                 ethers.utils.formatUnits(args.value, tokenDecimals).toString()
               );
@@ -96,12 +96,16 @@ async function listenForAllERC20Transfers(providerUrl, network) {
                   .formatUnits(remainingSupply, tokenDecimals)
                   .toString()
               );
+              console.log("TSUPPLY->", totalSupply);
+              console.log("BURNED ->", amountBurned);
+              console.log("RATIO ->", amountBurned / totalSupply);
               let percentageBurned = (amountBurned / totalSupply) * 100;
               percentageBurned = percentageBurned.toFixed(2);
               let totalBurned = total_burned + amountBurned;
               let percentageTotalBurned = (totalBurned / totalSupply) * 100;
+              console.log("RATIO 2 ->", amountBurned / totalSupply);
               const msg = `
-              <b>${amountBurned} ${pool.baseToken.symbol} Burnt!</b>\n
+              <b>${amountBurned} ${pool.baseToken.symbol} Burned!</b>\n
               🔥🔥🔥🔥🔥🔥🔥🔥\n
               <b>👌 Amount Burned: </b>${amountBurned} (${percentageBurned})
               <b>✌️ Total Burned: </b>${totalBurned} (${percentageTotalBurned})

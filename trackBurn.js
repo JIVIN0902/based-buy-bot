@@ -120,7 +120,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           }
         }
       } catch (error) {
-        // console.log(error.message);
+        console.log(error.message);
       }
     }
   );

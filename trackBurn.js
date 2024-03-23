@@ -58,6 +58,17 @@ async function listenForAllERC20Transfers(providerUrl, network) {
             const amountBurned = parseInt(
               ethers.utils.formatUnits(args.value, tokenDecimals).toString()
             );
+            await buysCollection.update(
+              {
+                "pool.baseToken.address": ethers.utils.getAddress(tokenAddress),
+              },
+              {
+                $set: {
+                  circ_supply: remainingSupply,
+                },
+              }
+            );
+            console.log("Db updated");
             for (const chat of isTokenBurn) {
               const {
                 buy_step,
@@ -75,6 +86,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               <b>Amount Burned: </b>${amountBurned}
               <b>Remaining Supply: </b>${remainingSupply}
               `;
+
               await sendTelegramMessage(
                 dedent(msg),
                 image,
@@ -86,7 +98,7 @@ async function listenForAllERC20Transfers(providerUrl, network) {
           }
         }
       } catch (error) {
-        console.log("Some error: ", error.message);
+        console.log("Some error: ");
       }
     }
   );

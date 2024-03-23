@@ -104,12 +104,12 @@ async function listenForAllERC20Transfers(network) {
               let totalBurned = total_burned + amountBurned;
               let percentageTotalBurned = (totalBurned / totalSupply) * 100;
               percentageTotalBurned = percentageTotalBurned.toFixed(4);
-              const emojiSteps = percentageBurned / 0.1;
+              const emojiSteps = (percentageBurned / 0.1) * 10;
               const msg = `
               <b>${formatNumber(amountBurned)} ${
                 pool.baseToken.symbol
               } Burned!</b>\n
-            ${"🔥".repeat(emojiSteps > 1 ? parseInt(emojiSteps) : 1)}\n
+            ${"🔥".repeat(emojiSteps > 1 ? parseInt(emojiSteps) : 10)}\n
               <b>👌 Amount Burned: </b>${formatNumber(
                 amountBurned
               )} (${percentageBurned}%)

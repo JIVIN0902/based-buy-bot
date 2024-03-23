@@ -98,15 +98,15 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               console.log("BURNED ->", amountBurned);
               console.log("RATIO ->", amountBurned / totalSupply);
               let percentageBurned = (amountBurned / totalSupply) * 100;
-              percentageBurned = percentageBurned.toFixed(2);
+              percentageBurned = percentageBurned.toFixed(4);
               let totalBurned = total_burned + amountBurned;
               let percentageTotalBurned = (totalBurned / totalSupply) * 100;
-              console.log("RATIO 2 ->", amountBurned / totalSupply);
+              percentageTotalBurned = percentageTotalBurned.toFixed(4);
               const msg = `
               <b>${amountBurned} ${pool.baseToken.symbol} Burned!</b>\n
               🔥🔥🔥🔥🔥🔥🔥🔥\n
-              <b>👌 Amount Burned: </b>${amountBurned} (${percentageBurned})
-              <b>✌️ Total Burned: </b>${totalBurned} (${percentageTotalBurned})
+              <b>👌 Amount Burned: </b>${amountBurned} (${percentageBurned}%)
+              <b>✌️ Total Burned: </b>${totalBurned} (${percentageTotalBurned}%)
               <b>👉 Remaining Supply: </b>${remainingSupply}
               `;
 

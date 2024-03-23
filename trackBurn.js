@@ -60,8 +60,9 @@ async function listenForAllERC20Transfers(providerUrl, network) {
               } = chat;
 
               const totalSupply = circ_supply
-                ? ethers.BigNumber.from(
-                    (circ_supply * 10 ** tokenDecimals).toString()
+                ? ethers.utils.formatUnits(
+                    circ_supply.toString(),
+                    tokenDecimals
                   )
                 : await tokenContract.totalSupply();
               console.log(totalSupply.toString());

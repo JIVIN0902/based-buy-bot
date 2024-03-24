@@ -126,6 +126,9 @@ const TRENDING_RANK_EMOJIS = {
   20: "2️⃣0️⃣",
 };
 
+const BURN_GIF =
+  "https://firebasestorage.googleapis.com/v0/b/raidon-90131.appspot.com/o/burn.mp4?alt=media&token=7c33a0e2-8386-4a9e-8906-0de8190b12e2";
+
 const VERSIONS = ["v2", "v3", "izi"];
 
 const CHAINS = [
@@ -183,4 +186,5 @@ module.exports = {
   TRENDING_RECIPIENT_ADDRESS,
   TRENDING_CHAINS,
   TREND_BOT_CHAINS,
+  BURN_GIF,
 };

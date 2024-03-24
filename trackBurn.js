@@ -3,7 +3,13 @@ const { ERC20_ABI } = require("./abis");
 const { DB } = require("./db");
 const { sendTelegramMessage, formatNumber } = require("./utils");
 const dedent = require("dedent");
-const { RPCS, explorers, BURN_GIF } = require("./config");
+const {
+  RPCS,
+  explorers,
+  BURN_GIF,
+  TRENDINGS,
+  TRENDING_MSG_IDS,
+} = require("./config");
 
 const iface = new ethers.utils.Interface(ERC20_ABI);
 

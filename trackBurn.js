@@ -13,7 +13,7 @@ const {
 
 const iface = new ethers.utils.Interface(ERC20_ABI);
 
-async function listenForAllERC20Transfers(network) {
+async function trackBurns(network) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
 
   const transferTopic = ethers.utils.id("Transfer(address,address,uint256)");
@@ -242,9 +242,5 @@ async function listenForAllERC20Transfers(network) {
   );
 }
 
-// Example usage
-
-// const providerUrl =
-//   "https://open-platform.nodereal.io/014f811f63514485bf519847d0b19465/base";
-// ("https://eth-mainnet.nodereal.io/v1/014f811f63514485bf519847d0b19465");
-listenForAllERC20Transfers("base");
+// trackBurns("base");
+module.exports = { trackBurns };

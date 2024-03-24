@@ -284,7 +284,7 @@ for (const network of CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }
-  tasks.push(trackBurns(network));
+  // tasks.push(trackBurns(network));
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);

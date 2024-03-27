@@ -205,7 +205,7 @@ async function trackBuys(network, version) {
                 ? "https://t.me/SatoshiVMTrending"
                 : "https://t.me/OrangeTrending";
             trendingMsg = `\n<b><a href="${grpLink}/${
-              TRENDING_MSG_IDS[network]
+              TRENDING_MSG_IDS[network].orangeTrending
             }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
               TRENDING_CHAINS[network]
             } TRENDING</a></b>\n`;
@@ -259,7 +259,7 @@ async function trackBuys(network, version) {
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
         } | <a href="${TRENDINGS[network]}/${
-          TRENDING_MSG_IDS[network]
+          TRENDING_MSG_IDS[network].orangeTrending
         }">TRENDING</a>
         `;
 

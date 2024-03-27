@@ -35,6 +35,10 @@ const TRENDINGS = {
   svm: "https://t.me/SatoshiVMTrending",
 };
 
+const STANDALONE_TRENDINGS = {
+  zksync: "https://t.me/ZkSyncTrendingLive",
+};
+
 const RPCS = {
   manta: "https://pacific-rpc.manta.network/http",
   metis: "https://andromeda.metis.io/?owner=1088",
@@ -74,7 +78,22 @@ const NATIVES = {
   svm: "BTC",
 };
 
-// const TRENDING_CHAT_ID = -1001883705059;
+const ORANGE_TRENDING_CHAT_ID = -1001883705059;
+
+const STANDALONE_TRENDING_CHAT_IDS = {
+  manta: null,
+  metis: null,
+  avalanche: null,
+  scroll: null,
+  zksync: -1002053145502,
+  base: null,
+  pulsechain: null,
+  blast: null,
+  merlinchain: null,
+  zetachain: null,
+  svm: -1002045980358,
+};
+
 const TRENDING_CHAT_IDS = {
   manta: -1001883705059,
   metis: -1001883705059,
@@ -90,17 +109,40 @@ const TRENDING_CHAT_IDS = {
 };
 
 const TRENDING_MSG_IDS = {
-  manta: 48,
-  metis: 47,
-  avalanche: 45,
-  scroll: 46,
-  zksync: 50,
-  base: 49,
-  pulsechain: 44,
-  blast: 43,
-  merlinchain: 51,
-  zetachain: 55,
-  svm: 0,
+  manta: {
+    orangeTrending: 48,
+  },
+  metis: {
+    orangeTrending: 47,
+  },
+  avalanche: {
+    orangeTrending: 45,
+  },
+  scroll: {
+    orangeTrending: 46,
+  },
+  zksync: {
+    orangeTrending: 50,
+    standalone: 8,
+  },
+  base: {
+    orangeTrending: 49,
+  },
+  pulsechain: {
+    orangeTrending: 44,
+  },
+  blast: {
+    orangeTrending: 43,
+  },
+  merlinchain: {
+    orangeTrending: 51,
+  },
+  zetachain: {
+    orangeTrending: 55,
+  },
+  svm: {
+    orangeTrending: 56,
+  },
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -178,6 +220,7 @@ module.exports = {
   NATIVES,
   TRENDING_CHAT_IDS,
   TRENDING_MSG_IDS,
+  ORANGE_TRENDING_CHAT_ID,
   CHAINS,
   VERSIONS,
   BOT_TOKEN,
@@ -187,4 +230,6 @@ module.exports = {
   TRENDING_CHAINS,
   TREND_BOT_CHAINS,
   BURN_GIF,
+  STANDALONE_TRENDINGS,
+  STANDALONE_TRENDING_CHAT_IDS,
 };

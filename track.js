@@ -33,6 +33,7 @@ const {
   TRENDING_MSG_IDS,
   TRENDING_CHAT_IDS,
   TRENDINGS,
+  STANDALONE_TRENDINGS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
@@ -188,17 +189,27 @@ async function trackBuys(network, version) {
           address: ethers.utils.getAddress(baseToken.address),
         });
         let trendingMsg = null;
+        // let trendingMsgStandalone = null;
 
         if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
-          const grpLink =
-            network === "svm"
-              ? "https://t.me/SatoshiVMTrending"
-              : "https://t.me/OrangeTrending";
-          trendingMsg = `\n<b><a href="${grpLink}/${
-            TRENDING_MSG_IDS[network]
-          }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
-            TRENDING_CHAINS[network]
-          } TRENDING</a></b>\n`;
+          if (STANDALONE_TRENDINGS[network]) {
+            const grpLink = STANDALONE_TRENDINGS[network];
+            trendingMsg = `\n<b><a href="${grpLink}/${
+              TRENDING_MSG_IDS[network].standalone
+            }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
+              TRENDING_CHAINS[network]
+            } TRENDING</a></b>\n`;
+          } else {
+            const grpLink =
+              network === "svm"
+                ? "https://t.me/SatoshiVMTrending"
+                : "https://t.me/OrangeTrending";
+            trendingMsg = `\n<b><a href="${grpLink}/${
+              TRENDING_MSG_IDS[network]
+            }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
+              TRENDING_CHAINS[network]
+            } TRENDING</a></b>\n`;
+          }
         }
 
         const isWhale = amountInUsd >= 3000;
@@ -284,7 +295,6 @@ for (const network of CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }
-  // tasks.push(trackBurns(network));
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);

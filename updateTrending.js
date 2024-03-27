@@ -1,17 +1,24 @@
 const { scheduleJob } = require("node-schedule");
 const { DB } = require("./db");
-const { buyBot } = require("./utils");
+// const { buyBot } = require("./utils");
 const {
   TRENDING_CHAT_ID,
   TRENDING_MSG_IDS,
   CHAINS,
   TRENDING_RANK_EMOJIS,
   TRENDING_CHAT_IDS,
+  STANDALONE_TRENDINGS,
+  STANDALONE_TRENDING_CHAT_IDS,
+  ORANGE_TRENDING_CHAT_ID,
 } = require("./config");
 const dedent = require("dedent");
 const { ethers } = require("ethers");
 const { default: axios } = require("axios");
 const { getTokenDetails } = require("./trend-bot/utils");
+const TelegramBot = require("node-telegram-bot-api");
+
+const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
 const BREAK_INTERVAL = 10 * 60 * 1000;
 
@@ -21,11 +28,8 @@ function sleep(ms) {
 
 async function updateTrending() {
   const db = new DB();
-  const {
-    trendingCollection,
-    trendingVolCollection,
-    buysCollection,
-  } = await db.init();
+  const { trendingCollection, trendingVolCollection, buysCollection } =
+    await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
   const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
@@ -35,7 +39,6 @@ async function updateTrending() {
   await trendingVolCollection.deleteMany({
     timestamp: { $lt: snapshot },
   });
-  await trendingCollection.updateMany({}, { $set: { rank: 0 } });
   for (const network of CHAINS) {
     let trendingData = await trendingCollection.find({ network });
 
@@ -57,6 +60,7 @@ async function updateTrending() {
       .charAt(0)
       .toUpperCase()}${network.slice(1)} Trending</a> (LIVE)\n\n`;
     let i = 1;
+    await trendingCollection.updateMany({ network }, { $set: { rank: 0 } });
     for (let item of trends) {
       try {
         const groupData = await buysCollection.findOne({
@@ -88,40 +92,73 @@ async function updateTrending() {
       }
     }
 
-    msg += `\n🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>`;
-    msg += `🍊 <a href='https://t.me/OrangeTrending'>Orange Trending</a> <i>Automatically updates Trending every 30 secs.</i>`;
+    msg += `\n🍊 <b><i>@OrangeBuyBot, to qualify use Orange in your group.</i></b>`;
+    msg += `\n🍊<b><i> @OrangeBuyBot Automatically updates Trending every 30 secs.</i></b>`;
 
-    // console.log(msg);
     // Replace with you
+    // console.log(msg);
     await editTrendingMsg(msg, network);
   }
 }
 
 async function editTrendingMsg(msg, network) {
   try {
-    await buyBot.editMessageText(dedent(msg), {
-      parse_mode: "HTML",
-      disable_web_page_preview: true,
-      chat_id: TRENDING_CHAT_IDS[network],
-      message_id: TRENDING_MSG_IDS[network],
-    });
+    const reply_markup = {
+      inline_keyboard: [
+        [
+          {
+            text: "🔥 Buy Trending 🔥",
+            url: "https://t.me/MaxxCrypto404",
+          },
+        ],
+      ],
+    };
+    const msg_ids = TRENDING_MSG_IDS[network];
+    const standalone_chat_id = STANDALONE_TRENDING_CHAT_IDS[network];
+    if (standalone_chat_id) {
+      // console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
+      await buyBot.editMessageText(dedent(msg), {
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+        chat_id: standalone_chat_id,
+        message_id: msg_ids.standalone,
+      });
+      await buyBot.editMessageReplyMarkup(reply_markup, {
+        chat_id: standalone_chat_id,
+        message_id: msg_ids.standalone,
+      });
+    }
+    if (msg_ids.orangeTrending) {
+      // console.log("ORANGE ->", msg_ids.orangeTrending, ORANGE_TRENDING_CHAT_ID);
+      await buyBot.editMessageText(dedent(msg), {
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+        chat_id: ORANGE_TRENDING_CHAT_ID,
+        message_id: msg_ids.orangeTrending,
+      });
+      await buyBot.editMessageReplyMarkup(reply_markup, {
+        chat_id: ORANGE_TRENDING_CHAT_ID,
+        message_id: msg_ids.orangeTrending,
+      });
+    }
   } catch (error) {
     console.log("ERROR while editing", error.message);
   }
 }
 
-async function sendTrendingMessageFirstTime(network) {
+async function sendTrendingMessageFirstTime(network, chat_id) {
   try {
     const msg = `
     ✅<b> <a href='https://t.me/OrangeTrending'>${network} Trending</a> (LIVE)</b>\n
 
-    🍊 <i><b><a href='https://t.me/OrangeTrending'>@OrangeTrending</a> automatically updates Trending every 20 secs.</b></i>
+    🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>
+    🍊 <i><b>@OrangeBuyBot automatically updates Trending every 20 secs.</b></i>
     `;
-    const m = await buyBot.sendMessage(TRENDING_CHAT_ID, dedent(msg), {
+    const m = await buyBot.sendMessage(chat_id, dedent(msg), {
       parse_mode: "HTML",
       disable_web_page_preview: true,
     });
-    // console.log(`${network} ->`, m.message_id);
+    console.log(`${network} ->`, m.message_id);
   } catch (error) {
     console.log(error.message);
   }
@@ -129,11 +166,8 @@ async function sendTrendingMessageFirstTime(network) {
 
 async function updateTrendingVolumes() {
   const db = new DB();
-  const {
-    trendingCollection,
-    trendingVolCollection,
-    buysCollection,
-  } = await db.init();
+  const { trendingCollection, trendingVolCollection, buysCollection } =
+    await db.init();
   await trendingCollection.updateMany({}, { $set: { vol: 0 } });
 }
 
@@ -158,24 +192,25 @@ async function tr() {
   }
 }
 
-updateTrending();
+// updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();
 
 // (async () => {
 //   for (const net of [
+//     "zkSync",
 //     // "Blast",
-//     "PulseChain",
-//     "Avalanche",
-//     "Scroll",
-//     "Metis",
-//     "Manta",
-//     "Base",
-//     "Zksync",
-//     "Merlin",
+//     // "PulseChain",
+//     // "Avalanche",
+//     // "Scroll",
+//     // "Metis",
+//     // "Manta",
+//     // "Base",
+//     // "Zksync",
+//     // "Merlin",
 //   ]) {
-//     await sendTrendingMessageFirstTime(net);
+//     await sendTrendingMessageFirstTime(net, -1002053145502);
 //   }
 // })();
 

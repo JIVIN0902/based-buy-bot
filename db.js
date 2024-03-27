@@ -167,15 +167,16 @@ async function test() {
   //     { $set: { network: "blast" } }
   //   )
   // );
-  // await trendingCollection.create({
-  //   network: "merlinchain",
-  //   symbol: "VOYA",
-  //   project: "Voya",
-  //   tg_link: "https://t.me/+YQyWhYjpeUQ1NDM1",
-  //   address: ethers.utils.getAddress(
-  //     "0x480E158395cC5b41e5584347c495584cA2cAf78d"
-  //   ),
-  // });
+  await trendingCollection.create({
+    network: "base",
+    symbol: "COINYE",
+    project: "CoinYe",
+    tg_link: "https://t.me/CoinyeWest",
+    address: ethers.utils.getAddress(
+      "0x0028e1E60167b48a938B785AA5292917E7eacA8b"
+    ),
+  });
+  console.log(await trendingCollection.findOne({ symbol: "COINYE" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);

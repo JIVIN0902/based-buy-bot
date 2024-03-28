@@ -33,6 +33,7 @@ const TRENDINGS = {
   merlinchain: "https://t.me/OrangeTrending",
   zetachain: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
+  bevm: "https://t.me/SatoshiVMTrending",
 };
 
 const STANDALONE_TRENDINGS = {
@@ -77,6 +78,7 @@ const NATIVES = {
   merlinchain: "BTC",
   zetachain: "ZETA",
   svm: "BTC",
+  bevm: "BTC",
 };
 
 const ORANGE_TRENDING_CHAT_ID = -1001883705059;

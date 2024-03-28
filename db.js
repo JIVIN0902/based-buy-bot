@@ -87,6 +87,12 @@ const trendingSchema = new Schema({
   lastVolResetTimestamp: { type: Number, default: 0 },
 });
 
+const adsSchema = new Schema({
+  timestamp: Number,
+  url: { type: String, unique: true },
+  text: String,
+});
+
 const trendingVolumeSchema = new Schema({
   amount_buy: Number,
   chat_id: String,
@@ -107,6 +113,7 @@ class DB {
 
     const buysCollection = this.db.model("buys", mainSchema);
     const trendingCollection = this.db.model("trends", trendingSchema);
+    const adsCollection = this.db.model("ads", adsSchema);
     const trendingVolCollection = this.db.model(
       "trending-volume",
       trendingVolumeSchema
@@ -116,6 +123,7 @@ class DB {
       buysCollection,
       trendingCollection,
       trendingVolCollection,
+      adsCollection,
     };
   }
 }

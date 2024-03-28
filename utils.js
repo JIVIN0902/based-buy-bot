@@ -16,6 +16,13 @@ function compareAddresses(addy1, addy2) {
   return ethers.utils.getAddress(addy1) === ethers.utils.getAddress(addy2);
 }
 
+async function getAdToShow(adsCollection) {
+  const ads = await adsCollection.find({});
+  const randomIdx = getRandomInt(0, ads.length - 1);
+  const adToShow = ads[randomIdx];
+  return adToShow;
+}
+
 // Path to your JSON file
 function readPrices() {
   const filePath = "./prices.json";
@@ -251,6 +258,10 @@ function formatNumber(amount, max = 2) {
   }).format(amount);
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = {
   sendTelegramMessage,
   get_data_v3,
@@ -265,4 +276,6 @@ module.exports = {
   buyBot,
   updateTrendingVol,
   updateTrendingMarketCap,
+  getRandomInt,
+  getAdToShow,
 };

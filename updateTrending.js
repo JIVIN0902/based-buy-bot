@@ -16,6 +16,7 @@ const { ethers } = require("ethers");
 const { default: axios } = require("axios");
 const { getTokenDetails } = require("./trend-bot/utils");
 const TelegramBot = require("node-telegram-bot-api");
+const { getAdToShow } = require("./utils");
 
 const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
@@ -28,8 +29,12 @@ function sleep(ms) {
 
 async function updateTrending() {
   const db = new DB();
-  const { trendingCollection, trendingVolCollection, buysCollection } =
-    await db.init();
+  const {
+    trendingCollection,
+    trendingVolCollection,
+    buysCollection,
+    adsCollection,
+  } = await db.init();
   const snapshot = Date.now() - 30 * 60 * 1000;
   const weekSnap = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
@@ -97,26 +102,28 @@ async function updateTrending() {
 
     // Replace with you
     // console.log(msg);
-    await editTrendingMsg(msg, network);
+    await editTrendingMsg(adsCollection, msg, network);
   }
 }
 
-async function editTrendingMsg(msg, network) {
+async function editTrendingMsg(adsCollection, msg, network) {
   try {
+    const adToShow = await getAdToShow(adsCollection);
     const reply_markup = {
       inline_keyboard: [
         [
           {
-            text: "🔥 Buy Trending 🔥",
-            url: "https://t.me/MaxxCrypto404",
+            text: adToShow.text,
+            url: adToShow.url,
           },
         ],
       ],
     };
+    console.log(reply_markup);
     const msg_ids = TRENDING_MSG_IDS[network];
     const standalone_chat_id = STANDALONE_TRENDING_CHAT_IDS[network];
-    if (standalone_chat_id) {
-      // console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
+    if (standalone_chat_id && msg_ids.standalone) {
+      console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
       await buyBot.editMessageText(dedent(msg), {
         parse_mode: "HTML",
         disable_web_page_preview: true,
@@ -129,7 +136,7 @@ async function editTrendingMsg(msg, network) {
       });
     }
     if (msg_ids.orangeTrending) {
-      // console.log("ORANGE ->", msg_ids.orangeTrending, ORANGE_TRENDING_CHAT_ID);
+      console.log("ORANGE ->", msg_ids.orangeTrending);
       await buyBot.editMessageText(dedent(msg), {
         parse_mode: "HTML",
         disable_web_page_preview: true,
@@ -192,7 +199,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();

@@ -124,12 +124,14 @@ async function editTrendingMsg(adsCollection, msg, network) {
     const standalone_chat_id = STANDALONE_TRENDING_CHAT_IDS[network];
     if (standalone_chat_id && msg_ids.standalone) {
       console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
-      await buyBot.editMessageText(dedent(msg), {
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-        chat_id: standalone_chat_id,
-        message_id: msg_ids.standalone,
-      });
+      try {
+        await buyBot.editMessageText(dedent(msg), {
+          parse_mode: "HTML",
+          disable_web_page_preview: true,
+          chat_id: standalone_chat_id,
+          message_id: msg_ids.standalone,
+        });
+      } catch (error) {}
       await buyBot.editMessageReplyMarkup(reply_markup, {
         chat_id: standalone_chat_id,
         message_id: msg_ids.standalone,
@@ -137,12 +139,14 @@ async function editTrendingMsg(adsCollection, msg, network) {
     }
     if (msg_ids.orangeTrending) {
       console.log("ORANGE ->", msg_ids.orangeTrending);
-      await buyBot.editMessageText(dedent(msg), {
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-        chat_id: ORANGE_TRENDING_CHAT_ID,
-        message_id: msg_ids.orangeTrending,
-      });
+      try {
+        await buyBot.editMessageText(dedent(msg), {
+          parse_mode: "HTML",
+          disable_web_page_preview: true,
+          chat_id: ORANGE_TRENDING_CHAT_ID,
+          message_id: msg_ids.orangeTrending,
+        });
+      } catch (error) {}
       await buyBot.editMessageReplyMarkup(reply_markup, {
         chat_id: ORANGE_TRENDING_CHAT_ID,
         message_id: msg_ids.orangeTrending,

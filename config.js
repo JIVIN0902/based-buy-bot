@@ -14,7 +14,7 @@ const explorers = {
   merlinchain: "https://scan.merlinchain.io",
   zetachain: "https://explorer.zetachain.com",
   svm: "https://svmscan.io",
-  bevm: "https://bevmscam.io",
+  bevm: "https://scan-mainnet.bevm.io",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";

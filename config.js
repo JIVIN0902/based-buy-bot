@@ -14,6 +14,7 @@ const explorers = {
   merlinchain: "https://scan.merlinchain.io",
   zetachain: "https://explorer.zetachain.com",
   svm: "https://svmscan.io",
+  bevm: "https://bevmscam.io",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -33,7 +34,7 @@ const TRENDINGS = {
   merlinchain: "https://t.me/OrangeTrending",
   zetachain: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
-  bevm: "https://t.me/SatoshiVMTrending",
+  bevm: "https://t.me/OrangeTrending",
 };
 
 const STANDALONE_TRENDINGS = {

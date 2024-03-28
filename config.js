@@ -55,6 +55,7 @@ const RPCS = {
   zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
   inevm: "https://mainnet.rpc.inevm.com/http",
   svm: "https://alpha-rpc-node-http.svmscan.io",
+  bevm: "https://rpc-mainnet-1.bevm.io",
 };
 
 const topics = {
@@ -143,6 +144,9 @@ const TRENDING_MSG_IDS = {
   svm: {
     orangeTrending: 56,
   },
+  bevm: {
+    orangeTrending: 57,
+  },
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -185,6 +189,7 @@ const CHAINS = [
   "blast",
   "zetachain",
   "svm",
+  "bevm",
 ];
 
 const TRENDING_CHAINS = {
@@ -199,6 +204,7 @@ const TRENDING_CHAINS = {
   base: "BASE",
   zetachain: "ZETACHAIN",
   svm: "satoshivm",
+  bevm: "bevm",
 };
 
 const TREND_BOT_CHAINS = {

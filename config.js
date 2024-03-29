@@ -1,5 +1,7 @@
 const { config } = require("dotenv");
+
 config();
+
 const explorers = {
   metis: "https://explorer.metis.io",
   avalanche: "https://snowtrace.io",
@@ -15,6 +17,7 @@ const explorers = {
   zetachain: "https://explorer.zetachain.com",
   svm: "https://svmscan.io",
   bevm: "https://scan-mainnet.bevm.io",
+  degen: "https://explorer.degen.tips",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -58,6 +61,7 @@ const RPCS = {
   inevm: "https://mainnet.rpc.inevm.com/http",
   svm: "https://alpha-rpc-node-http.svmscan.io",
   bevm: "https://rpc-mainnet-1.bevm.io",
+  degen: "https://rpc.degen.tips",
 };
 
 const topics = {
@@ -80,6 +84,7 @@ const NATIVES = {
   zetachain: "ZETA",
   svm: "BTC",
   bevm: "BTC",
+  degen: "DEGEN",
 };
 
 const ORANGE_TRENDING_CHAT_ID = -1001883705059;
@@ -110,6 +115,8 @@ const TRENDING_CHAT_IDS = {
   merlinchain: -1001883705059,
   zetachain: -1001883705059,
   svm: -1002045980358,
+  bevm: -1002045980359,
+  degen: -1001883705059,
 };
 
 const TRENDING_MSG_IDS = {
@@ -149,6 +156,9 @@ const TRENDING_MSG_IDS = {
   },
   bevm: {
     orangeTrending: 57,
+  },
+  degen: {
+    orangeTrending: 58,
   },
 };
 
@@ -193,6 +203,7 @@ const CHAINS = [
   "zetachain",
   "svm",
   "bevm",
+  "degen",
 ];
 
 const TRENDING_CHAINS = {
@@ -208,6 +219,7 @@ const TRENDING_CHAINS = {
   zetachain: "ZETACHAIN",
   svm: "satoshivm",
   bevm: "bevm",
+  degen: "DEGEN",
 };
 
 const TREND_BOT_CHAINS = {

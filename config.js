@@ -18,6 +18,7 @@ const explorers = {
   svm: "https://svmscan.io",
   bevm: "https://scan-mainnet.bevm.io",
   degen: "https://explorer.degen.tips",
+  xdc: "https://explorer.xinfin.network",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -61,7 +62,8 @@ const RPCS = {
   inevm: "https://mainnet.rpc.inevm.com/http",
   svm: "https://alpha-rpc-node-http.svmscan.io",
   bevm: "https://rpc-mainnet-1.bevm.io",
-  degen: "https://rpc.degen.tips",
+  // degen: "https://rpc.degen.tips",
+  xdc: "https://erpc.xinfin.network",
 };
 
 const topics = {
@@ -85,6 +87,7 @@ const NATIVES = {
   svm: "BTC",
   bevm: "BTC",
   degen: "DEGEN",
+  xdc: "XDC",
 };
 
 const ORANGE_TRENDING_CHAT_ID = -1001883705059;
@@ -201,10 +204,11 @@ const CHAINS = [
   "pulsechain",
   "blast",
   "zetachain",
-  "svm",
   "bevm",
-  "degen",
+  // "degen",
 ];
+
+const BANANA_CHAINS = ["svm", "pulsechain", "xdc"];
 
 const TRENDING_CHAINS = {
   manta: "MANTA",
@@ -253,4 +257,5 @@ module.exports = {
   BURN_GIF,
   STANDALONE_TRENDINGS,
   STANDALONE_TRENDING_CHAT_IDS,
+  BANANA_CHAINS,
 };

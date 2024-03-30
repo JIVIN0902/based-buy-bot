@@ -12,6 +12,11 @@ const {
 
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
+const bananaBuyBot = new TelegramBot(
+  "6855442320:AAGdHmPQkG9gJI5QuLPH-TVpuXS_E6j6r3o",
+  { polling: false }
+);
+
 function compareAddresses(addy1, addy2) {
   return ethers.utils.getAddress(addy1) === ethers.utils.getAddress(addy2);
 }
@@ -160,6 +165,44 @@ async function sendTelegramMessage(msg, img_url, chat_id, network, is_button) {
   }
 }
 
+async function sendTelegramMessageBanana(
+  msg,
+  img_url,
+  chat_id,
+  network,
+  is_button
+) {
+  try {
+    msg = dedent(msg);
+    let keyboardMarkup = null;
+
+    if (img_url) {
+      const img_type = img_url.includes("mp4") ? "video" : "photo";
+      if (img_type === "photo") {
+        await bananaBuyBot.sendPhoto(chat_id, img_url, {
+          caption: msg,
+          parse_mode: "HTML",
+          reply_markup: keyboardMarkup,
+        });
+      } else {
+        await bananaBuyBot.sendVideo(chat_id, img_url, {
+          caption: msg,
+          parse_mode: "HTML",
+          reply_markup: keyboardMarkup,
+        });
+      }
+    } else {
+      await bananaBuyBot.sendMessage(chat_id, msg, {
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+        reply_markup: keyboardMarkup,
+      });
+    }
+  } catch (error) {
+    console.error("Sending message errored:", error.message);
+  }
+}
+
 function getUserPosition(totalBalance, tokenBought) {
   const prevBalance = totalBalance - tokenBought;
   const position = (tokenBought / prevBalance) * 100;
@@ -278,4 +321,5 @@ module.exports = {
   updateTrendingMarketCap,
   getRandomInt,
   getAdToShow,
+  sendTelegramMessageBanana,
 };

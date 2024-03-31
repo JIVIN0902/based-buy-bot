@@ -263,9 +263,7 @@ async function trackBuys(network, version) {
             ${trendingMsg || ""}
             ${
               adToShow
-                ? `${trendingMsg ? "" : "\n"}<a href="${adToShow.url}">${
-                    adToShow.text
-                  }</a>`
+                ? `Ad: <a href="${adToShow.url}">${adToShow.text}</a>\n`
                 : ""
             }
             <a href='https://dexscreener.com/${

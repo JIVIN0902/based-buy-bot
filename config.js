@@ -37,6 +37,7 @@ const TRENDINGS = {
   blast: "https://t.me/OrangeTrending",
   merlinchain: "https://t.me/OrangeTrending",
   zetachain: "https://t.me/OrangeTrending",
+  degen: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
   bevm: "https://t.me/OrangeTrending",
 };

@@ -253,7 +253,7 @@ async function trackBuys(network, version) {
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
             ${trendingMsg || ""}
             <a href='https://dexscreener.com/${
-              pool.chainId
+              pool.chainId === "degen" ? "degenchain" : pool.chainId
             }/${pool_address}'>📊 CHART</a>${
           tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${

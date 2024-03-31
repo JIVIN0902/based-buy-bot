@@ -206,7 +206,7 @@ const CHAINS = [
   "blast",
   "zetachain",
   "bevm",
-  // "degen",
+  "degen",
 ];
 
 const BANANA_CHAINS = ["svm", "pulsechain", "xdc"];

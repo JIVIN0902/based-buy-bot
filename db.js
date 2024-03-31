@@ -91,6 +91,7 @@ const adsSchema = new Schema({
   timestamp: Number,
   url: { type: String, unique: true },
   text: String,
+  network: { type: String, default: null },
 });
 
 const trendingVolumeSchema = new Schema({

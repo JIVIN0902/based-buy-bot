@@ -21,6 +21,7 @@ const {
   get_data_izi,
   updateTrendingVol,
   updateTrendingMarketCap,
+  getRandomInt,
 } = require("./utils");
 const {
   RPCS,
@@ -43,8 +44,12 @@ const { trackBurns } = require("./trackBurn");
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
   const db = new DB();
-  const { buysCollection, trendingCollection, trendingVolCollection } =
-    await db.init();
+  const {
+    buysCollection,
+    trendingCollection,
+    trendingVolCollection,
+    adsCollection,
+  } = await db.init();
 
   const topic = topics[version];
 
@@ -64,13 +69,17 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-      console.log(network, pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
       });
       if (chats.length === 0) return;
       const tx_hash = log.transactionHash;
+      const networkAds = await adsCollection.find({ network });
+      const adToShow =
+        networkAds.length > 0
+          ? networkAds[getRandomInt(0, networkAds.length - 1)]
+          : null;
 
       const event = iface.parseLog(log);
       const args = event.args;
@@ -252,6 +261,13 @@ async function trackBuys(network, version) {
             }
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
             ${trendingMsg || ""}
+            ${
+              adToShow
+                ? `${trendingMsg ? "" : "\n"}<a href="${adToShow.url}">${
+                    adToShow.text
+                  }</a>`
+                : ""
+            }
             <a href='https://dexscreener.com/${
               pool.chainId === "degen" ? "degenchain" : pool.chainId
             }/${pool_address}'>📊 CHART</a>${

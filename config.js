@@ -62,7 +62,7 @@ const RPCS = {
   inevm: "https://mainnet.rpc.inevm.com/http",
   svm: "https://alpha-rpc-node-http.svmscan.io",
   bevm: "https://rpc-mainnet-1.bevm.io",
-  // degen: "https://rpc.degen.tips",
+  degen: "https://rpc.degen.tips",
   xdc: "https://erpc.xinfin.network",
 };
 

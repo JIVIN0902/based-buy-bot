@@ -134,11 +134,12 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
-  // console.log(
-  //   await buysCollection.find({
-  //     "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
-  //   })
-  // );
+  console.log(
+    await buysCollection.find({
+      // "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
+      "pool.chainId": "degen",
+    })
+  );
   // const items = await trendingCollection.find({});
   // for (const item of items) {
   //   console.log(item);
@@ -175,20 +176,20 @@ async function test() {
   //     { $set: { network: "blast" } }
   //   )
   // );
-  await trendingCollection.create({
-    network: "base",
-    symbol: "COINYE",
-    project: "CoinYe",
-    tg_link: "https://t.me/CoinyeWest",
-    address: ethers.utils.getAddress(
-      "0x0028e1E60167b48a938B785AA5292917E7eacA8b"
-    ),
-  });
-  console.log(await trendingCollection.findOne({ symbol: "COINYE" }));
+  // await trendingCollection.create({
+  //   network: "base",
+  //   symbol: "COINYE",
+  //   project: "CoinYe",
+  //   tg_link: "https://t.me/CoinyeWest",
+  //   address: ethers.utils.getAddress(
+  //     "0x0028e1E60167b48a938B785AA5292917E7eacA8b"
+  //   ),
+  // });
+  // console.log(await trendingCollection.findOne({ symbol: "COINYE" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);
   // }
 }
 
-// test();
+test();

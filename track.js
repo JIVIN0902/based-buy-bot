@@ -223,6 +223,9 @@ async function trackBuys(network, version) {
 
         const isWhale = amountInUsd >= 3000;
         const emoji = isWhale ? "🐳" : buy_emoji;
+        const adMsg = adToShow
+          ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>\n`
+          : "";
 
         let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
@@ -261,11 +264,7 @@ async function trackBuys(network, version) {
             }
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
             ${trendingMsg || ""}
-            ${
-              adToShow
-                ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>\n`
-                : ""
-            }
+            ${adMsg || ""}
             <a href='https://dexscreener.com/${
               pool.chainId === "degen" ? "degenchain" : pool.chainId
             }/${pool_address}'>📊 CHART</a>${

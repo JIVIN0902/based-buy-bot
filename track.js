@@ -224,7 +224,7 @@ async function trackBuys(network, version) {
         const isWhale = amountInUsd >= 3000;
         const emoji = isWhale ? "🐳" : buy_emoji;
         const adMsg = adToShow
-          ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>\n`
+          ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>`
           : "";
 
         let msg = `

@@ -135,58 +135,67 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
-  console.log(
-    await buysCollection.find({
-      // "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
-      "pool.chainId": "degen",
-    })
-  );
+  // console.log(
+  //   await buysCollection.find({
+  //     // "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
+  //     "pool.chainId": "degen",
+  //   })
+  // );
   // const items = await trendingCollection.find({});
   // for (const item of items) {
   //   console.log(item);
   // }
 
-  // await buysCollection.deleteOne({
-  //   _id: "65fcc4db8325c097d811b167",
-  // });
-  // console.log(
-  //   await buysCollection.find({
-  //     "pool.chainId": "svm",
-  //     "pool.pairAddress": "0xD05bd2fd4c5dFC743dE05FFb8322Ad8C36da6705",
-  //   })
-  // );
-  // const data = await buysCollection.find({ network: "svm" });
-  // for (const item of data) {
-  //   console.log(item);
-  // }
-  // console.log();
-  // console.log(await buysCollection.find({ "pool.chainId": "avalanche" }));
-  // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {
-  // const delRes = await trendingCollection.deleteOne({
-  //   _id: "65e38ab38f7d2f4734ba6ff4",
-  // });
-  // console.log(delRes);
-  // }
-  // await buysCollection.deleteOne({ _id: "65d108ad4d4497d6248bd687" });
-  // console.log(
-  //   await buysCollection.find({ "pool.baseToken.symbol": "VMUMDOGE" })
-  // );
-  // console.log(
-  //   await trendingCollection.updateOne(
-  //     { address: "0x5D5cB63E071E4cA1956F9C8C5258Fe7711FD2Ba9" },
-  //     { $set: { network: "blast" } }
-  //   )
-  // );
-  // await trendingCollection.create({
-  //   network: "base",
-  //   symbol: "COINYE",
-  //   project: "CoinYe",
-  //   tg_link: "https://t.me/CoinyeWest",
-  //   address: ethers.utils.getAddress(
-  //     "0x0028e1E60167b48a938B785AA5292917E7eacA8b"
-  //   ),
-  // });
-  // console.log(await trendingCollection.findOne({ symbol: "COINYE" }));
+  // // await buysCollection.deleteOne({
+  // //   _id: "65fcc4db8325c097d811b167",
+  // // });
+  // // console.log(
+  // //   await buysCollection.find({
+  // //     "pool.chainId": "svm",
+  // //     "pool.pairAddress": "0xD05bd2fd4c5dFC743dE05FFb8322Ad8C36da6705",
+  // //   })
+  // // );
+  // // const data = await buysCollection.find({ network: "svm" });
+  // // for (const item of data) {
+  // //   console.log(item);
+  // // }
+  // // console.log();
+  // // console.log(await buysCollection.find({ "pool.chainId": "avalanche" }));
+  // // for (const item of ["65e3dd72a1f6d76ded7b8689", "65e3dd79a1f6d76ded7b868b"]) {
+  // // const delRes = await trendingCollection.deleteOne({
+  // //   _id: "65e38ab38f7d2f4734ba6ff4",
+  // // });
+  // // console.log(delRes);
+  // // }
+  // // await buysCollection.deleteOne({ _id: "65d108ad4d4497d6248bd687" });
+  // // console.log(
+  // //   await buysCollection.find({ "pool.baseToken.symbol": "VMUMDOGE" })
+  // // );
+  // // console.log(
+  // //   await trendingCollection.updateOne(
+  // //     { address: "0x5D5cB63E071E4cA1956F9C8C5258Fe7711FD2Ba9" },
+  // //     { $set: { network: "blast" } }
+  // //   )
+  // // );
+  console.log(await trendingCollection.deleteMany({ network: "blast" }));
+  await trendingCollection.create({
+    tg_link: "https://t.me/AndyBlastL2",
+    tx_hash: null,
+    lastVolResetTimestamp: 0,
+    hrs_tier: 168,
+    address: "0xd43D8aDAC6A4C7d9Aeece7c3151FcA8f23752cf8",
+    symbol: "ANDY",
+    rank: 1,
+    timestamp: Date.now(),
+    network: "blast",
+    chat_id: -1002105755963,
+    vol: 0,
+    volTimestampLatest: 0,
+    marketCap: 38500000,
+    marketCapGrowth: 11,
+    marketCapTimestamp: 0,
+  });
+  console.log(await trendingCollection.find({ network: "blast" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);

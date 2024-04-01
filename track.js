@@ -264,7 +264,6 @@ async function trackBuys(network, version) {
             }
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
             ${trendingMsg || ""}
-            ${adMsg || ""}
             <a href='https://dexscreener.com/${
               pool.chainId === "degen" ? "degenchain" : pool.chainId
             }/${pool_address}'>📊 CHART</a>${
@@ -274,6 +273,7 @@ async function trackBuys(network, version) {
         } | <a href="${TRENDINGS[network]}/${
           TRENDING_MSG_IDS[network].orangeTrending
         }">TRENDING</a>
+        ${adMsg || ""}
         `;
 
         if (amountInUsd > min_buy) {

@@ -226,7 +226,6 @@ async function trackBuys(network, version) {
                 : ""
             }
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
-            ${trendingMsg || ""}
             <a href='https://dexscreener.com/${
               pool.chainId
             }/${pool_address}'>📊 CHART</a>${

@@ -35,6 +35,7 @@ const {
   TRENDINGS,
   STANDALONE_TRENDINGS,
   BANANA_CHAINS,
+  CHARTS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
@@ -189,6 +190,9 @@ async function trackBuys(network, version) {
 
         const isWhale = amountInUsd >= 3000;
         const emoji = isWhale ? "🐳" : buy_emoji;
+        const chartLink = CHARTS[network]
+          ? `${CHARTS[network]}/${pool_address}`
+          : `https://dexscreener.com/${pool.chainId}/${pool_address}`;
 
         let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
@@ -225,10 +229,8 @@ async function trackBuys(network, version) {
                     ).toFixed(0)}%`
                 : ""
             }
-            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
-            <a href='https://dexscreener.com/${
-              pool.chainId
-            }/${pool_address}'>📊 CHART</a>${
+            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}\n
+            <a href='${chartLink}'>📊 CHART</a>${
           tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""

@@ -211,6 +211,10 @@ const CHAINS = [
 
 const BANANA_CHAINS = ["svm", "pulsechain", "xdc"];
 
+const CHARTS = {
+  xdc: "https://www.geckoterminal.com/xdc/pools",
+};
+
 const TRENDING_CHAINS = {
   manta: "MANTA",
   metis: "METIS",
@@ -259,4 +263,5 @@ module.exports = {
   STANDALONE_TRENDINGS,
   STANDALONE_TRENDING_CHAT_IDS,
   BANANA_CHAINS,
+  CHARTS,
 };

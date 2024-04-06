@@ -2,8 +2,8 @@ const { DB } = require("./db");
 const { getRandomInt } = require("./utils");
 
 const data = {
-  text: "🔥 Degen Dex 🔥",
-  url: "https://t.me",
+  text: "👀 Anon Confessions on TG 👀",
+  url: "https://t.me/BasedConfessions",
   network: "degen",
 };
 async function updateAds() {
@@ -16,22 +16,22 @@ async function updateAds() {
     // });
     // console.log("Ad updated");
 
-    // console.log(await adsCollection.find({}));
+    console.log(await adsCollection.find({}));
 
     // const ads = await adsCollection.find({});
     // console.log(ads);
     // const randomIdx = getRandomInt(0, ads.length - 1);
     // const adToShow = ads[randomIdx];
     // console.log(adToShow);
-    await adsCollection.updateOne(
-      { url: "https://t.me" },
-      {
-        $set: {
-          text: "DegenDex - NativeDex On Degen",
-          url: "https://t.me/DegendexChat",
-        },
-      }
-    );
+    // await adsCollection.updateOne(
+    //   { url: "https://t.me/DegendexChat" },
+    //   {
+    //     $set: {
+    //       text: data.text,
+    //       url: data.url,
+    //     },
+    //   }
+    // );
     // console.log("db updated");
     // await adsCollection.deleteOne({ _id: "6605b7c1265415bfa3787f7c" });
     // console.log("deleted");

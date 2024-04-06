@@ -65,7 +65,7 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-      //   console.log(network, pool_address);
+      console.log(network, pool_address);
 
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
@@ -253,7 +253,7 @@ async function trackBuys(network, version) {
 }
 
 let tasks = [];
-for (const network of BANANA_CHAINS) {
+for (const network of ["xdc"]) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }

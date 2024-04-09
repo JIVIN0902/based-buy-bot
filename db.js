@@ -182,7 +182,7 @@ async function test() {
     tg_link: "https://t.me/AndyBlastL2",
     tx_hash: null,
     lastVolResetTimestamp: 0,
-    hrs_tier: 168,
+    hrs_tier: 24 * 30,
     address: "0xd43D8aDAC6A4C7d9Aeece7c3151FcA8f23752cf8",
     symbol: "ANDY",
     rank: 1,

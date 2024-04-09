@@ -3,7 +3,7 @@ const fs = require("fs");
 const { scheduleJob } = require("node-schedule");
 
 async function updatePrices() {
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network,pulsechain,bitcoin,zetachain,degen-base,xdce-crowd-sale&vs_currencies=usd`;
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network,pulsechain,bitcoin,zetachain,degen-base,xdce-crowd-sale,coredaoorg&vs_currencies=usd`;
   const { data } = await axios.get(url);
   const ethPrice = data.ethereum.usd;
   const avaxPrice = data["avalanche-2"].usd;
@@ -14,6 +14,7 @@ async function updatePrices() {
   const zetaPrice = data["zetachain"].usd;
   const degenPrice = data["degen-base"].usd;
   const xdcPrice = data["xdce-crowd-sale"].usd;
+  const corePrice = data["coredaoorg"].usd;
   const priceData = {
     ETH: ethPrice,
     WETH: ethPrice,
@@ -38,6 +39,8 @@ async function updatePrices() {
     DEGEN: degenPrice,
     XDC: xdcPrice,
     WXDC: xdcPrice,
+    CORE: corePrice,
+    WCORE: corePrice,
   };
   const jsonData = JSON.stringify(priceData, null, 2);
   // console.log(jsonData);

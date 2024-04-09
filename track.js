@@ -70,6 +70,7 @@ async function trackBuys(network, version) {
     try {
       const pool_address = log.address;
 
+      console.log(network, pool_address);
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
       });

@@ -19,6 +19,7 @@ const explorers = {
   bevm: "https://scan-mainnet.bevm.io",
   degen: "https://explorer.degen.tips",
   xdc: "https://explorer.xinfin.network",
+  core: "https://scan.coredao.org",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -38,6 +39,7 @@ const TRENDINGS = {
   merlinchain: "https://t.me/OrangeTrending",
   zetachain: "https://t.me/OrangeTrending",
   degen: "https://t.me/OrangeTrending",
+  core: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
   bevm: "https://t.me/OrangeTrending",
 };
@@ -65,6 +67,7 @@ const RPCS = {
   bevm: "https://rpc-mainnet-1.bevm.io",
   degen: "https://rpc.degen.tips",
   xdc: "https://erpc.xinfin.network",
+  core: "https://rpc.coredao.org",
 };
 
 const topics = {
@@ -89,6 +92,7 @@ const NATIVES = {
   bevm: "BTC",
   degen: "DEGEN",
   xdc: "XDC",
+  core: "CORE",
 };
 
 const ORANGE_TRENDING_CHAT_ID = -1001883705059;
@@ -121,6 +125,7 @@ const TRENDING_CHAT_IDS = {
   svm: -1002045980358,
   bevm: -1002045980359,
   degen: -1001883705059,
+  core: -1001883705059,
 };
 
 const TRENDING_MSG_IDS = {
@@ -163,6 +168,9 @@ const TRENDING_MSG_IDS = {
   },
   degen: {
     orangeTrending: 58,
+  },
+  core: {
+    orangeTrending: 59,
   },
 };
 
@@ -207,6 +215,7 @@ const CHAINS = [
   "zetachain",
   "bevm",
   "degen",
+  "core",
 ];
 
 const BANANA_CHAINS = ["svm", "pulsechain", "xdc"];
@@ -229,6 +238,7 @@ const TRENDING_CHAINS = {
   svm: "satoshivm",
   bevm: "bevm",
   degen: "DEGEN",
+  core: "CORE",
 };
 
 const TREND_BOT_CHAINS = {

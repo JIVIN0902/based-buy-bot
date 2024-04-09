@@ -59,5 +59,4 @@ function getNativePrice(key) {
   return data[key];
 }
 
-// updatePrices();
 module.exports = { getNativePrice, updatePrices };

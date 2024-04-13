@@ -35,6 +35,8 @@ const {
   TRENDING_CHAT_IDS,
   TRENDINGS,
   STANDALONE_TRENDINGS,
+  DEAD_ADDRESS,
+  ZERO_ADDRESS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
@@ -151,9 +153,15 @@ async function trackBuys(network, version) {
           const tx_receipt = await provider.getTransaction(tx_hash);
           to = tx_receipt.from;
         }
-        let totalSupply = compareAddresses(token0, baseToken.address)
-          ? await token0Contract.totalSupply()
-          : await token1Contract.totalSupply();
+        const tokenContract = compareAddresses(token0, baseToken.address)
+          ? token0Contract
+          : token1Contract;
+        let totalSupply = await tokenContract.totalSupply();
+        const zeroAddressBalance = await tokenContract.balanceOf(ZERO_ADDRESS);
+        const deadAddressBalance = await tokenContract.balanceOf(DEAD_ADDRESS);
+        totalSupply = totalSupply
+          .sub(zeroAddressBalance)
+          .sub(deadAddressBalance);
         let tokenInDecimals = compareAddresses(token0, quoteToken.address)
           ? token0Decimals
           : token1Decimals;
@@ -166,9 +174,7 @@ async function trackBuys(network, version) {
         totalSupply = parseInt(
           ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
         );
-        let userBalance = compareAddresses(token0, baseToken.address)
-          ? await token0Contract.balanceOf(to)
-          : await token1Contract.balanceOf(to);
+        let userBalance = await tokenContract.balanceOf(to);
         userBalance = parseFloat(
           ethers.utils.formatUnits(userBalance, tokenOutDecimals).toString()
         );

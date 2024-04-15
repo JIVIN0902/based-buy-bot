@@ -285,12 +285,16 @@ function get_data_izi(args, track_token, other_token, token0, token1) {
 }
 
 function process_number(amountInUsd, buyStep) {
-  if (amountInUsd <= buyStep) return 1;
-  else if (amountInUsd <= 10000) return parseInt(amountInUsd / buyStep);
-  let step = buyStep < 100 ? 100 : buyStep;
-  if (amountInUsd <= 50000) return parseInt(amountInUsd / step);
-  if (amountInUsd <= 100000) return parseInt(amountInUsd / 250);
-  return 200;
+  let step = buyStep;
+  if (!step) {
+    if (amountInUsd < 3000) step = 10;
+    if (amountInUsd < 20000) step = 20;
+    else step = 50;
+  }
+  if (amountInUsd <= step) return 1;
+  const emoji_count = parseInt(amountInUsd / step);
+  if (emoji_count > 800) return 800;
+  return emoji_count;
 }
 
 function formatNumber(amount, max = 2) {

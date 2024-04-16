@@ -177,17 +177,17 @@ async function test() {
   // //     { $set: { network: "blast" } }
   // //   )
   // // );
-  console.log(await trendingCollection.deleteMany({ network: "blast" }));
+  // console.log(await trendingCollection.deleteMany({ network: "blast" }));
   await trendingCollection.create({
-    tg_link: "https://t.me/AndyBlastL2",
+    tg_link: "https://t.me/Dappadofficial",
     tx_hash: null,
     lastVolResetTimestamp: 0,
     hrs_tier: 24 * 30,
-    address: "0xd43D8aDAC6A4C7d9Aeece7c3151FcA8f23752cf8",
-    symbol: "ANDY",
-    rank: 1,
+    address: "0xE87269Fa38180A13e9bB3C487537F5282EF3e5d7",
+    symbol: "APPA",
+    rank: 2,
     timestamp: Date.now(),
-    network: "blast",
+    network: "zksync",
     chat_id: -1002105755963,
     vol: 0,
     volTimestampLatest: 0,
@@ -195,7 +195,7 @@ async function test() {
     marketCapGrowth: 11,
     marketCapTimestamp: 0,
   });
-  console.log(await trendingCollection.find({ network: "blast" }));
+  console.log(await trendingCollection.find({ network: "zksync" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);

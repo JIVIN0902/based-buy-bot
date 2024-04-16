@@ -20,6 +20,7 @@ const explorers = {
   degen: "https://explorer.degen.tips",
   xdc: "https://explorer.xinfin.network",
   core: "https://scan.coredao.org",
+  bitlayer: "https://www.btrscan.com",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -68,6 +69,7 @@ const RPCS = {
   degen: "https://rpc.degen.tips",
   xdc: "https://erpc.xinfin.network",
   core: "https://rpc.coredao.org",
+  bitlayer: "https://rpc.bitlayer.org",
 };
 
 const topics = {
@@ -90,6 +92,7 @@ const NATIVES = {
   zetachain: "ZETA",
   svm: "BTC",
   bevm: "BTC",
+  bitlayer: "BTC",
   degen: "DEGEN",
   xdc: "XDC",
   core: "CORE",
@@ -221,7 +224,7 @@ const CHAINS = [
   "core",
 ];
 
-const BANANA_CHAINS = ["svm", "pulsechain", "xdc"];
+const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer"];
 
 const CHARTS = {
   xdc: "https://www.geckoterminal.com/xdc/pools",

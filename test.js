@@ -1,11 +1,11 @@
 // const { ethers } = require("ethers");
 // const { NATIVES, explorers, TRENDINGS, TRENDING_MSG_IDS } = require("./config");
 // const dedent = require("dedent");
-// const {
-//   process_number,
-//   formatNumber,
-//   sendTelegramMessage,
-// } = require("./utils");
+const {
+  process_number,
+  formatNumber,
+  sendTelegramMessage,
+} = require("./utils");
 
 // // const number = 0.5;
 // // const bigNumberString = ethers.BigNumber.from(number.toString()).toString();
@@ -111,3 +111,4 @@
 // console.log(msg);
 
 // sendTelegramMessage(dedent(msg), null, -4010683331, "base", false);
+console.log(process_number(4373.78, 10));

@@ -21,7 +21,7 @@ const explorers = {
   xdc: "https://explorer.xinfin.network",
   core: "https://scan.coredao.org",
   bitlayer: "https://www.btrscan.com",
-  b2: "https://explorer.bsquared.network"
+  b2: "https://explorer.bsquared.network",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -61,7 +61,7 @@ const RPCS = {
   dymension: "https://dymension-evm.blockpi.network/v1/rpc/public	",
   base: "https://open-platform.nodereal.io/01a63ae96ef3458aa2a161b3ab7b16d6/base",
   pulsechain: "https://rpc.pulsechain.com",
-  blast: "https://rpc.blast.io",
+  blast: "https://rpc.ankr.com/blast",
   merlinchain: "https://rpc.merlinchain.io",
   zetachain: "https://zetachain-evm.blockpi.network/v1/rpc/public",
   inevm: "https://mainnet.rpc.inevm.com/http",
@@ -71,7 +71,7 @@ const RPCS = {
   xdc: "https://erpc.xinfin.network",
   core: "https://rpc.coredao.org",
   bitlayer: "https://rpc.bitlayer.org",
-  b2: "https://rpc.bsquared.network"
+  b2: "https://rpc.bsquared.network",
 };
 
 const topics = {
@@ -98,7 +98,7 @@ const NATIVES = {
   degen: "DEGEN",
   xdc: "XDC",
   core: "CORE",
-  b2: "BTC"
+  b2: "BTC",
 };
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

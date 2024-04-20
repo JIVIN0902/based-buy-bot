@@ -176,7 +176,7 @@ async function sendTelegramMessageBanana(
     msg = dedent(msg);
     let keyboardMarkup = {
       inline_keyboard: [
-        { text: "Your Ad Here", url: "https://t.me/MaxxCrypto404" },
+        [{ text: "Your Ad Here", url: "https://t.me/MaxxCrypto404" }],
       ],
     };
 

@@ -93,6 +93,8 @@ async function trackBuys(network, version) {
       const token0Decimals = await token0Contract.decimals();
       const token1Decimals = await token1Contract.decimals();
       let i = 0;
+
+      // console.log(network, pool_address);
       for (const chat of chats) {
         i += 1;
         const pool = chat.pool;
@@ -109,7 +111,6 @@ async function trackBuys(network, version) {
         } = chat;
         const baseToken = pool.baseToken;
         const quoteToken = pool.quoteToken;
-        // console.log(chat.chat_id, baseToken.symbol, circ_supply);
         const swap_data =
           version === "v3"
             ? get_data_v3(
@@ -167,7 +168,7 @@ async function trackBuys(network, version) {
         totalSupply = parseInt(
           ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
         );
-        let userBalance = tokenContract.balanceOf(to);
+        let userBalance = await tokenContract.balanceOf(to);
         userBalance = parseFloat(
           ethers.utils.formatUnits(userBalance, tokenOutDecimals).toString()
         );

@@ -22,6 +22,7 @@ const explorers = {
   core: "https://scan.coredao.org",
   bitlayer: "https://www.btrscan.com",
   b2: "https://explorer.bsquared.network",
+  chillis: "https://chiliscan.com",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -44,6 +45,7 @@ const TRENDINGS = {
   core: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
   bevm: "https://t.me/OrangeTrending",
+  chillis: "https://t.me/ChilizTrendingLIVE",
 };
 
 const STANDALONE_TRENDINGS = {
@@ -72,6 +74,7 @@ const RPCS = {
   core: "https://rpc.coredao.org",
   bitlayer: "https://rpc.bitlayer.org",
   b2: "https://rpc.bsquared.network",
+  chillis: "https://rpc.ankr.com/chiliz",
 };
 
 const topics = {
@@ -99,6 +102,7 @@ const NATIVES = {
   xdc: "XDC",
   core: "CORE",
   b2: "BTC",
+  chillis: "CHZ",
 };
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -118,6 +122,7 @@ const STANDALONE_TRENDING_CHAT_IDS = {
   merlinchain: null,
   zetachain: null,
   svm: -1002045980358,
+  chillis: -1002027639711,
 };
 
 const TRENDING_CHAT_IDS = {
@@ -181,6 +186,9 @@ const TRENDING_MSG_IDS = {
   core: {
     orangeTrending: 59,
   },
+  chillis: {
+    standalone: 3,
+  },
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -227,10 +235,11 @@ const CHAINS = [
   "core",
 ];
 
-const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer", "b2"];
+const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer", "b2", "chillis"];
 
 const CHARTS = {
   xdc: "https://www.geckoterminal.com/xdc/pools",
+  chillis: "https://www.geckoterminal.com/chiliz-chain/pools",
 };
 
 const TRENDING_CHAINS = {
@@ -248,6 +257,7 @@ const TRENDING_CHAINS = {
   bevm: "bevm",
   degen: "DEGEN",
   core: "CORE",
+  chillis: "CHILLIZ",
 };
 
 const TREND_BOT_CHAINS = {

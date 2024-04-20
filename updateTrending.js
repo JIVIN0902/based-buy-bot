@@ -18,7 +18,8 @@ const { getTokenDetails } = require("./trend-bot/utils");
 const TelegramBot = require("node-telegram-bot-api");
 const { getAdToShow } = require("./utils");
 
-const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+// const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+const BOT_TOKEN = "6855442320:AAGdHmPQkG9gJI5QuLPH-TVpuXS_E6j6r3o";
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
 const BREAK_INTERVAL = 10 * 60 * 1000;
@@ -160,10 +161,10 @@ async function editTrendingMsg(adsCollection, msg, network) {
 async function sendTrendingMessageFirstTime(network, chat_id) {
   try {
     const msg = `
-    ✅<b> <a href='https://t.me/OrangeTrending'>${network} Trending</a> (LIVE)</b>\n
+    ✅<b> <a href='https://t.me/ChilizTrendingLIVE'>${network} Trending</a> (LIVE)</b>\n
 
-    🍊 <b><i>Powered by <a href='https://t.me/OrangeBuyBot'>Orange Buy Bot</a>, to qualify use Orange in your group.</i></b>
-    🍊 <i><b>@OrangeBuyBot automatically updates Trending every 20 secs.</b></i>
+    🍌 <b><i>Powered by @BananaBuyBot, to qualify use Banana in your group.</i></b>
+    🍌  <i><b>@BananaBuyBot automatically updates Trending every 20 secs.</b></i>
     `;
     const m = await buyBot.sendMessage(chat_id, dedent(msg), {
       parse_mode: "HTML",
@@ -210,7 +211,7 @@ module.exports = { updateTrending, updateTrendingVolumes };
 
 // (async () => {
 //   for (const net of [
-//     "zkSync",
+//     "Chillis",
 //     // "Blast",
 //     // "PulseChain",
 //     // "Avalanche",
@@ -221,7 +222,7 @@ module.exports = { updateTrending, updateTrendingVolumes };
 //     // "Zksync",
 //     // "Merlin",
 //   ]) {
-//     await sendTrendingMessageFirstTime(net, -1002053145502);
+//     await sendTrendingMessageFirstTime(net, -1002027639711);
 //   }
 // })();
 

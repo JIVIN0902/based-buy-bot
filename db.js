@@ -1,5 +1,6 @@
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
+const { buyBot } = require("./utils");
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
@@ -135,6 +136,16 @@ async function test() {
   const db = new DB();
   const { buysCollection, trendingCollection, trendingVolCollection } =
     await db.init();
+  // const grpCount = await buysCollection.countDocuments();
+  // console.log(grpCount);
+  const groups = await buysCollection.find({});
+  let totalMembers = 0;
+  for (const group of groups) {
+    try {
+      totalMembers += await buyBot.getChatMemberCount(group.chat_id);
+    } catch (error) {}
+  }
+  console.log(`CUMULATIVE MEMBERS ->`, totalMembers);
   // console.log(
   //   await buysCollection.find({
   //     // "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",
@@ -178,28 +189,28 @@ async function test() {
   // //   )
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
-  await trendingCollection.create({
-    tg_link: "https://t.me/Dappadofficial",
-    tx_hash: null,
-    lastVolResetTimestamp: 0,
-    hrs_tier: 24 * 30,
-    address: "0xE87269Fa38180A13e9bB3C487537F5282EF3e5d7",
-    symbol: "APPA",
-    rank: 2,
-    timestamp: Date.now(),
-    network: "zksync",
-    chat_id: -1002105755963,
-    vol: 0,
-    volTimestampLatest: 0,
-    marketCap: 38500000,
-    marketCapGrowth: 11,
-    marketCapTimestamp: 0,
-  });
-  console.log(await trendingCollection.find({ network: "zksync" }));
+  // await trendingCollection.create({
+  //   tg_link: "https://t.me/Dappadofficial",
+  //   tx_hash: null,
+  //   lastVolResetTimestamp: 0,
+  //   hrs_tier: 24 * 30,
+  //   address: "0xE87269Fa38180A13e9bB3C487537F5282EF3e5d7",
+  //   symbol: "APPA",
+  //   rank: 2,
+  //   timestamp: Date.now(),
+  //   network: "zksync",
+  //   chat_id: -1002105755963,
+  //   vol: 0,
+  //   volTimestampLatest: 0,
+  //   marketCap: 38500000,
+  //   marketCapGrowth: 11,
+  //   marketCapTimestamp: 0,
+  // });
+  // console.log(await trendingCollection.find({ network: "zksync" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);
   // }
 }
 
-// test();
+test();

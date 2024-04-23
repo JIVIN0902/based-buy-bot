@@ -261,7 +261,7 @@ async function trackBuys(network, version) {
 }
 
 let tasks = [];
-for (const network of ["chillis"]) {
+for (const network of BANANA_CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }

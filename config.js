@@ -23,6 +23,7 @@ const explorers = {
   bitlayer: "https://www.btrscan.com",
   b2: "https://explorer.bsquared.network",
   chillis: "https://chiliscan.com",
+  xai: "https://explorer.xai-chain.net",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -45,6 +46,7 @@ const TRENDINGS = {
   core: "https://t.me/OrangeTrending",
   svm: "https://t.me/SatoshiVMTrending",
   bevm: "https://t.me/OrangeTrending",
+  xai: "https://t.me/OrangeTrending",
   chillis: "https://t.me/ChilizTrendingLIVE",
 };
 
@@ -75,6 +77,7 @@ const RPCS = {
   bitlayer: "https://rpc.bitlayer.org",
   b2: "https://rpc.bsquared.network",
   chillis: "https://rpc.ankr.com/chiliz",
+  xai: "https://xai-chain.net/rpc",
 };
 
 const topics = {
@@ -103,6 +106,7 @@ const NATIVES = {
   core: "CORE",
   b2: "BTC",
   chillis: "CHZ",
+  xai: "XAI",
 };
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -140,6 +144,7 @@ const TRENDING_CHAT_IDS = {
   bevm: -1002045980359,
   degen: -1001883705059,
   core: -1001883705059,
+  xai: -1001883705059,
 };
 
 const TRENDING_MSG_IDS = {
@@ -189,6 +194,9 @@ const TRENDING_MSG_IDS = {
   chillis: {
     standalone: 3,
   },
+  xai: {
+    orangeTrending: 60,
+  },
 };
 
 const TRENDING_RANK_EMOJIS = {
@@ -227,12 +235,13 @@ const CHAINS = [
   "scroll",
   "base",
   "zksync",
-  "pulsechain",
+  // "pulsechain",
   "blast",
   "zetachain",
-  "bevm",
-  "degen",
-  "core",
+  // "bevm",
+  // "degen",
+  // "core",
+  "xai",
 ];
 
 const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer", "b2", "chillis"];
@@ -258,6 +267,7 @@ const TRENDING_CHAINS = {
   degen: "DEGEN",
   core: "CORE",
   chillis: "CHILLIZ",
+  xai: "XAI",
 };
 
 const TREND_BOT_CHAINS = {

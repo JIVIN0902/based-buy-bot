@@ -72,6 +72,7 @@ async function trackBuys(network, version) {
     try {
       const pool_address = log.address;
 
+      // console.log(network, pool_address);
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
       });
@@ -117,7 +118,6 @@ async function trackBuys(network, version) {
         } = chat;
         const baseToken = pool.baseToken;
         const quoteToken = pool.quoteToken;
-        // console.log(chat.chat_id, baseToken.symbol, circ_supply);
         const swap_data =
           version === "v3"
             ? get_data_v3(
@@ -317,8 +317,8 @@ for (const network of CHAINS) {
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
-scheduleJob("*/60 * * * * *", updateTrending);
-scheduleJob("0 * * * *", updateTrendingVolumes);
+// scheduleJob("*/60 * * * * *", updateTrending);
+// scheduleJob("0 * * * *", updateTrendingVolumes);
 
 Promise.all(tasks)
   .then(() => {

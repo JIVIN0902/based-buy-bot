@@ -25,6 +25,7 @@ async function updatePrices() {
     AVAX: avaxPrice,
     WAVAX: avaxPrice,
     USDC: 1,
+    DAI: 1,
     USDT: 1,
     "m.USDC": 1,
     "m.USDT": 1,

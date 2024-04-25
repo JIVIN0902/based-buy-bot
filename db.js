@@ -138,14 +138,21 @@ async function test() {
     await db.init();
   // const grpCount = await buysCollection.countDocuments();
   // console.log(grpCount);
-  const groups = await buysCollection.find({});
-  let totalMembers = 0;
-  for (const group of groups) {
-    try {
-      totalMembers += await buyBot.getChatMemberCount(group.chat_id);
-    } catch (error) {}
-  }
-  console.log(`CUMULATIVE MEMBERS ->`, totalMembers);
+  const chats = await buysCollection.find({
+    "pool.pairAddress": ethers.utils.getAddress(
+      "0x131fc641d2c62c3aef5c50014d48332288d3612d"
+    ),
+  });
+  // console.log(chats);
+  // const groups = await buysCollection.find({});
+  // let totalMembers = 0;
+  // for (const group of groups) {
+  //   try {
+  //     totalMembers += await buyBot.getChatMemberCount(group.chat_id);
+  //   } catch (error) {}
+  // }
+  // console.log(`CUMULATIVE MEMBERS ->`, totalMembers);
+
   // console.log(
   //   await buysCollection.find({
   //     // "pool.baseToken.address": "0xcDE90558fc317C69580DeeAF3eFC509428Df9080",

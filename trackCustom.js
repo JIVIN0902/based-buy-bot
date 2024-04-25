@@ -7,7 +7,6 @@ const {
 } = require("./abis");
 const TelegramBot = require("node-telegram-bot-api");
 const dedent = require("dedent");
-const { DB } = require("./db");
 const {
   get_data_v2,
   readPrices,
@@ -21,7 +20,7 @@ const {
   get_data_izi,
   updateTrendingVol,
   updateTrendingMarketCap,
-  getRandomInt,
+  sendTelegramMessageBanana,
 } = require("./utils");
 const {
   RPCS,
@@ -35,23 +34,21 @@ const {
   TRENDING_CHAT_IDS,
   TRENDINGS,
   STANDALONE_TRENDINGS,
-  DEAD_ADDRESS,
+  BANANA_CHAINS,
+  CHARTS,
   ZERO_ADDRESS,
+  DEAD_ADDRESS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
 const { updateTrending, updateTrendingVolumes } = require("./updateTrending");
 const { trackBurns } = require("./trackBurn");
+const { DBBanana } = require("./dbBanana");
 
 async function trackBuys(network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
-  const db = new DB();
-  const {
-    buysCollection,
-    trendingCollection,
-    trendingVolCollection,
-    adsCollection,
-  } = await db.init();
+  const db = new DBBanana();
+  const { buysCollection } = await db.init();
 
   const topic = topics[version];
 
@@ -71,18 +68,13 @@ async function trackBuys(network, version) {
   provider.on(filter, async (log) => {
     try {
       const pool_address = log.address;
-
       // console.log(network, pool_address);
+
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
       });
       if (chats.length === 0) return;
       const tx_hash = log.transactionHash;
-      const networkAds = await adsCollection.find({ network });
-      const adToShow =
-        networkAds.length > 0
-          ? networkAds[getRandomInt(0, networkAds.length - 1)]
-          : null;
 
       const event = iface.parseLog(log);
       const args = event.args;
@@ -102,6 +94,8 @@ async function trackBuys(network, version) {
       const token0Decimals = await token0Contract.decimals();
       const token1Decimals = await token1Contract.decimals();
       let i = 0;
+
+      // console.log(network, pool_address);
       for (const chat of chats) {
         i += 1;
         const pool = chat.pool;
@@ -157,19 +151,12 @@ async function trackBuys(network, version) {
           ? token0Contract
           : token1Contract;
         let totalSupply = await tokenContract.totalSupply();
-        // console.log("TOTAL SUPPLY ->", totalSupply);
-        let zeroAddressBalance = 0;
-        let deadAddressBalance = 0;
-
-        try {
-          zeroAddressBalance = await tokenContract.balanceOf(ZERO_ADDRESS);
-          deadAddressBalance = await tokenContract.balanceOf(DEAD_ADDRESS);
-        } catch (error) {}
-
+        const zeroAddressBalance = await tokenContract.balanceOf(ZERO_ADDRESS);
+        const deadAddressBalance = await tokenContract.balanceOf(DEAD_ADDRESS);
         totalSupply = totalSupply
           .sub(zeroAddressBalance)
           .sub(deadAddressBalance);
-        // console.log("TOTAL SUPPLY ->", totalSupply);
+        // console.log(totalSupply);
         let tokenInDecimals = compareAddresses(token0, quoteToken.address)
           ? token0Decimals
           : token1Decimals;
@@ -208,38 +195,12 @@ async function trackBuys(network, version) {
         const explorer = explorers[pool.chainId];
         const native = NATIVES[network];
         const nativePrice = prices[native];
-        const isTrending = await trendingCollection.findOne({
-          address: ethers.utils.getAddress(baseToken.address),
-        });
-        let trendingMsg = null;
-        // let trendingMsgStandalone = null;
-
-        if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
-          if (STANDALONE_TRENDINGS[network]) {
-            const grpLink = STANDALONE_TRENDINGS[network];
-            trendingMsg = `\n<b><a href="${grpLink}/${
-              TRENDING_MSG_IDS[network].standalone
-            }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
-              TRENDING_CHAINS[network]
-            } TRENDING</a></b>\n`;
-          } else {
-            const grpLink =
-              network === "svm"
-                ? "https://t.me/SatoshiVMTrending"
-                : "https://t.me/OrangeTrending";
-            trendingMsg = `\n<b><a href="${grpLink}/${
-              TRENDING_MSG_IDS[network].orangeTrending
-            }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
-              TRENDING_CHAINS[network]
-            } TRENDING</a></b>\n`;
-          }
-        }
 
         const isWhale = amountInUsd >= 3000;
         const emoji = isWhale ? "🐳" : buy_emoji;
-        const adMsg = adToShow
-          ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>`
-          : "";
+        const chartLink = CHARTS[network]
+          ? `${CHARTS[network]}/${pool_address}`
+          : `https://dexscreener.com/${pool.chainId}/${pool_address}`;
 
         let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
@@ -276,40 +237,23 @@ async function trackBuys(network, version) {
                     ).toFixed(0)}%`
                 : ""
             }
-            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
-            ${trendingMsg || ""}
-            <a href='https://dexscreener.com/${
-              pool.chainId === "degen" ? "degenchain" : pool.chainId
-            }/${pool_address}'>📊 CHART</a>${
+            🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}\n
+            <a href='${chartLink}'>📊 CHART</a>${
           tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""
         }${twitter ? ` | <a href='${twitter}'>X</a>` : ""}${
           website ? ` | <a href='${website}'>WEBSITE</a>` : ""
-        } | <a href="${TRENDINGS[network]}/${
-          TRENDING_MSG_IDS[network].orangeTrending
-        }">TRENDING</a>
-        ${adMsg || ""}
+        } 
         `;
 
         if (amountInUsd > min_buy) {
-          await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
-          if (amountInUsd > 500 && isTrending && i === 1) {
-            await sendTelegramMessage(
-              dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
-              null,
-              TRENDING_CHAT_IDS[network],
-              network,
-              false
-            );
-          }
+          await sendTelegramMessageBanana(
+            dedent(msg),
+            image,
+            chat_id,
+            network,
+            true
+          );
         }
-        await updateTrendingMarketCap(
-          { trendingCollection, trendingVolCollection },
-          marketCap,
-          amountInUsd,
-          chat_id,
-          network,
-          baseToken.address
-        );
       }
     } catch (error) {
       console.log(error.message);
@@ -318,15 +262,15 @@ async function trackBuys(network, version) {
 }
 
 let tasks = [];
-for (const network of CHAINS) {
+for (const network of BANANA_CHAINS) {
   for (const version of VERSIONS) {
     tasks.push(trackBuys(network, version));
   }
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);
-scheduleJob("*/60 * * * * *", updateTrending);
-scheduleJob("0 * * * *", updateTrendingVolumes);
+// scheduleJob("*/60 * * * * *", updateTrending);
+// scheduleJob("0 * * * *", updateTrendingVolumes);
 
 Promise.all(tasks)
   .then(() => {

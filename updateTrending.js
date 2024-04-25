@@ -120,11 +120,10 @@ async function editTrendingMsg(adsCollection, msg, network) {
         ],
       ],
     };
-    console.log(reply_markup);
     const msg_ids = TRENDING_MSG_IDS[network];
     const standalone_chat_id = STANDALONE_TRENDING_CHAT_IDS[network];
     if (standalone_chat_id && msg_ids.standalone) {
-      console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
+      // console.log("STANDALONE ->", standalone_chat_id, msg_ids.standalone);
       try {
         await buyBot.editMessageText(dedent(msg), {
           parse_mode: "HTML",
@@ -139,7 +138,7 @@ async function editTrendingMsg(adsCollection, msg, network) {
       });
     }
     if (msg_ids.orangeTrending) {
-      console.log("ORANGE ->", msg_ids.orangeTrending);
+      // console.log("ORANGE ->", msg_ids.orangeTrending);
       try {
         await buyBot.editMessageText(dedent(msg), {
           parse_mode: "HTML",
@@ -154,7 +153,7 @@ async function editTrendingMsg(adsCollection, msg, network) {
       });
     }
   } catch (error) {
-    console.log("ERROR while editing", error.message);
+    // console.log("ERROR while editing", error.message);
   }
 }
 

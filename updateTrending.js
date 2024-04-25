@@ -46,12 +46,13 @@ async function updateTrending() {
     timestamp: { $lt: snapshot },
   });
   for (const network of CHAINS) {
+    console.log(network);
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];
     for (let item of trendingData) {
       const address = ethers.utils.getAddress(item.address);
-      if (item.marketCap > 10000) {
+      if (item.marketCap > 5000) {
         trends.push({ ...item._doc, address });
       } else {
         await trendingCollection.deleteOne({ address });
@@ -153,7 +154,7 @@ async function editTrendingMsg(adsCollection, msg, network) {
       });
     }
   } catch (error) {
-    // console.log("ERROR while editing", error.message);
+    console.log("ERROR while editing", error.message);
   }
 }
 
@@ -203,7 +204,7 @@ async function tr() {
   }
 }
 
-// updateTrending();
+updateTrending();
 module.exports = { updateTrending, updateTrendingVolumes };
 // ();
 // tr();

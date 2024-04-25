@@ -138,11 +138,11 @@ async function test() {
     await db.init();
   // const grpCount = await buysCollection.countDocuments();
   // console.log(grpCount);
-  const chats = await buysCollection.find({
-    "pool.pairAddress": ethers.utils.getAddress(
-      "0x131fc641d2c62c3aef5c50014d48332288d3612d"
-    ),
-  });
+  // const chats = await buysCollection.find({
+  //   "pool.pairAddress": ethers.utils.getAddress(
+  //     "0x131fc641d2c62c3aef5c50014d48332288d3612d"
+  //   ),
+  // });
   // console.log(chats);
   // const groups = await buysCollection.find({});
   // let totalMembers = 0;
@@ -196,23 +196,23 @@ async function test() {
   // //   )
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
-  // await trendingCollection.create({
-  //   tg_link: "https://t.me/Dappadofficial",
-  //   tx_hash: null,
-  //   lastVolResetTimestamp: 0,
-  //   hrs_tier: 24 * 30,
-  //   address: "0xE87269Fa38180A13e9bB3C487537F5282EF3e5d7",
-  //   symbol: "APPA",
-  //   rank: 2,
-  //   timestamp: Date.now(),
-  //   network: "zksync",
-  //   chat_id: -1002105755963,
-  //   vol: 0,
-  //   volTimestampLatest: 0,
-  //   marketCap: 38500000,
-  //   marketCapGrowth: 11,
-  //   marketCapTimestamp: 0,
-  // });
+  await trendingCollection.create({
+    tg_link: "https://t.me/PepeXAI",
+    tx_hash: null,
+    lastVolResetTimestamp: 0,
+    hrs_tier: 24 * 30,
+    address: "0x309d86275d0fcb2a7819fa266e6138c78b230827",
+    symbol: "PEPEWIFXAI",
+    rank: 1,
+    timestamp: Date.now(),
+    network: "xai",
+    chat_id: -1002110687717,
+    vol: 0,
+    volTimestampLatest: 0,
+    marketCap: 8000,
+    marketCapGrowth: 11,
+    marketCapTimestamp: 0,
+  });
   // console.log(await trendingCollection.find({ network: "zksync" }));
   // const data = await buysCollection.find();
   // for (const item of data) {

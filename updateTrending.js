@@ -18,8 +18,8 @@ const { getTokenDetails } = require("./trend-bot/utils");
 const TelegramBot = require("node-telegram-bot-api");
 const { getAdToShow } = require("./utils");
 
-// const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
-const BOT_TOKEN = "6855442320:AAGdHmPQkG9gJI5QuLPH-TVpuXS_E6j6r3o";
+const BOT_TOKEN = "7109381344:AAGxAINAtCMN-0qdwrYyS94raBa5u_9p244";
+// const BOT_TOKEN = "6855442320:AAGdHmPQkG9gJI5QuLPH-TVpuXS_E6j6r3o";
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
 
 const BREAK_INTERVAL = 10 * 60 * 1000;
@@ -46,7 +46,6 @@ async function updateTrending() {
     timestamp: { $lt: snapshot },
   });
   for (const network of CHAINS) {
-    console.log(network);
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];

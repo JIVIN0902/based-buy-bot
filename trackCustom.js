@@ -21,6 +21,7 @@ const {
   updateTrendingVol,
   updateTrendingMarketCap,
   sendTelegramMessageBanana,
+  sendTelegramMessageCustom,
 } = require("./utils");
 const {
   RPCS,
@@ -43,11 +44,11 @@ const { scheduleJob } = require("node-schedule");
 const { updatePrices } = require("./updatePrices");
 const { updateTrending, updateTrendingVolumes } = require("./updateTrending");
 const { trackBurns } = require("./trackBurn");
-const { DBBanana } = require("./dbBanana");
+const { DBCustom } = require("./db");
 
-async function trackBuys(network, version) {
+async function trackBuys(bot_token, network, version) {
   const provider = new ethers.providers.JsonRpcProvider(RPCS[network]);
-  const db = new DBBanana();
+  const db = new DBCustom();
   const { buysCollection } = await db.init();
 
   const topic = topics[version];
@@ -73,6 +74,7 @@ async function trackBuys(network, version) {
       const chats = await buysCollection.find({
         "pool.pairAddress": ethers.utils.getAddress(pool_address),
       });
+
       if (chats.length === 0) return;
       const tx_hash = log.transactionHash;
 
@@ -246,7 +248,8 @@ async function trackBuys(network, version) {
         `;
 
         if (amountInUsd > min_buy) {
-          await sendTelegramMessageBanana(
+          await sendTelegramMessageCustom(
+            bot_token,
             dedent(msg),
             image,
             chat_id,
@@ -262,10 +265,10 @@ async function trackBuys(network, version) {
 }
 
 let tasks = [];
-for (const network of BANANA_CHAINS) {
-  for (const version of VERSIONS) {
-    tasks.push(trackBuys(network, version));
-  }
+const network = "chillis";
+const bot_token = "6958109382:AAHjorzV3B_YvLmRAWuzEvdtMUlaAc6G5UA";
+for (const version of VERSIONS) {
+  tasks.push(trackBuys(bot_token, network, version));
 }
 
 scheduleJob("*/60 * * * * *", updatePrices);

@@ -130,7 +130,40 @@ class DB {
   }
 }
 
-module.exports = { DB, mainSchema, trendingSchema, trendingVolumeSchema };
+class DBCustom {
+  db;
+  constructor() {}
+
+  async init() {
+    this.db = await mongoose.connect(
+      "mongodb+srv://Dynamo:uNPQBc7OlNcaV5Ei@cluster0.wbqvypk.mongodb.net/custom-buy-bot?retryWrites=true&w=majority",
+      {}
+    );
+
+    const buysCollection = this.db.model("buys", mainSchema);
+    const trendingCollection = this.db.model("trends", trendingSchema);
+    const adsCollection = this.db.model("ads", adsSchema);
+    const trendingVolCollection = this.db.model(
+      "trending-volume",
+      trendingVolumeSchema
+    );
+
+    return {
+      buysCollection,
+      trendingCollection,
+      trendingVolCollection,
+      adsCollection,
+    };
+  }
+}
+
+module.exports = {
+  DB,
+  mainSchema,
+  trendingSchema,
+  trendingVolumeSchema,
+  DBCustom,
+};
 
 async function test() {
   const db = new DB();

@@ -212,6 +212,55 @@ async function sendTelegramMessageBanana(
   }
 }
 
+async function sendTelegramMessageCustom(
+  bot_token,
+  msg,
+  img_url,
+  chat_id,
+  network,
+  is_button
+) {
+  try {
+    msg = dedent(msg);
+    let keyboardMarkup = null;
+    //   inline_keyboard: [
+    //     [
+    //       {
+    //         text: "🔥 Chiliz Trending 🔥",
+    //         url: "https://t.me/ChilizTrendingLIVE",
+    //       },
+    //     ],
+    //   ],
+    // };
+    const customBuyBot = new TelegramBot(bot_token, { polling: false });
+
+    if (img_url) {
+      const img_type = img_url.includes("mp4") ? "video" : "photo";
+      if (img_type === "photo") {
+        await customBuyBot.sendPhoto(chat_id, img_url, {
+          caption: msg,
+          parse_mode: "HTML",
+          reply_markup: keyboardMarkup,
+        });
+      } else {
+        await customBuyBot.sendVideo(chat_id, img_url, {
+          caption: msg,
+          parse_mode: "HTML",
+          reply_markup: keyboardMarkup,
+        });
+      }
+    } else {
+      await customBuyBot.sendMessage(chat_id, msg, {
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+        reply_markup: keyboardMarkup,
+      });
+    }
+  } catch (error) {
+    console.error("Sending message errored:", error.message);
+  }
+}
+
 function getUserPosition(totalBalance, tokenBought) {
   const prevBalance = totalBalance - tokenBought;
   const position = (tokenBought / prevBalance) * 100;
@@ -335,4 +384,5 @@ module.exports = {
   getRandomInt,
   getAdToShow,
   sendTelegramMessageBanana,
+  sendTelegramMessageCustom,
 };

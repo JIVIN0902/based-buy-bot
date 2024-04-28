@@ -246,6 +246,8 @@ const CHAINS = [
 
 const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer", "b2", "chillis"];
 
+const FLOOZ_CHAINS = ["base", "blast", "avalanche"];
+
 const CHARTS = {
   xdc: "https://www.geckoterminal.com/xdc/pools",
   chillis: "https://www.geckoterminal.com/chiliz-chain/pools",
@@ -305,4 +307,5 @@ module.exports = {
   CHARTS,
   ZERO_ADDRESS,
   DEAD_ADDRESS,
+  FLOOZ_CHAINS,
 };

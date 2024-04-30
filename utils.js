@@ -496,9 +496,9 @@ async function prepareMessage(
   const chartLink = FLOOZ_CHAINS.includes(network)
     ? `<b>📊 </b><a href='https://dexscreener.com/${
         pool.chainId === "degen" ? "degenchain" : pool.chainId
-      }/${pool_address}'>SCREENER</a> | <a href="https://flooz.xyz/trade/${
+      }/${pool_address}'>CHART</a> | <a href="https://flooz.xyz/trade/${
         baseToken.address
-      }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=charts-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">FLOOZ</a>`
+      }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=charts-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">TRADE</a>`
     : `<a href='https://dexscreener.com/${
         pool.chainId === "degen" ? "degenchain" : pool.chainId
       }/${pool_address}'>📊 CHART</a>`;

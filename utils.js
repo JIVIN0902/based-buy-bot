@@ -13,6 +13,8 @@ const {
   TRENDING_CHAINS,
   NATIVES,
   FLOOZ_CHAINS,
+  STANDALONE_TRENDINGS,
+  TRENDING_RANK_EMOJIS,
 } = require("./config");
 
 const buyBot = new TelegramBot(BOT_TOKEN, { polling: false });
@@ -357,172 +359,182 @@ async function prepareMessage(
   tokenDetails,
   db
 ) {
-  const {
-    buy_step,
-    buy_emoji,
-    min_buy,
-    image,
-    chat_id,
-    tg_link,
-    twitter,
-    website,
-    circ_supply,
-    pool,
-  } = chat;
-  const baseToken = pool.baseToken;
-  const quoteToken = pool.quoteToken;
-  const {
-    token0,
-    token1,
-    token0Contract,
-    token1Contract,
-    token0Decimals,
-    token1Decimals,
-    pool_address,
-    tx_hash,
-  } = tokenDetails;
-  const {
-    buysCollection,
-    trendingCollection,
-    trendingVolCollection,
-    adsCollection,
-  } = db;
-  const swap_data =
-    version === "v3"
-      ? get_data_v3(args, baseToken.address, quoteToken.address, token0, token1)
-      : version === "izi"
-      ? get_data_izi(
-          args,
-          baseToken.address,
-          quoteToken.address,
-          token0,
-          token1
-        )
-      : get_data_v2(
-          args,
-          baseToken.address,
-          quoteToken.address,
-          token0,
-          token1
-        );
-
-  let { amountIn, amountOut } = swap_data;
-
-  if (!amountIn && !amountOut) return;
-
-  let to =
-    version === "v3" ? args.recipient : version === "v2" ? args.to : null;
-  if (version === "izi") {
-    const tx_receipt = await provider.getTransaction(tx_hash);
-    to = tx_receipt.from;
-  }
-  const tokenContract = compareAddresses(token0, baseToken.address)
-    ? token0Contract
-    : token1Contract;
-  let totalSupply = await tokenContract.totalSupply();
-  let zeroAddressBalance = 0;
-  let deadAddressBalance = 0;
-
   try {
-    zeroAddressBalance = await tokenContract.balanceOf(ZERO_ADDRESS);
-    deadAddressBalance = await tokenContract.balanceOf(DEAD_ADDRESS);
-  } catch (error) {}
+    const {
+      buy_step,
+      buy_emoji,
+      min_buy,
+      image,
+      chat_id,
+      tg_link,
+      twitter,
+      website,
+      circ_supply,
+      pool,
+    } = chat;
+    const baseToken = pool.baseToken;
+    const quoteToken = pool.quoteToken;
+    const {
+      token0,
+      token1,
+      token0Contract,
+      token1Contract,
+      token0Decimals,
+      token1Decimals,
+      pool_address,
+      tx_hash,
+    } = tokenDetails;
+    const {
+      buysCollection,
+      trendingCollection,
+      trendingVolCollection,
+      adsCollection,
+    } = db;
+    const swap_data =
+      version === "v3"
+        ? get_data_v3(
+            args,
+            baseToken.address,
+            quoteToken.address,
+            token0,
+            token1
+          )
+        : version === "izi"
+        ? get_data_izi(
+            args,
+            baseToken.address,
+            quoteToken.address,
+            token0,
+            token1
+          )
+        : get_data_v2(
+            args,
+            baseToken.address,
+            quoteToken.address,
+            token0,
+            token1
+          );
 
-  totalSupply = totalSupply.sub(zeroAddressBalance).sub(deadAddressBalance);
-  let tokenInDecimals = compareAddresses(token0, quoteToken.address)
-    ? token0Decimals
-    : token1Decimals;
-  tokenInDecimals = parseInt(tokenInDecimals.toString());
-  let tokenOutDecimals = compareAddresses(token0, baseToken.address)
-    ? token0Decimals
-    : token1Decimals;
-  tokenOutDecimals = parseInt(tokenOutDecimals.toString());
+    let { amountIn, amountOut } = swap_data;
 
-  totalSupply = parseInt(
-    ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
-  );
-  let userBalance = await tokenContract.balanceOf(to);
-  userBalance = parseFloat(
-    ethers.utils.formatUnits(userBalance, tokenOutDecimals).toString()
-  );
-  amountIn = parseFloat(
-    ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
-  );
-  amountOut = parseFloat(
-    ethers.utils.formatUnits(amountOut, tokenOutDecimals).toString()
-  );
-  const position = to !== null ? getUserPosition(userBalance, amountOut) : null;
-  // console.log(amountIn, amountOut);
-  const prices = readPrices();
-  const quoteTokenPrice = prices[quoteToken.symbol];
-  const amountInUsd = amountIn * quoteTokenPrice;
-  // console.log("Amt in usd ->", amountInUsd);
-  const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
-  // console.log("Token price usd ->", tokenPriceUsd);
-  const supply = circ_supply ? circ_supply : totalSupply;
-  // console.log("Supply ->", supply, baseToken.symbol);
-  const marketCap = tokenPriceUsd * supply;
-  // console.log(amountInUsd, tokenPriceUsd, marketCap);
-  const explorer = explorers[pool.chainId];
-  const native = NATIVES[network];
-  const nativePrice = prices[native];
-  const isTrending = await trendingCollection.findOne({
-    address: ethers.utils.getAddress(baseToken.address),
-  });
-  let trendingMsg = null;
-  // let trendingMsgStandalone = null;
+    if (!amountIn && !amountOut) return;
 
-  if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
-    if (STANDALONE_TRENDINGS[network]) {
-      const grpLink = STANDALONE_TRENDINGS[network];
-      trendingMsg = `\n<b><a href="${grpLink}/${
-        TRENDING_MSG_IDS[network].standalone
-      }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
-        TRENDING_CHAINS[network]
-      } TRENDING</a></b>\n`;
-    } else {
-      const grpLink =
-        network === "svm"
-          ? "https://t.me/SatoshiVMTrending"
-          : "https://t.me/OrangeTrending";
-      trendingMsg = `\n<b><a href="${grpLink}/${
-        TRENDING_MSG_IDS[network].orangeTrending
-      }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
-        TRENDING_CHAINS[network]
-      } TRENDING</a></b>\n`;
+    let to =
+      version === "v3" ? args.recipient : version === "v2" ? args.to : null;
+    if (version === "izi") {
+      const tx_receipt = await provider.getTransaction(tx_hash);
+      to = tx_receipt.from;
     }
-  }
+    const tokenContract = compareAddresses(token0, baseToken.address)
+      ? token0Contract
+      : token1Contract;
+    let totalSupply = await tokenContract.totalSupply();
+    let zeroAddressBalance = 0;
+    let deadAddressBalance = 0;
 
-  const chartLink = FLOOZ_CHAINS.includes(network)
-    ? `<b>📊 </b><a href='https://dexscreener.com/${
-        pool.chainId === "degen" ? "degenchain" : pool.chainId
-      }/${pool_address}'>CHART</a> | <a href="https://flooz.xyz/trade/${
-        baseToken.address
-      }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=charts-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">TRADE</a>`
-    : `<a href='https://dexscreener.com/${
-        pool.chainId === "degen" ? "degenchain" : pool.chainId
-      }/${pool_address}'>📊 CHART</a>`;
-  const isWhale = amountInUsd >= 3000;
-  const emoji = isWhale ? "🐳" : buy_emoji;
-  const adMsg = adToShow
-    ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>`
-    : "";
+    try {
+      zeroAddressBalance = await tokenContract.balanceOf(ZERO_ADDRESS);
+      deadAddressBalance = await tokenContract.balanceOf(DEAD_ADDRESS);
+    } catch (error) {}
 
-  let msg = `
+    totalSupply = totalSupply.sub(zeroAddressBalance).sub(deadAddressBalance);
+    let tokenInDecimals = compareAddresses(token0, quoteToken.address)
+      ? token0Decimals
+      : token1Decimals;
+    tokenInDecimals = parseInt(tokenInDecimals.toString());
+    let tokenOutDecimals = compareAddresses(token0, baseToken.address)
+      ? token0Decimals
+      : token1Decimals;
+    tokenOutDecimals = parseInt(tokenOutDecimals.toString());
+
+    totalSupply = parseInt(
+      ethers.utils.formatUnits(totalSupply, tokenOutDecimals).toString()
+    );
+    let userBalance = await tokenContract.balanceOf(to);
+    userBalance = parseFloat(
+      ethers.utils.formatUnits(userBalance, tokenOutDecimals).toString()
+    );
+    amountIn = parseFloat(
+      ethers.utils.formatUnits(amountIn, tokenInDecimals).toString()
+    );
+    amountOut = parseFloat(
+      ethers.utils.formatUnits(amountOut, tokenOutDecimals).toString()
+    );
+    const position =
+      to !== null ? getUserPosition(userBalance, amountOut) : null;
+    // console.log(amountIn, amountOut);
+    const prices = readPrices();
+    const quoteTokenPrice = prices[quoteToken.symbol];
+    const amountInUsd = amountIn * quoteTokenPrice;
+    // console.log("Amt in usd ->", amountInUsd);
+    const tokenPriceUsd = (amountIn / amountOut) * quoteTokenPrice;
+    // console.log("Token price usd ->", tokenPriceUsd);
+    const supply = circ_supply ? circ_supply : totalSupply;
+    // console.log("Supply ->", supply, baseToken.symbol);
+    const marketCap = tokenPriceUsd * supply;
+    // console.log(amountInUsd, tokenPriceUsd, marketCap);
+    const explorer = explorers[pool.chainId];
+    const native = NATIVES[network];
+    const nativePrice = prices[native];
+    const isTrending = await trendingCollection.findOne({
+      address: ethers.utils.getAddress(baseToken.address),
+    });
+    let trendingMsg = null;
+    // let trendingMsgStandalone = null;
+
+    if (isTrending && isTrending.rank > 0 && isTrending.rank <= 10) {
+      if (STANDALONE_TRENDINGS[network]) {
+        const grpLink = STANDALONE_TRENDINGS[network];
+        trendingMsg = `\n<b><a href="${grpLink}/${
+          TRENDING_MSG_IDS[network].standalone
+        }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
+          TRENDING_CHAINS[network]
+        } TRENDING</a></b>\n`;
+      } else {
+        const grpLink =
+          network === "svm"
+            ? "https://t.me/SatoshiVMTrending"
+            : "https://t.me/OrangeTrending";
+        trendingMsg = `\n<b><a href="${grpLink}/${
+          TRENDING_MSG_IDS[network].orangeTrending
+        }">${TRENDING_RANK_EMOJIS[isTrending.rank]} ON ${
+          TRENDING_CHAINS[network]
+        } TRENDING</a></b>\n`;
+      }
+    }
+
+    const chartLink = FLOOZ_CHAINS.includes(network)
+      ? `<b>📊 </b><a href='https://dexscreener.com/${
+          pool.chainId === "degen" ? "degenchain" : pool.chainId
+        }/${pool_address}'>CHART</a> | <a href="https://flooz.xyz/trade/${
+          baseToken.address
+        }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=charts-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">TRADE</a>`
+      : `<a href='https://dexscreener.com/${
+          pool.chainId === "degen" ? "degenchain" : pool.chainId
+        }/${pool_address}'>📊 CHART</a>`;
+    const isWhale = amountInUsd >= 3000;
+    const emoji = isWhale ? "🐳" : buy_emoji;
+    const adMsg = adToShow
+      ? `<a href="${adToShow.url}">Ad: ${adToShow.text}</a>`
+      : "";
+
+    let msg = `
             <b>New ${baseToken.symbol}${isWhale ? " Whale" : ""} Buy!</b>\n
             ${emoji.repeat(process_number(amountInUsd, buy_step))}\n
             💵 <b>Spent:</b> ${formatNumber(amountIn, 3)} ${
-    quoteToken.symbol
-  } ($${formatNumber(amountInUsd)})
+      quoteToken.symbol
+    } ($${formatNumber(amountInUsd)})
             💰 <b>Bought: </b>${formatNumber(amountOut)} ${baseToken.symbol}
             🏷️ <b>${baseToken.symbol} Price:</b> $${
-    tokenPriceUsd >= 0.000000001
-      ? formatNumber(tokenPriceUsd, 8)
-      : formatNumber(tokenPriceUsd, 18)
-  }
+      tokenPriceUsd >= 0.000000001
+        ? formatNumber(tokenPriceUsd, 8)
+        : formatNumber(tokenPriceUsd, 18)
+    }
             💲 <b>${native} Price:</b> $${
-    nativePrice >= 1 ? formatNumber(nativePrice) : formatNumber(nativePrice, 8)
-  }
+      nativePrice >= 1
+        ? formatNumber(nativePrice)
+        : formatNumber(nativePrice, 8)
+    }
             ${
               to
                 ? `🧔‍♂️ <b>Buyer: </b><a href="${explorer}/address/${to}">${to.slice(
@@ -544,13 +556,17 @@ async function prepareMessage(
             🏦 <b>Market Cap:</b> $${formatNumber(marketCap, 0)}
             ${trendingMsg || ""}
             ${chartLink}${tg_link ? ` | <a href='${tg_link}'>TG</a>` : ""}${
-    twitter ? ` | <a href='${twitter}'>X</a>` : ""
-  }${website ? ` | <a href='${website}'>WEBSITE</a>` : ""} | <a href="${
-    TRENDINGS[network]
-  }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>
+      twitter ? ` | <a href='${twitter}'>X</a>` : ""
+    }${website ? ` | <a href='${website}'>WEBSITE</a>` : ""} | <a href="${
+      TRENDINGS[network]
+    }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>
         ${adMsg || ""}
         `;
-  return { msg, amountInUsd, isTrending, marketCap };
+    return { msg, amountInUsd, isTrending, marketCap };
+  } catch (error) {
+    console.log("Error while building msg ->", error);
+    return {};
+  }
 }
 
 function process_number(amountInUsd, buyStep) {

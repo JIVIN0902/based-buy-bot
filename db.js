@@ -56,6 +56,14 @@ const poolSchema = new Schema({
   pairCreatedAt: Number,
 });
 
+const statsSchema = new Schema({
+  tx_hash: String,
+  timestamp: Number,
+  buyAmount: Number,
+  network: String,
+  version: String,
+});
+
 const mainSchema = new Schema({
   pool: poolSchema,
   chat_id: Number,
@@ -116,6 +124,7 @@ class DB {
     const buysCollection = this.db.model("buys", mainSchema);
     const trendingCollection = this.db.model("trends", trendingSchema);
     const adsCollection = this.db.model("ads", adsSchema);
+    const statsCollection = this.db.model("stats", statsSchema);
     const trendingVolCollection = this.db.model(
       "trending-volume",
       trendingVolumeSchema
@@ -126,6 +135,7 @@ class DB {
       trendingCollection,
       trendingVolCollection,
       adsCollection,
+      statsCollection,
     };
   }
 }

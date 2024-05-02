@@ -153,7 +153,7 @@ async function editTrendingMsg(adsCollection, msg, network) {
       });
     }
   } catch (error) {
-    console.log("ERROR while editing", error.message);
+    // console.log("ERROR while editing", error.message);
   }
 }
 

@@ -147,8 +147,7 @@ async function trackBuys(network, version) {
             symbol: pool.baseToken.symbol,
             address: pool.baseToken.address,
           };
-          await statsCollection.create({ ...statsData });
-          console.log("Stat recorded");
+          i == 1 && (await statsCollection.create({ ...statsData }));
         } catch (error) {}
         if (amountInUsd > min_buy) {
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);

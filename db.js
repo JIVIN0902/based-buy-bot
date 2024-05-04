@@ -1,6 +1,8 @@
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
 const { buyBot } = require("./utils");
+const { parse } = require("json2csv");
+const { promises } = require("fs");
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
@@ -62,6 +64,8 @@ const statsSchema = new Schema({
   buyAmount: Number,
   network: String,
   version: String,
+  symbol: String,
+  address: String,
 });
 
 const mainSchema = new Schema({
@@ -177,8 +181,27 @@ module.exports = {
 
 async function test() {
   const db = new DB();
-  const { buysCollection, trendingCollection, trendingVolCollection } =
-    await db.init();
+  const {
+    buysCollection,
+    trendingCollection,
+    trendingVolCollection,
+    statsCollection,
+  } = await db.init();
+  // await statsCollection.deleteMany({});
+  // let data = await statsCollection.find({ network: "blast" });
+  // data = data.map((item) => ({
+  //   tx_hash: item.tx_hash,
+  //   timestamp: parseInt(item.timestamp / 1000),
+  //   buyAmount: item.buyAmount,
+  //   network: item.network,
+  //   version: item.version,
+  //   symbol: item.symbol,
+  //   address: item.address,
+  // }));
+
+  // const csv = parse(data);
+  // await promises.writeFile("orange.csv", csv);
+
   // const grpCount = await buysCollection.countDocuments();
   // console.log(grpCount);
   // const chats = await buysCollection.find({
@@ -239,23 +262,23 @@ async function test() {
   // //   )
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
-  await trendingCollection.create({
-    tg_link: "https://t.me/PepeXAI",
-    tx_hash: null,
-    lastVolResetTimestamp: 0,
-    hrs_tier: 24 * 30,
-    address: "0x309d86275d0fcb2a7819fa266e6138c78b230827",
-    symbol: "PEPEWIFXAI",
-    rank: 1,
-    timestamp: Date.now(),
-    network: "xai",
-    chat_id: -1002110687717,
-    vol: 0,
-    volTimestampLatest: 0,
-    marketCap: 8000,
-    marketCapGrowth: 11,
-    marketCapTimestamp: 0,
-  });
+  // await trendingCollection.create({
+  //   tg_link: "https://t.me/PepeXAI",
+  //   tx_hash: null,
+  //   lastVolResetTimestamp: 0,
+  //   hrs_tier: 24 * 30,
+  //   address: "0x309d86275d0fcb2a7819fa266e6138c78b230827",
+  //   symbol: "PEPEWIFXAI",
+  //   rank: 1,
+  //   timestamp: Date.now(),
+  //   network: "xai",
+  //   chat_id: -1002110687717,
+  //   vol: 0,
+  //   volTimestampLatest: 0,
+  //   marketCap: 8000,
+  //   marketCapGrowth: 11,
+  //   marketCapTimestamp: 0,
+  // });
   // console.log(await trendingCollection.find({ network: "zksync" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
@@ -263,4 +286,4 @@ async function test() {
   // }
 }
 
-// test();
+test();

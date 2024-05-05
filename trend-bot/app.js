@@ -2,7 +2,10 @@ const TelegramBot = require("node-telegram-bot-api");
 const { DB } = require("../db");
 const { ethers } = require("ethers");
 
-const bot = new TelegramBot("6761137970:AAFwdMMo-VUfAXvx8MZ5VUbswr_0LdUOBDk", {
+// Replace 'YOUR_TELEGRAM_BOT_TOKEN' with your actual bot token
+// const token = "7137563235:AAHdDMVPIaiJEIZCZItIuh5PdGVUy507lzI";
+const token = "6761137970:AAFwdMMo-VUfAXvx8MZ5VUbswr_0LdUOBDk";
+const bot = new TelegramBot(token, {
   polling: true,
 });
 
@@ -62,12 +65,11 @@ bot.onText(/\/delete (.+)/, async (msg, match) => {
   try {
     const echoMessage = match[1];
     let [address, network] = echoMessage.split(" ");
-    days = parseInt(days);
     const db = new DB();
 
     const { trendingCollection } = await db.init();
 
-    await trendingCollection.delete({
+    await trendingCollection.deleteMany({
       network,
       address: ethers.utils.getAddress(address),
     });

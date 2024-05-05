@@ -188,6 +188,7 @@ async function test() {
     statsCollection,
   } = await db.init();
   // await statsCollection.deleteMany({});
+  await trendingCollection.deleteOne({ _id: "6636afb374301276784361f9" });
   // let data = await statsCollection.find({ network: "blast" });
   // data = data.map((item) => ({
   //   tx_hash: item.tx_hash,
@@ -263,27 +264,27 @@ async function test() {
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
   // await trendingCollection.create({
-  //   tg_link: "https://t.me/PepeXAI",
+  //   tg_link: "https://t.me/basedduckbuck",
   //   tx_hash: null,
   //   lastVolResetTimestamp: 0,
   //   hrs_tier: 24 * 30,
-  //   address: "0x309d86275d0fcb2a7819fa266e6138c78b230827",
-  //   symbol: "PEPEWIFXAI",
+  //   address: "0x2a5df5D3DBa819089cE1daCD55477f522C3AFFa3",
+  //   symbol: "$BUCK",
   //   rank: 1,
   //   timestamp: Date.now(),
-  //   network: "xai",
-  //   chat_id: -1002110687717,
+  //   network: "base",
+  //   chat_id: -1002014104417,
   //   vol: 0,
   //   volTimestampLatest: 0,
   //   marketCap: 8000,
   //   marketCapGrowth: 11,
   //   marketCapTimestamp: 0,
   // });
-  // console.log(await trendingCollection.find({ network: "zksync" }));
+  // console.log(await trendingCollection.find({ network: "base" }));
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);
   // }
 }
 
-test();
+// test();

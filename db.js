@@ -105,6 +105,7 @@ const adsSchema = new Schema({
   url: { type: String, unique: true },
   text: String,
   network: { type: String, default: null },
+  expiry: Number,
 });
 
 const trendingVolumeSchema = new Schema({
@@ -186,6 +187,7 @@ async function test() {
     trendingCollection,
     trendingVolCollection,
     statsCollection,
+    adsCollection,
   } = await db.init();
   // await statsCollection.deleteMany({});
   await trendingCollection.deleteOne({ _id: "6636afb374301276784361f9" });
@@ -285,6 +287,8 @@ async function test() {
   // for (const item of data) {
   //   console.log(item);
   // }
+  // await adsCollection.deleteOne({ url: "https://t.me/AndyBlastL2" });
+  // console.log(await adsCollection.find({}));
 }
 
 // test();

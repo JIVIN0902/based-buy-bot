@@ -4,17 +4,27 @@ const { getRandomInt } = require("./utils");
 const data = {
   text: "👀 Anon Confessions on TG 👀",
   url: "https://t.me/BasedConfessions",
-  network: "degen",
+  network: "all",
+  days: 100,
 };
 async function updateAds() {
   try {
     const db = new DB();
     const { adsCollection } = await db.init();
-    // await adsCollection.create({
-    //   ...data,
-    //   timestamp: Date.now(),
-    // });
-    // console.log("Ad updated");
+    await adsCollection.deleteMany({});
+    const currentDate = new Date();
+    const expiry = new Date(
+      currentDate.getTime() + data.days * 24 * 60 * 60 * 1000
+    ).getTime();
+
+    console.log(expiry);
+
+    await adsCollection.create({
+      ...data,
+      timestamp: Date.now(),
+      expiry: expiry,
+    });
+    console.log("Ad updated");
 
     console.log(await adsCollection.find({}));
 

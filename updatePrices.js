@@ -21,6 +21,7 @@ async function updatePrices() {
     ETH: ethPrice,
     WETH: ethPrice,
     METIS: metisPrice,
+    WMETIS: metisPrice,
     Metis: metisPrice,
     AVAX: avaxPrice,
     WAVAX: avaxPrice,

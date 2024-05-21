@@ -185,8 +185,8 @@ async function sendTelegramMessageBanana(
       inline_keyboard: [
         [
           {
-            text: "🔥 Chiliz Trending 🔥",
-            url: "https://t.me/ChilizTrendingLIVE",
+            text: "🔥 Your Ad here 🔥",
+            url: "https://t.me/MaxxCrypto404",
           },
         ],
       ],

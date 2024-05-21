@@ -228,20 +228,27 @@ async function test() {
   //     "pool.chainId": "degen",
   //   })
   // );
-  // const items = await trendingCollection.find({});
-  // for (const item of items) {
-  //   console.log(item);
-  // }
+  // await trendingCollection.deleteMany({
+  //   symbol: "PEPEWIFXAI",
+  // });
+  const items = await trendingCollection.find({ network: "merlinchain" });
+  for (const item of items) {
+    console.log(item);
+  }
 
-  // // await buysCollection.deleteOne({
-  // //   _id: "65fcc4db8325c097d811b167",
-  // // });
+  // await buysCollection.deleteOne({
+  //   _id: "662836b356be3c2bbcc1f389",
+  // });
   // // console.log(
-  // //   await buysCollection.find({
-  // //     "pool.chainId": "svm",
-  // //     "pool.pairAddress": "0xD05bd2fd4c5dFC743dE05FFb8322Ad8C36da6705",
-  // //   })
-  // // );
+  // console.log(
+  //   await buysCollection.find({
+  //     "pool.chainId": "blast",
+  //     "pool.baseToken.address": ethers.utils.getAddress(
+  //       "0x76D6556758365e63e48A0DFAfd19C8DBa15F97eE"
+  //     ),
+  //   })
+  // );
+  // );
   // // const data = await buysCollection.find({ network: "svm" });
   // // for (const item of data) {
   // //   console.log(item);

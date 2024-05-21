@@ -45,7 +45,7 @@ async function updateTrending() {
   await trendingVolCollection.deleteMany({
     timestamp: { $lt: snapshot },
   });
-  for (const network of CHAINS) {
+  for (const network of ["xai"]) {
     let trendingData = await trendingCollection.find({ network });
 
     let trends = [];
@@ -102,7 +102,7 @@ async function updateTrending() {
     msg += `\n🍊<b><i> @OrangeBuyBot Automatically updates Trending every 30 secs.</i></b>`;
 
     // Replace with you
-    // console.log(msg);
+    console.log(msg);
     await editTrendingMsg(adsCollection, msg, network);
   }
 }
@@ -153,7 +153,7 @@ async function editTrendingMsg(adsCollection, msg, network) {
       });
     }
   } catch (error) {
-    // console.log("ERROR while editing", error.message);
+    console.log("ERROR while editing", error.message);
   }
 }
 

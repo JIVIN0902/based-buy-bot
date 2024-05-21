@@ -24,6 +24,7 @@ const explorers = {
   b2: "https://explorer.bsquared.network",
   chillis: "https://chiliscan.com",
   xai: "https://explorer.xai-chain.net",
+  sanko: "https://explorer.sanko.xyz",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -78,6 +79,7 @@ const RPCS = {
   b2: "https://rpc.bsquared.network",
   chillis: "https://rpc.ankr.com/chiliz",
   xai: "https://xai-chain.net/rpc",
+  sanko: "https://mainnet.sanko.xyz",
 };
 
 const topics = {
@@ -107,6 +109,7 @@ const NATIVES = {
   b2: "BTC",
   chillis: "CHZ",
   xai: "XAI",
+  sanko: "DMT",
 };
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -244,13 +247,22 @@ const CHAINS = [
   "xai",
 ];
 
-const BANANA_CHAINS = ["svm", "pulsechain", "xdc", "bitlayer", "b2", "chillis"];
+const BANANA_CHAINS = [
+  "svm",
+  "pulsechain",
+  "xdc",
+  "bitlayer",
+  "b2",
+  "chillis",
+  "sanko",
+];
 
 const FLOOZ_CHAINS = ["base", "blast", "avalanche", "zksync"];
 
 const CHARTS = {
   xdc: "https://www.geckoterminal.com/xdc/pools",
   chillis: "https://www.geckoterminal.com/chiliz-chain/pools",
+  sanko: "https://www.defined.fi/sanko",
 };
 
 const TRENDING_CHAINS = {

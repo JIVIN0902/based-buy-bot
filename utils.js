@@ -181,16 +181,17 @@ async function sendTelegramMessageBanana(
 ) {
   try {
     msg = dedent(msg);
-    let keyboardMarkup = {
-      inline_keyboard: [
-        [
-          {
-            text: "🔥 Your Ad here 🔥",
-            url: "https://t.me/MaxxCrypto404",
-          },
-        ],
-      ],
-    };
+    let keyboardMarkup = null;
+    // {
+    //   inline_keyboard: [
+    //     [
+    //       {
+    //         text: "🔥 Your Ad here 🔥",
+    //         url: "https://t.me/MaxxCrypto404",
+    //       },
+    //     ],
+    //   ],
+    // };
 
     if (img_url) {
       const img_type = img_url.includes("mp4") ? "video" : "photo";

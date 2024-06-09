@@ -3,7 +3,7 @@ const fs = require("fs");
 const { scheduleJob } = require("node-schedule");
 
 async function updatePrices() {
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network,pulsechain,bitcoin,zetachain,degen-base,xdce-crowd-sale,coredaoorg,chiliz,xai-blockchain,dream-machine-token&vs_currencies=usd`;
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=metis-token,avalanche-2,ethereum,manta-network,pulsechain,bitcoin,zetachain,degen-base,xdce-crowd-sale,coredaoorg,chiliz,xai-blockchain,dream-machine-token,shiba-predator&vs_currencies=usd`;
   const { data } = await axios.get(url);
   const ethPrice = data.ethereum.usd;
   const avaxPrice = data["avalanche-2"].usd;
@@ -18,6 +18,7 @@ async function updatePrices() {
   const chillisPrice = data["chiliz"].usd;
   const xaiPrice = data["xai-blockchain"].usd;
   const dmtPrice = data["dream-machine-token"].usd;
+  const qomPrice = data["shiba-predator"].usd;
   const priceData = {
     ETH: ethPrice,
     WETH: ethPrice,
@@ -52,6 +53,8 @@ async function updatePrices() {
     WXAI: xaiPrice,
     DMT: dmtPrice,
     WDMT: dmtPrice,
+    QOM: qomPrice,
+    WQOM: qomPrice,
   };
   const jsonData = JSON.stringify(priceData, null, 2);
   // console.log(jsonData);

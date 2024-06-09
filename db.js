@@ -190,7 +190,7 @@ async function test() {
     adsCollection,
   } = await db.init();
   // await statsCollection.deleteMany({});
-  await trendingCollection.deleteOne({ _id: "6636afb374301276784361f9" });
+  // await trendingCollection.deleteOne({ _id: "6636afb374301276784361f9" });
   // let data = await statsCollection.find({ network: "blast" });
   // data = data.map((item) => ({
   //   tx_hash: item.tx_hash,
@@ -231,10 +231,10 @@ async function test() {
   // await trendingCollection.deleteMany({
   //   symbol: "PEPEWIFXAI",
   // });
-  const items = await trendingCollection.find({ network: "merlinchain" });
-  for (const item of items) {
-    console.log(item);
-  }
+  // const items = await trendingCollection.find({ network: "merlinchain" });
+  // for (const item of items) {
+  //   console.log(item);
+  // }
 
   // await buysCollection.deleteOne({
   //   _id: "662836b356be3c2bbcc1f389",
@@ -272,23 +272,23 @@ async function test() {
   // //   )
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
-  // await trendingCollection.create({
-  //   tg_link: "https://t.me/basedduckbuck",
-  //   tx_hash: null,
-  //   lastVolResetTimestamp: 0,
-  //   hrs_tier: 24 * 30,
-  //   address: "0x2a5df5D3DBa819089cE1daCD55477f522C3AFFa3",
-  //   symbol: "$BUCK",
-  //   rank: 1,
-  //   timestamp: Date.now(),
-  //   network: "base",
-  //   chat_id: -1002014104417,
-  //   vol: 0,
-  //   volTimestampLatest: 0,
-  //   marketCap: 8000,
-  //   marketCapGrowth: 11,
-  //   marketCapTimestamp: 0,
-  // });
+  await trendingCollection.create({
+    tg_link: "https://t.me/AlfTheCrocodile",
+    tx_hash: null,
+    lastVolResetTimestamp: 0,
+    hrs_tier: 24 * 1,
+    address: "0x26F1bB40eA88B46CEB21557dC0FfAC7B7c0ad40f",
+    symbol: "Alf",
+    rank: 7,
+    timestamp: Date.now(),
+    network: "base",
+    chat_id: -1002162715623,
+    vol: 0,
+    volTimestampLatest: 0,
+    marketCap: 8000,
+    marketCapGrowth: 11,
+    marketCapTimestamp: 0,
+  });
   // console.log(await trendingCollection.find({ network: "base" }));
   // const data = await buysCollection.find();
   // for (const item of data) {

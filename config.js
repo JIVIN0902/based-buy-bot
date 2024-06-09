@@ -25,6 +25,7 @@ const explorers = {
   chillis: "https://chiliscan.com",
   xai: "https://explorer.xai-chain.net",
   sanko: "https://explorer.sanko.xyz",
+  qom: "https://scan.qom.one",
 };
 
 // const BOT_TOKEN = "6758353198:AAH0ddOvAUOq_1RMNv_IhkavwuaWO1mWa_A";
@@ -80,6 +81,7 @@ const RPCS = {
   chillis: "https://rpc.ankr.com/chiliz",
   xai: "https://xai-chain.net/rpc",
   sanko: "https://mainnet.sanko.xyz",
+  qom: "https://rpc.qom.one",
 };
 
 const topics = {
@@ -110,6 +112,7 @@ const NATIVES = {
   chillis: "CHZ",
   xai: "XAI",
   sanko: "DMT",
+  qom: "QOM",
 };
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -255,6 +258,7 @@ const BANANA_CHAINS = [
   "b2",
   "chillis",
   "sanko",
+  "qom",
 ];
 
 const FLOOZ_CHAINS = ["base", "blast", "avalanche", "zksync"];
@@ -263,6 +267,7 @@ const CHARTS = {
   xdc: "https://www.geckoterminal.com/xdc/pools",
   chillis: "https://www.geckoterminal.com/chiliz-chain/pools",
   sanko: "https://www.defined.fi/sanko",
+  qom: "https://www.qomswap.com/info/pools",
 };
 
 const TRENDING_CHAINS = {

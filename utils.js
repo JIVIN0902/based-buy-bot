@@ -563,7 +563,7 @@ async function prepareMessage(
       TRENDINGS[network]
     }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>${
       socials
-        ? `| <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot">SOCIALS</a>`
+        ? `| <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot&utm_source=Telegram-OrangeBuyBot&utm_medium=hub-page-CTA&utm_campaign=Flooz-Telegram-Bots&utm_id=OrangeBuyBot">SOCIALS</a>`
         : ""
     }
         ${adMsg || ""}

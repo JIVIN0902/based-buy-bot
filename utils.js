@@ -372,6 +372,7 @@ async function prepareMessage(
       website,
       circ_supply,
       pool,
+      socials,
     } = chat;
     const baseToken = pool.baseToken;
     const quoteToken = pool.quoteToken;
@@ -561,7 +562,11 @@ async function prepareMessage(
     }${website ? ` | <a href='${website}'>WEBSITE</a>` : ""} | <a href="${
       TRENDINGS[network]
     }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>
-        ${adMsg || ""}
+        ${adMsg || ""}${
+      socials
+        ? `| <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot">SOCIALS</a>`
+        : ""
+    }
         `;
     return { msg, amountInUsd, isTrending, marketCap };
   } catch (error) {

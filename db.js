@@ -81,6 +81,7 @@ const mainSchema = new Schema({
   circ_supply: { type: Number, default: null },
   total_burned: { type: Number, default: 0 },
   lp_burned: { type: Number, default: 0 },
+  socials: { type: Boolean, default: false },
 });
 
 const trendingSchema = new Schema({
@@ -272,23 +273,24 @@ async function test() {
   // //   )
   // // );
   // console.log(await trendingCollection.deleteMany({ network: "blast" }));
-  await trendingCollection.create({
-    tg_link: "https://t.me/AlfTheCrocodile",
-    tx_hash: null,
-    lastVolResetTimestamp: 0,
-    hrs_tier: 24 * 1,
-    address: "0x26F1bB40eA88B46CEB21557dC0FfAC7B7c0ad40f",
-    symbol: "Alf",
-    rank: 7,
-    timestamp: Date.now(),
-    network: "base",
-    chat_id: -1002162715623,
-    vol: 0,
-    volTimestampLatest: 0,
-    marketCap: 8000,
-    marketCapGrowth: 11,
-    marketCapTimestamp: 0,
-  });
+  // await trendingCollection.create({
+  //   tg_link: "https://t.me/AlfTheCrocodile",
+  //   tx_hash: null,
+  //   lastVolResetTimestamp: 0,
+  //   hrs_tier: 24 * 1,
+  //   address: "0x26F1bB40eA88B46CEB21557dC0FfAC7B7c0ad40f",
+  //   symbol: "Alf",
+  //   rank: 7,
+  //   timestamp: Date.now(),
+  //   network: "base",
+  //   chat_id: -1002162715623,
+  //   vol: 0,
+  //   volTimestampLatest: 0,
+  //   marketCap: 8000,
+  //   marketCapGrowth: 11,
+  //   marketCapTimestamp: 0,
+  // });
+  console.log(await buysCollection.find({ socials: true }));
   // console.log(await trendingCollection.find({ network: "base" }));
   // const data = await buysCollection.find();
   // for (const item of data) {

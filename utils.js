@@ -561,12 +561,12 @@ async function prepareMessage(
       twitter ? ` | <a href='${twitter}'>X</a>` : ""
     }${website ? ` | <a href='${website}'>WEBSITE</a>` : ""} | <a href="${
       TRENDINGS[network]
-    }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>
-        ${adMsg || ""}${
+    }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>${
       socials
         ? `| <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot">SOCIALS</a>`
         : ""
     }
+        ${adMsg || ""}
         `;
     return { msg, amountInUsd, isTrending, marketCap };
   } catch (error) {

@@ -619,4 +619,5 @@ module.exports = {
   sendTelegramMessageBanana,
   sendTelegramMessageCustom,
   prepareMessage,
+  bananaBuyBot,
 };

@@ -1,5 +1,6 @@
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
+const { bananaBuyBot } = require("./utils");
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
@@ -129,3 +130,20 @@ class DBBanana {
 }
 
 module.exports = { DBBanana };
+
+async function main() {
+  const db = new DBBanana();
+  const { buysCollection } = await db.init();
+  const bananaCt = await buysCollection.countDocuments();
+  console.log(bananaCt);
+  const groups = await buysCollection.find({});
+  let totalMembers = 0;
+  for (const group of groups) {
+    try {
+      totalMembers += await bananaBuyBot.getChatMemberCount(group.chat_id);
+    } catch (error) {}
+  }
+  console.log(`CUMULATIVE MEMBERS Banana ->`, totalMembers);
+}
+
+// main();

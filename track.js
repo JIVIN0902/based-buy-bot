@@ -41,7 +41,7 @@ const {
   FLOOZ_CHAINS,
 } = require("./config");
 const { scheduleJob } = require("node-schedule");
-const { updatePrices } = require("./updatePrices");
+const { updatePrices, updateCount } = require("./updatePrices");
 const { updateTrending, updateTrendingVolumes } = require("./updateTrending");
 const { trackBurns } = require("./trackBurn");
 
@@ -146,10 +146,13 @@ async function trackBuys(network, version) {
             symbol: pool.baseToken.symbol,
             address: pool.baseToken.address,
           };
-          i == 1 && (await statsCollection.create({ ...statsData }));
+          if (i === 1) {
+            await statsCollection.create({ ...statsData });
+          }
         } catch (error) {}
         if (amountInUsd > min_buy) {
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);
+          updateCount();
           if (amountInUsd > 500 && isTrending && i === 1) {
             await sendTelegramMessage(
               dedent(`<b>${TRENDING_CHAINS[network]}</b>\n` + msg),
@@ -158,16 +161,16 @@ async function trackBuys(network, version) {
               network,
               false
             );
+            await updateTrendingMarketCap(
+              { trendingCollection, trendingVolCollection },
+              marketCap,
+              amountInUsd,
+              chat_id,
+              network,
+              pool.baseToken.address
+            );
           }
         }
-        await updateTrendingMarketCap(
-          { trendingCollection, trendingVolCollection },
-          marketCap,
-          amountInUsd,
-          chat_id,
-          network,
-          pool.baseToken.address
-        );
       }
     } catch (error) {
       console.log(error.message);

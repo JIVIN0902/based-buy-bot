@@ -214,7 +214,17 @@ async function test() {
   //   ),
   // });
   // console.log(chats);
-  // const groups = await buysCollection.find({});
+  // const groups = await buysCollection.find({
+  //   "pool.baseToken.symbol": "ANDY",
+  //   "pool.chainId": "blast",
+  // });
+  // // console.log(groups);
+  // for (const group of groups) {
+  //   console.log(group.chat_id);
+  //   if (group.chat_id !== -1002105755963) {
+  //     await buysCollection.deleteOne({ chat_id: group.chat_id });
+  //   }
+  // }
   // let totalMembers = 0;
   // for (const group of groups) {
   //   try {
@@ -290,8 +300,14 @@ async function test() {
   //   marketCapGrowth: 11,
   //   marketCapTimestamp: 0,
   // });
-  console.log(await buysCollection.find({ socials: true }));
-  // console.log(await trendingCollection.find({ network: "base" }));
+  // console.log(
+  //   await buysCollection.find({
+  //     "pool.baseToken.address": "0xd43D8aDAC6A4C7d9Aeece7c3151FcA8f23752cf8",
+  //   })
+  // );
+  // console.log(await trendingCollection.find({ network: "blast" }));
+  // const orangeCt = await buysCollection.countDocuments();
+  // console.log(orangeCt);
   // const data = await buysCollection.find();
   // for (const item of data) {
   //   console.log(item);

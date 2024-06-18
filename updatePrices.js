@@ -73,4 +73,19 @@ function getNativePrice(key) {
   return data[key];
 }
 
-module.exports = { getNativePrice, updatePrices };
+function updateCount() {
+  let data = fs.readFileSync("count.json", "utf-8");
+
+  data = JSON.parse(data);
+  let count = data.count + 1;
+
+  fs.writeFile("count.json", JSON.stringify({ count }, null, 2), (err) => {
+    if (err) {
+      console.error("An error occurred:", err.message);
+    } else {
+      console.log("Data written to file successfully.");
+    }
+  });
+}
+
+module.exports = { getNativePrice, updatePrices, updateCount };

@@ -134,16 +134,20 @@ module.exports = { DBBanana };
 async function main() {
   const db = new DBBanana();
   const { buysCollection } = await db.init();
-  const bananaCt = await buysCollection.countDocuments();
-  console.log(bananaCt);
-  const groups = await buysCollection.find({});
-  let totalMembers = 0;
+  // const bananaCt = await buysCollection.countDocuments();
+  // console.log(bananaCt);
+  const groups = await buysCollection.find({ "pool.chainId": "sanko" });
+  console.log(groups.length);
   for (const group of groups) {
-    try {
-      totalMembers += await bananaBuyBot.getChatMemberCount(group.chat_id);
-    } catch (error) {}
+    console.log(group.chat_id, group.pool.baseToken.address);
   }
-  console.log(`CUMULATIVE MEMBERS Banana ->`, totalMembers);
+  // let totalMembers = 0;
+  // for (const group of groups) {
+  //   try {
+  //     totalMembers += await bananaBuyBot.getChatMemberCount(group.chat_id);
+  //   } catch (error) {}
+  // }
+  // console.log(`CUMULATIVE MEMBERS Banana ->`, totalMembers);
 }
 
 // main();

@@ -510,7 +510,7 @@ async function prepareMessage(
           pool.chainId === "degen" ? "degenchain" : pool.chainId
         }/${pool_address}'>CHART</a> | <a href="https://flooz.xyz/trade/${
           baseToken.address
-        }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=charts-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">TRADE</a>`
+        }?network=${network}&utm_source=telegram-orange-buy-bot+&utm_medium=buy-message-orange-buy-bot&utm_campaign=orange-buy-bot-flooz-partnership">TRADE</a>`
       : `<a href='https://dexscreener.com/${
           pool.chainId === "degen" ? "degenchain" : pool.chainId
         }/${pool_address}'>📊 CHART</a>`;
@@ -563,7 +563,7 @@ async function prepareMessage(
       TRENDINGS[network]
     }/${TRENDING_MSG_IDS[network].orangeTrending}">TRENDING</a>${
       socials
-        ? `| <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot&utm_source=Telegram-OrangeBuyBot&utm_medium=hub-page-CTA&utm_campaign=Flooz-Telegram-Bots&utm_id=OrangeBuyBot">SOCIALS</a>`
+        ? ` | <a href="https://flooz.xyz/hub/${chat_id}?partnerId=orangeBuyBot&utm_source=Telegram-OrangeBuyBot&utm_medium=hub-page-CTA&utm_campaign=Flooz-Telegram-Bots&utm_id=OrangeBuyBot">SOCIALS</a>`
         : ""
     }
         ${adMsg || ""}

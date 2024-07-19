@@ -53,7 +53,6 @@ async function trackBuys(network, version) {
     trendingCollection,
     trendingVolCollection,
     adsCollection,
-    statsCollection,
   } = await db.init();
 
   const topic = topics[version];
@@ -146,9 +145,6 @@ async function trackBuys(network, version) {
             symbol: pool.baseToken.symbol,
             address: pool.baseToken.address,
           };
-          if (i === 1) {
-            await statsCollection.create({ ...statsData });
-          }
         } catch (error) {}
         if (amountInUsd > min_buy) {
           await sendTelegramMessage(dedent(msg), image, chat_id, network, true);

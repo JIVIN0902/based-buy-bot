@@ -314,6 +314,8 @@ async function test() {
   // }
   // await adsCollection.deleteOne({ url: "https://t.me/AndyBlastL2" });
   // console.log(await adsCollection.find({}));
+  // await statsCollection.deleteMany({});
+  // console.log("Deleted");
 }
 
 // test();
